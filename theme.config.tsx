@@ -47,9 +47,15 @@ const config: DocsThemeConfig = {
   search: {
     component: null
   },
+  head: (<>
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:site" content="@tomasreimers"/>
+  </>),
   useNextSeoProps() {
     return {
-      titleTemplate: '%s – Frontend docs'
+      titleTemplate: '%s – Frontend docs',
+      defaultTitle: "Frontend docs",
+      description: "A ~20-page, front-to-back-readable guide to writing frontend for experienced developers."
     }
   }
 }
