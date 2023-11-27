@@ -1,15 +1,38 @@
 {
-  "index": "Introduction",
-  "another": "Another Page",
-  "advanced": "Advanced (A Folder)",
-  "about": {
-    "title": "About",
-    "type": "page"
+  "index": "Foreword",
+  "-- Platform": {
+    "type": "separator",
+    "title": "WEB FUNDAMENTALS"
   },
+  "html": "Chapter 1: HTML",
+  "css": "Chapter 2: CSS",
+  "js": "Chapter 3: JS",
+  "ecosystem": "Chapter 4: Ecosystem",
+  "-- React": {
+    "type": "separator",
+    "title": "REACT ESSENTIALS"
+  },
+  "declarativeui": "Chapter 5: Declarative UI",
+  "lifecycle": "Chapter 6: Lifecycle",
+  "profilingandtesting": "Chapter 7: Profiling & testing",
+  "-- Design": {
+    "type": "separator",
+    "title": "DESIGN PRINCIPLES"
+  },
+  "designsystems": "Chapter 8: Design systems",
+  "uipatterns": "Chapter 9: UI patterns",
+  "-- Data": {
+    "type": "separator",
+    "title": "DATA ARCHITECTURE"
+  },
+  "statemanagement": "Chapter 10: State",
+  "network": "Chapter 11: Network",
+  "sync": "Chapter 12: Synchronization",
+  "routing": "Chapter 13: Routing & server",
   "contact": {
-    "title": "Contact ↗",
+    "title": "Want updates? Follow me on Twitter ↗",
     "type": "page",
-    "href": "https://twitter.com/shuding_",
+    "href": "https://twitter.com/tomasreimers",
     "newWindow": true
   }
 }
