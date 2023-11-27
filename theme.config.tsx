@@ -55,7 +55,7 @@ const config: DocsThemeConfig = {
     return {
       titleTemplate: '%s – Frontend docs',
       defaultTitle: "Frontend docs",
-      description: "A ~20-page, front-to-back-readable guide to writing frontend for experienced developers."
+      description: "A ~20-page, front-to-back-readable guide on writing frontend for experienced developers."
     }
   }
 }
