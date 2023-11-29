@@ -35,7 +35,7 @@ You can open that HTML file to see it with the style applied. And, like our HTML
 
 ## Selectors
 
-CSS is all about selecting elements and modifying their properties. CSS files are structured as lists of these rules, which use a selector to specify element(s) the rule applies to and lists properties to apply to those elements. 
+CSS is all about selecting elements and modifying their properties. CSS files are structured as lists of these rules, which use a selector to specify element(s) the rule applies to and lists properties to apply to those matched elements. 
 
 ```css
 /**
@@ -80,12 +80,6 @@ Selectors can also match states. These selectors are prefixed with a colon. For 
 
 TODO: JSFIDDLE LINK
 
-Selectors can also create elements. For example, `.foo::before` will create an element within all elements with class `foo` but before their children. 
-
-Yes this is weird; an example of when you might use it is to add a bullet point before items in a bullet point list. 
-
-TODO: JSFIDDLE LINK
-
 ## Properties
 
 As for properties you can set on a selector, they are all of the form property-name colon property-value (which sometimes includes a unit). For example, 
@@ -105,9 +99,9 @@ There are a few types of potential values:
 
 CSS is wonderfully expressive. For example, you can do everything from change the cursor to do 3d transforms. While I can't cover everything CSS can do, some basics you can expect to encounter are:
 
-### Typography
+Typography 
 
-### Background
+Background properties
 
 ### Sizing: the box model
 
@@ -133,10 +127,9 @@ Two unintuitive things about this model are:
 1. Margin doesn’t always behave intuitively. Specifically, if you have two boxes next to each other with a margin of 10px, the total margin may not be 20px, it is only 10px (as both are at least 10px away from their neighbors).
 2. By default, width and height only define the size of the content. For many developers, this is unintuitive: because they would expect a box with width 200px to have a width of 200px, regardless of how much padding it has. To give developers this option, CSS added the property `box-sizing: border-box`. 
 
-### Positioning 
-
 ## Layout
 
+Note: even for people who have been doing this a while, there is still a lot of guess and check.
 
 ### Flex and Grid
 
@@ -144,6 +137,8 @@ While the box model worked well for documents, it reached limits with applicatio
 
 - Flexbox: TODO FLEXBOX FROGGY
 - Grid: TODO GRID GARDEN
+
+### Positioning
 
 ## Browser defaults
 
@@ -171,7 +166,11 @@ TODO: JSFIDDLE LINK
 
 ### Psuedo-elements
 
-TODO
+Selectors can also create elements. For example, `.foo::before` will create an element within all elements with class `foo` but before their children. 
+
+Yes this is weird; an example of when you might use it is to add a bullet point before items in a bullet point list. 
+
+TODO: JSFIDDLE LINK
 
 ## Devtools
 

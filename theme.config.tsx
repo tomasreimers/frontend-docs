@@ -47,15 +47,20 @@ const config: DocsThemeConfig = {
   search: {
     component: null
   },
-  head: (<>
-    <meta name="twitter:card" content="summary_large_image"/>
-    <meta name="twitter:site" content="@tomasreimers"/>
-  </>),
+  head: (() => {
+    return (
+      <>
+        <meta name="twitter:card" content="summary_large_image"/>
+        <meta name="twitter:creator" content="@tomasreimers"/>
+        <meta property="og:image" content="https://frontenddocs.com/images/opengraph/default.png" />
+      </>
+    );
+  }),
   useNextSeoProps() {
     return {
       titleTemplate: '%s – Frontend docs',
       defaultTitle: "Frontend docs",
-      description: "A ~20-page, front-to-back-readable guide on writing frontend for experienced developers."
+      description: "A ~20-page, front-to-back-readable guide on writing frontend for experienced developers.",
     }
   }
 }
