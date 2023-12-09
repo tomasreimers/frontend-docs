@@ -36,7 +36,7 @@ p {
 
 This is a CSS file! It says that all paragraph tags, `p`, should have a text color of red. 
 
-You can open that HTML file to see it with the style applied. And, like our HTML example, we can continue to experiment using JSFiddle:
+You can open that HTML file to see it with the style applied. And, [like our HTML example](/html/#try-it-yourself), we can continue to experiment using JSFiddle:
 
 <Fiddle url={"//jsfiddle.net/e6mjs3bz/embedded/html,css,result/"} />
 
@@ -145,7 +145,7 @@ Each element is modeled as four concentric rectangles (or boxes):
 - Border: a line around the padding
 - Margin: space outside the border separating the element from adjacent elements.
 
-<Image className="mt-6 w-full" src={Box} />
+<Image src={Box} alt="Box model" />
 
 For each rectangle, you can define all sides at once (`padding; 16px`), each side individually (`padding-left: 16px`), or each side individually using a shorthand (`padding: 16px 12px 8px 4px` defines the top as 16px, right as 12px, bottom as 8px, and left as 4px).
 
@@ -204,7 +204,7 @@ You might be wondering, is that all it really is? Is every web page written this
 
 The developer tools panel includes a variety of tools, but if you open “Elements” you’ll see the full HTML of the webpage, starting with the `<html>` tag (technically this is showing you the DOM, but more on that later). You can select an element to see its CSS and box model.
 
-<Image className="mt-6 w-full" src={Devtools} />
+<Image src={Devtools} />
 
 You can read more about the developer tools panel [here](https://developer.chrome.com/docs/devtools/overview#elements); the rest of the tools primarily help you debug any JavaScript running alongside the page, and we’ll get to that in the next chapter. 
 

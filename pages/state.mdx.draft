@@ -1,0 +1,19 @@
+---
+opengraphImage: 10
+---
+
+# Chapter 9: State management
+
+## TK The problem with global state
+
+## TK State
+
+## TK Context
+
+## TK External state stores
+
+## TK Derived state
+
+## TK Separation of concerns
+
+HOCs and Render props

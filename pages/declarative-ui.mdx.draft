@@ -1,0 +1,21 @@
+---
+opengraphImage: 5
+---
+
+# Chapter 4: Declarative UI
+
+## TK Components
+
+## TK Styling
+
+Not technically a part of react
+
+SCSS modules + primarily using classes to select
+
+Defensive CSS
+
+## TK Props
+
+## TK Event handlers
+
+## TK State

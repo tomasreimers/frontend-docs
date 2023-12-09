@@ -1,0 +1,237 @@
+---
+opengraphImage: 3
+---
+
+import { Image } from "../components/image"
+import { Fiddle } from "../components/fiddle"
+import Wat from "../public/images/content/javascript/wat.jpg"
+import Devtools from "../public/images/content/javascript/devtools.png"
+import TheGoodParts from "../public/images/content/javascript/thegoodparts.jpg"
+
+# JavaScript: The function of web pages
+
+All UI pretty much boils down to this:
+
+1. Draw something on the screen
+2. Listen to and react to user events (clicks, hovers, swipes, etc.) or global events (time changed, window resized, wifi disabled)
+
+JavaScript was developed in response to that second requirement; it was famously “developed in 5 days” as a way to add limited interactivity to documents: for example, to power dropdown menus. 
+
+## The language
+
+Despite the name, the language has no relation to Java, and is instead based on the [ECMAscript standard](https://en.wikipedia.org/wiki/ECMAScript) (an abstract spec for a scripting languages). Because of its rapid adoption and growth from a small scripting language to a full-blown application framework, JavaScript certainly has its quirks, and there is certainly language bloat and more bad than good. 
+
+<Image src={TheGoodParts} alt="JavaScript vs JavaScript the Good Parts" />
+
+For a good highlight-reel of those quirks, check out [the WAT of JavaScript](https://www.destroyallsoftware.com/talks/wat).
+
+<Image src={Wat} alt="The wat of JavaScript" />
+
+However, quirks aside, it is a full, turing-complete programming language. In fact, your browser has a full JavaScript REPL embedded in it: [open up devtools](/css/#devtools) and click on the “Console” tab and type:
+
+```jsx
+console.log("Hello, world!");
+```
+
+When you click enter, the browser will evaluate that line and print “Hello, world!”. To take it a step further, you can copy the following to print your name! 
+
+```jsx
+const name = "YOUR NAME";
+console.log("Hello, " + name + "!");
+```
+
+For a crash course on the syntax of JavaScript, check out [Learn X in Y](https://learnxinyminutes.com/docs/javascript/). 
+
+## The browser runtime
+
+In the context of web pages, JavaScript is either included as a referenced file (same way CSS is included):
+
+```jsx filename="index.html" {5}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Demo app</title>
+    <script src="script.js" />
+  </head>
+  <body>
+    <p>Hello, world!</p>
+  </body>
+</html>
+```
+
+Or directly written inline:
+
+```jsx filename="index.html" {5-7}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Demo app</title>
+    <script>
+      console.log("Hello, world!");
+    </script>
+  </head>
+  <body>
+    <p>Hello, world!</p>
+  </body>
+</html>
+```
+
+By default, when the browser is parsing the HTML, if it encounters a script tag, it will stop, load, parse, and run the JavaScript before it resumes parsing the HTML. This is very rarely desired—as you almost always want to display SOMETHING to the user before you start loading a script—so you’ll either see script tags included at the bottom of the body (after the main content has been parsed and displayed) or with an async attribute (e.g. `<script src="..." async />`) which does the same thing.
+
+### The DOM
+
+JavaScript is loaded along-side the webpage, and the runtime provides hooks into the browser’s in-memory model of the page: called the “document object model” or “DOM”. The DOM lets JavaScript listen for events and modify the page in response. 
+
+Much like we did with HTML or CSS, we can experiment using JSFiddle. For example, I can query for all the paragraph tags using: 
+
+```jsx
+console.log(document.querySelectorAll("p"));
+```
+
+And I can modify, or remove, those matching elements:
+
+<Fiddle url={"//jsfiddle.net/y43md1fq/4/embedded/html,css,js,result/"} />
+
+### Events
+
+As I said before, every UI language needs a way to respond to user events. In JavaScript, this takes the form of explicit event listeners that you can attach. For example, I can add an event listener for click events:
+
+<Fiddle url={"//jsfiddle.net/dtvonuj4/1/embedded/html,css,js,result/"} />
+
+Because components are nested, events may occur on multiple components: 
+
+<Fiddle url={"//jsfiddle.net/7fud0kgm/embedded/html,css,js,result/"} />
+
+You may have noticed that the parent event happens AFTER the child event. For historical reasons, every node actually receives the event twice: once during the “capture” phase (from ancestors to descendents), and once during the “bubble” phase (from descendents to ancestors). In this specific case, events are received in the order:
+
+1. Capture parent
+2. Capture child
+3. Bubble child
+4. Bubble parent
+
+Event listeners default to listening to the bubble event, but you can use the third parameter of `addEventListener` to instead listen to the capture event: 
+
+<Fiddle url={"//jsfiddle.net/fvpLr5nx/embedded/html,css,js,result/"} />
+
+By selecting the element in your browser’s developer tools, you can see any event handlers attached to it:
+
+<Image src={Devtools} alt="Devtools" />
+
+And if you go to the `source` panel, you can even [set a breakpoint on it](https://developer.chrome.com/docs/devtools/javascript/breakpoints#event-listeners).
+
+## Frontend frameworks
+
+With the building blocks of HTML, CSS, and JavaScript, the web changed very quickly: JavaScript didn’t stay a scripting language intended to open and close dropdowns for long; developers got increasingly ambitious with what web applications could do; and APIs were added to enable increasingly more native experiences; specifically: 
+
+- [XHR](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest): enabling webpages to programmatically query the network for additional data. (These days, the [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) is more common.)
+- [HTML5](https://en.wikipedia.org/wiki/HTML5): an updated specification for HTML, adding APIs targeted at full application development such as offline, history, geolocation, file reading, image rendering, etc.
+
+For a full list of JavaScript APIs, check out [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript). 
+
+Alongside the new APIs and browser-based applications (or perhaps powering the browser-based applications) came a suite of libraries built at targeting frontend.
+
+### Wave 1: Utilities
+
+The first wave of popular frontend frameworks came about in the 2000s and provided utilities for selecting elements (at this point, you could not select elements with CSS selectors natively) and requesting data from the network (something that was difficult). 
+
+```js filename="jquery-example.js"
+$( "#button-container button" ).on( "click", function( event ) {
+  hiddenBox.show();
+});
+```
+
+Examples include: [Mootools](https://mootools.net/), [Prototype](http://prototypejs.org/), and [jQuery](https://jquery.com/).
+
+### Wave 2: Data binding
+
+The second wave came about in the late 2000s / early 2010s and made it easier to bind data to HTML. This allowed developers to more easily store state in JavaScript, interpolate that state into their HTML, and modify that state in response to HTML events.
+
+```js filename="angularjs-example.js"
+<html ng-app>
+ <!-- Body tag augmented with ngController directive  -->
+ <body ng-controller="MyController">
+   <input ng-model="foo" value="bar">
+   <!-- Button tag with ngClick directive, and
+          string expression 'buttonText'
+          wrapped in "{{ }}" markup -->
+   <button ng-click="changeFoo()">{{buttonText}}</button>
+   <script src="angular.js"></script>
+ </body>
+</html>
+```
+
+Examples include: [Backbone](https://backbonejs.org/), [Angular 1.0](https://angularjs.org/), [Ember](https://emberjs.com/), and [Knockout](https://knockoutjs.com/).
+
+### Wave 3: Components
+
+The third wave further abstracted UI into components: bundles of structure, style, and function creating reusable UI concepts (a menu, table row, or form input). 
+
+```js filename="react-example.js"
+function Welcome(props) {
+  return <h1>Hello, {props.name}</h1>;
+}
+```
+
+Examples include: [React](https://react.dev/), [Angular 2.0](https://angular.io/), [Svelte](https://svelte.dev/), [Vue](https://vuejs.org/), and [Solid.js](https://www.solidjs.com/).
+
+A key innovation of React was JSX, a superset of JavaScript that allowed developers to write HTML-like syntax in JavaScript files. This language could be transpiled into JavaScript (with a object-based representation of the inlined HTML). We'll cover this more later.
+
+### Wave 4: Fullstack
+
+More recently, we've seen a fourth wave begin to emerge. Technologies like Next.js take advantage of the fact that JavaScript now powers both the client and server for many sites. By using Next.js, you can write React code that renders on the server, and keeps the client up-to-date. 
+
+While this wave is still early, examples include: [Next.js](https://nextjs.org/), [Remix](https://remix.run/), and [Astro](https://astro.build/).
+
+I will call out that these waves are fuzzy, and the idea of writing JavaScript that was shared between client and server started much earlier with [Meteor](https://www.meteor.com/). 
+ 
+## A desert island 
+
+A good friend once described JavaScript to me as "a desert island": 
+
+> You can do literally anything you want... but if you want indoor plumbing, you're going to have to build it.
+
+That stuck.
+
+JavaScript is an incredibly flexible language, but in many ways it's very bare. The need for frontend frameworks is indicative of that, and it doesn't include basic convenience methods or things we take foregranted in other languages (such as a consistent language spec).
+
+### Shims and polyfills
+
+Speaking of a consistent language spec, we haven’t talked about the governance of the web yet. The web standard is officially maintained by the [W3C](https://www.w3.org/), a standalone group created to steward the protocols of the web; however, because browsers are maintained by various organizations, which APIs you can use depends on which parts of the spec the browser vendor has implemented. In addition,browser vendors (specifically Chrome and Safari) will implement APIs before they're standards as a way to serve the needs of their parent organizations (Google and Apple respectively) and as a way to push the web forward. 
+
+[CanIUse](https://caniuse.com/) maintains a set of compatibility tables for various features across browser vendors and versions.
+
+To deal with the inconsistency of runtimes, websites use one of three strategies:
+
+- **Browser detection**: If you've ever seen the message "Please open this site in Chrome or Firefox for the best experience", you've experienced browser detection. The website is detecting which browser you're using, and gating the experience based on it, probably because the website requires some not-yet-widely-supported API. While common, this is broadly considered bad practice because it excludes niche browsers, excludes future browsers, and is unlikely to be updated once the new version of a currently-incompatible browser adds all the necessary APIs to support the site. 
+- **Feature detection**: The better version of browser detection is feature detection, which simply asks "does the current browser support the specific feature I need" (for example, if you're trying to use the `window.querySelectorAll()` function, you can test if `window.querySelectorAll` is a function; because in incompatible browsers it's not even defined). A popular library for this is [Modernizr](https://modernizr.com/).
+- **Polyfills (aka Shims)**: The even better version of feature detection is to not only detect if the browser supports a feature, but to retrofit it when it doesn't. As I said, JavaScript is an incredibly flexible langugae and even lets you add new functions to base types (for example, you can add a method to the base array type). Polyfills will detect if a browser has an API, and if not, define it for you; for example, the `.forEach()` method was introduced on arrays, but before every browser had it, websites might include a piece of code that checked if `forEach` existed on the base array type, and if not, [define it](https://vanillajstoolkit.com/polyfills/arrayforeach/). 
+
+### Utility libraries
+
+In addition to frameworks and polyfills, there are a handful of libraries dedicated to adding common utility functions to JavaScript. This is common in various languages; a popular example here is [underscore.js](https://underscorejs.org/).
+
+### Evolving the langauge 
+
+While the bareness of JavaScript can be disheartening to developers coming from more full-featured languages, I'll leave you on a positive note: 
+
+As one who's been watching the language and browser runtime evolve, we are making strides. For example, when jQuery was popular, selecting elements in the DOM was difficult. The author of jQuery built [Sizzle](https://github.com/jquery/sizzle), a library that abstracted away selecting elements and let developers use CSS selectors instead. Since then, browsers have added native support for this pattern with [document.querySelectorAll](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll). 
+
+And it doesn't stop there, we're watching the same thing play out with [web components](https://developer.mozilla.org/en-US/docs/Web/API/Web_components) right now: browsers are adding native support for the component architecture that frontend libraries have popularized. 
+
+## The universal virtual machine
+
+Speaking of evolution, people who really believe in the web platform will tell you it’s a full fledged virtual machine: a sandboxed render engine and scripting environment that runs on virtually every device. 
+
+One technological arc to highlight is the compilation of traditionally native languages into JavaScript. 
+
+It started with ASM.js and Emscripten: ASM.js was a subset of JavaScript intended as a compile target, and Emscripten was a backend for LLVM (a very common compiler with support for C, C++, ObjC, etc.). Emscripten could compile native code into ASM.js and even render graphics APIs directly to the screen via Canvas (JavaScript’s realtime drawing APIs). 
+
+This made for interesting technical demos, but became very real with WASM (or WebAssembly), a browser-supported compile target for the web that was (1) safe, and (2) directly transformable into native bytecode. This made it much faster than anything interpretted; some of the early benchmarks of WASM showed that it was only 2x slower than native! While the might seem like a high number, imagine being able to run PhotoShop in your browser with only 2x overhead compared running native... that’s really fast.
+
+While WASM is not yet widely used in production (a notable exception being Figma, which uses it to power their editor), there are very cool demos:
+
+ - [DOOM 3](https://wasm.continuation-labs.com/d3demo/)
+ - [Google Earth](https://blog.chromium.org/2019/06/webassembly-brings-google-earth-to-more.html?m=1)
+ - [Windows 95](https://copy.sh/v86/?profile=windows95)
+
+For something between satire and reality, [The Birth and Death of JavaScript](https://www.destroyallsoftware.com/talks/the-birth-and-death-of-javascript) is a funny talk that becomes more real every day.
