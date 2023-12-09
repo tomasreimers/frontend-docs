@@ -1,5 +1,5 @@
 import React from 'react'
-import { DocsThemeConfig } from 'nextra-theme-docs'
+import { DocsThemeConfig, useConfig } from 'nextra-theme-docs'
 
 const config: DocsThemeConfig = {
   faviconGlyph: "📚", 
@@ -48,11 +48,13 @@ const config: DocsThemeConfig = {
     component: null
   },
   head: (() => {
+    const { frontMatter } = useConfig();
+
     return (
       <>
         <meta name="twitter:card" content="summary_large_image"/>
         <meta name="twitter:creator" content="@tomasreimers"/>
-        <meta property="og:image" content="https://frontenddocs.com/images/opengraph/default.png" />
+        <meta property="og:image" content={`https://frontenddocs.com/images/opengraph/${frontMatter.opengraphImage ?? "default"}.png`} />
       </>
     );
   }),

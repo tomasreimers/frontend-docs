@@ -6,7 +6,7 @@
   },
   "html": "Chapter 1: HTML",
   "css": "Chapter 2: CSS",
-  "js": "Chapter 3: JS",
+  "js": "Chapter 3: JavaScript",
   "ecosystem": "Chapter 4: Ecosystem",
   "-- React": {
     "type": "separator",

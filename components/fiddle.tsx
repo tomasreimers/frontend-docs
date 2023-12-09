@@ -1,5 +1,4 @@
-import { useConfig, useTheme } from "nextra-theme-docs";
-import s from "./fiddle.module.scss"
+import { useTheme } from "nextra-theme-docs";
 
 export function Fiddle({ url }: { url: string }) {
   const theme = useTheme();
