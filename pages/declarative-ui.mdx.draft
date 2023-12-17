@@ -6,6 +6,9 @@ opengraphImage: 5
 
 ## TK Components
 
+
+We should talk around the event loop, and how JS is global single threaded (so you don't want to block the render loop with it)
+
 ## TK Styling
 
 Not technically a part of react
