@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/shuding/nextra-docs-template#readme",
   "dependencies": {
+    "@codesandbox/sandpack-react": "^2.10.0",
+    "@vercel/og": "^0.6.1",
     "next": "^13.0.6",
     "nextra": "latest",
     "nextra-theme-docs": "latest",

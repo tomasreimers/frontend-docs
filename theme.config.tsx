@@ -1,5 +1,6 @@
 import React from 'react'
-import { DocsThemeConfig, useConfig } from 'nextra-theme-docs'
+import { DocsThemeConfig } from 'nextra-theme-docs'
+import { useRouter } from 'next/router'
 
 const config: DocsThemeConfig = {
   faviconGlyph: "📚", 
@@ -15,7 +16,7 @@ const config: DocsThemeConfig = {
   },
   sidebar: {
     titleComponent({type, title, route}) {
-      if (type === 'doc' && route === '#') {
+      if (type === 'doc' && ["#", ""].includes(route)) {
         return <span className='text-gray-300 dark:text-neutral-600' title="Coming soon">{title}</span>
       }
       return <>{title}</>
@@ -48,13 +49,13 @@ const config: DocsThemeConfig = {
     component: null
   },
   head: (() => {
-    const { frontMatter } = useConfig();
+    const { asPath } = useRouter();
 
     return (
       <>
         <meta name="twitter:card" content="summary_large_image"/>
         <meta name="twitter:creator" content="@tomasreimers"/>
-        <meta property="og:image" content={`https://frontenddocs.com/images/opengraph/${frontMatter.opengraphImage ?? "default"}.png`} />
+        <meta property="og:image" content={`https://frontenddocs.com/api/og${asPath}image.png`} />
       </>
     );
   }),

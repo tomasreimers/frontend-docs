@@ -7,13 +7,13 @@
   "html": "Chapter 1: HTML",
   "css": "Chapter 2: CSS",
   "javascript": "Chapter 3: JavaScript",
-  "ecosystem": "Chapter 4: Ecosystem",
   "-- React": {
     "type": "separator",
     "title": "REACT ESSENTIALS"
   },
-  "declarative-ui": "Chapter 5: Declarative UI",
-  "lifecycle": "Chapter 6: Lifecycle",
+  "components": "Chapter 4: Components",
+  "applications": "Chapter 5: Applications",
+  "build-tooling": "Chapter 6: Build tooling",
   "profiling-and-testing": "Chapter 7: Profiling & testing",
   "-- Design": {
     "type": "separator",
@@ -25,10 +25,9 @@
     "type": "separator",
     "title": "DATA ARCHITECTURE"
   },
-  "state": "Chapter 10: State",
-  "network": "Chapter 11: Network",
-  "sync": "Chapter 12: Synchronization",
-  "routing-and-server": "Chapter 13: Routing & server",
+  "state": "Chapter 10: State stores",
+  "network": "Chapter 11: Network & sync",
+  "client-compute": "Chapter 12: Client compute",
   "contact": {
     "title": "Want updates? Follow me on Twitter ↗",
     "type": "page",

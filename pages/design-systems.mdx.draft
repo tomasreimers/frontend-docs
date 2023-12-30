@@ -1,7 +1,3 @@
----
-opengraphImage: 8
----
-
 # Chapter 7: Design systems
 
 ## TK The grid
@@ -20,6 +16,12 @@ Color theory
 
 ## TK Accessibility
 
+https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques
+
+## Defensive CSS
+
 ## TK Off the shelf systems
 
 Theo's video
+
+HTML -> SVG -> Canvas

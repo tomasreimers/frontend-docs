@@ -1,19 +1,31 @@
----
-opengraphImage: 10
----
-
 # Chapter 9: State management
 
 ## TK The problem with global state
 
-## TK State
+## Prop drilling
+
+## Architecture
+
+Split data fetch and presentation
+
+### Composition
+
+### Higher-order components
+
+https://legacy.reactjs.org/docs/higher-order-components.html
+
+### Render props
 
 ## TK Context
 
 ## TK External state stores
+
+Warning, don't use for inputs
 
 ## TK Derived state
 
 ## TK Separation of concerns
 
 HOCs and Render props
+
+## Virtualization (advanced)

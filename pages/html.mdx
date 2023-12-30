@@ -1,14 +1,10 @@
----
-opengraphImage: 1
----
-
-import { Fiddle } from "../components/fiddle"
+import { Example } from "../components/example"
 
 # HTML: The structure of web pages
 
 HTML started as a portable markup language to share academic papers with other people on the same network. Browsers were co-developed as a way to (1) fetch those files, and (2) display them. 
 
-While the web has changed a lot since then, that core technologies haven't. When you navigate to a URL like `google.com/foo/bar.html`, the browser requests the shared file `foo/bar.html` from the server at `google.com`; if you specify a folder path without a file, the browser will automatically request `index.html` on your behalf (specifically, the requests `google.com/foo/` and `google.com/foo/index.html` are the same).
+While the web has changed a lot since then, that core technologies haven't. 
 
 ## A basic page
 
@@ -58,11 +54,27 @@ There are other common tags to add functionality to the page: `<img>` for images
 
 ## Try it yourself
 
-To play with this further, you can use a service like JSFiddle or CodePen, which injects the HTML directly into the body tag (and allows you to define CSS and JS files, but more on that later). 
+To play with this further, you can use a service like CodeSandbox, which allows you to define and render an HTML file (and allows you to define CSS and JS files, but more on that later). 
 
-<Fiddle url={"//jsfiddle.net/349nvzqx/embedded/html,result/"} />
+<Example template="static" files={{
+  "/index.html": `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Demo app</title>
+  </head>
+  <body>
+    <p>Hello, world!</p>
+  </body>
+</html>`
+}} />
 
-## Media
+## The browser and URLs
+
+When you navigate to a URL like `google.com/foo/bar.html`, the browser requests the shared file `foo/bar.html` from the server at `google.com`; if you specify a folder path without a file, the browser will automatically request `index.html` on your behalf (specifically, the requests `google.com/foo/` and `google.com/foo/index.html` are the same).
+
+While most of this is probably familiar to anyone who's worked with web services before, one part that's unique to the browser is the hashtag (`#`): an artifact of the browser's origins as a document viewer. If there is a hashtag, the browser will scroll to the corresponding `a` element with that ID; for example, navigating to [#try-it-yourself](#try-it-yourself) will scroll to the element `<a id="try-it-yourself">`. 
+
+## Embedding media
 
 In addition to HTML, browsers can render and embed a variety of media files to make documents more rich. For example, they can handle a variety of images: 
 
@@ -73,4 +85,14 @@ In addition to HTML, browsers can render and embed a variety of media files to m
 
 They can also natively embed audio and video through MP4s. 
 
-<Fiddle url={"//jsfiddle.net/o62yeqk3/embedded/html,result/"} />
+<Example template="static" files={{
+  "/index.html": `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Demo app</title>
+  </head>
+  <body>
+    <img src="https://placehold.co/80x80.png" />
+  </body>
+</html>`
+}} />

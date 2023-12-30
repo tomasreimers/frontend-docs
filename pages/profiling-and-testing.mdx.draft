@@ -1,10 +1,24 @@
----
-opengraphImage: 7
----
-
 # Chapter 6: Profiling and testing
 
 ## TK React devtools
+
+#### Memoization
+
+Sometimes, you don't want to rerender the entire subtree in response to state updating.
+
+For example, imagine you have a very long list of items, stored as state in a parent component, and the user changes a single item. By default, React will re-render the entire list, but as the developer you know only the changed item needs to be rerendered. React provides [`memo`](https://react.dev/reference/react/memo) to handle this case. 
+
+```jsx
+import { memo } from 'react';
+
+const SomeComponent = memo(function SomeComponent(props) {
+  // ...
+});
+```
+
+When a component is wrapped in `memo` it will only rerender if its props change (defined as are no-longer pointer equal). In the event you're passing complex objects to your component (functions, objects, classes, anything where pointer equality is insufficient to determine equality)
+
+Because browser JavaScript is single-threaded, you want to make sure your render function doesn't take too long; for example, if you want your app to update in response to user input at 30 frames per second (video games tend to target 60fps) render can take a maximum of `33ms - time react needs to reconcile + commit` (~16ms as a rule of thumb).
 
 ## TK Testing library
 

@@ -1,8 +1,4 @@
----
-opengraphImage: 2
----
-
-import { Fiddle } from "../components/fiddle"
+import { Example } from "../components/example"
 import { Image } from "../components/image"
 import Box from "../public/images/content/css/boxmodel.png"
 import Devtools from "../public/images/content/css/devtools.png"
@@ -36,9 +32,25 @@ p {
 
 This is a CSS file! It says that all paragraph tags, `p`, should have a text color of red. 
 
-You can open that HTML file to see it with the style applied. And, [like our HTML example](/html/#try-it-yourself), we can continue to experiment using JSFiddle:
+You can open that HTML file to see it with the style applied. And, [like our HTML example](/html/#try-it-yourself), we can continue to experiment using CodeSandbox:
 
-<Fiddle url={"//jsfiddle.net/e6mjs3bz/embedded/html,css,result/"} />
+<Example template="static" files={{
+  "/index.html": `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Demo app</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <p>
+      Hello world
+    </p>
+  </body>
+</html>`,
+  "/styles.css": `p {
+  color: red;
+}`
+}} />
 
 ## Selectors
 
@@ -76,7 +88,36 @@ Selectors can also be combined:
 - Spaces match descendents (e.g. `.foo .bar` matches any element with class `bar` that is a descendent of an element with class `foo`)
 - [Combinators](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors/Selectors_and_combinators#combinators) can be used to build more complicated relationships (e.g. `.foo > .bar` matches any element with class `bar` that is a **direct** descendent of an element with class `foo`)
 
-<Fiddle url={"//jsfiddle.net/8u7p1knm/embedded/html,css,result/"} />
+<Example template="static" files={{
+  "/index.html": `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Demo app</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="parent">
+      <div class="child">
+        <div class="grandchild-a">
+          Grandchild A (matched)
+        </div>
+        <div class="grandchild-b">
+          Grandchild B (not matched)
+        </div>
+      </div>
+    </div>
+  </body>
+</html>`,
+  "/styles.css": `/* This will match because grandchild-a is a direct descendent */ 
+.parent .grandchild-a {
+  color: red;  
+}
+
+/* This won't match because grandchild-b isn't a direct descendent */ 
+.parent > .grandchild-b {
+  color: blue;
+}`
+}} />
 
 ### Specificity
 
@@ -90,13 +131,51 @@ This is called specificity.
 
 CSS rules can be thought of as applying from lowest specificity upwards. So, if a rule sets the text color to red, and no higher specificity rule overrides it (or there is no higher specificity rule), the text color will still be red. (This is where the *cascading* of **C**ascading **S**tyle **S**heets comes from).
 
-<Fiddle url={"//jsfiddle.net/yua26x7s/1/embedded/html,css,result/"} />
+<Example template="static" files={{
+  "/index.html": `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Demo app</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="foo">
+      Hello, world!
+    </div>
+  </body>
+</html>`,
+  "/styles.css": `/* Even though this is earlier in the file, it has a higher specificity (1 class, 1 tag) */
+div.foo {
+  color: red;
+}
+
+/* Even though this is later in the file, it has a lower specificity (1 class) */
+.foo {
+  background-color: yellow;
+}`
+}} />
 
 ### Psuedo-selectors
 
 Selectors can also match states. These selectors are prefixed with a colon. For example, `.foo:hover` matches elements with class `.foo` when the mouse hovers over them:
 
-<Fiddle url={"//jsfiddle.net/n8pvs0gc/2/embedded/html,css,result/"} />
+<Example template="static" files={{
+  "/index.html": `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Demo app</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <span class="foo">
+      Hover over me!
+    </span>
+  </body>
+</html>`,
+  "/styles.css": `.foo:hover {
+  color: red;
+}`
+}} />
 
 ## Properties
 
@@ -168,7 +247,48 @@ So far, we haven't talked much about margin, a word of caution there: many devel
 
 While blocks and inline-blocks worked well for documents, they reached their limits with applications. For a long time people hacked `<tables>`'s for layout, then `<div>`'s became popular, but ultimately application UIs demanded something more. As a result, two layouts were introduced: flexbox and grid, which both let you define elements flexibly and in relation to other elements.  
 
-<Fiddle url={"//jsfiddle.net/wfb6vzg4/12/embedded/html,css,result/"} />
+<Example template="static" files={{
+  "/index.html": `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Demo app</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="sidebar">
+        Sidebar
+      </div>
+      <div class="content">
+        Content (takes up remaining space)
+      </div>
+    </div>
+  </body>
+</html>`,
+  "/styles.css": `html, body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+
+.container {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  height: 100%;
+  align-items: stretch;
+}
+
+.sidebar {
+  width: 160px;
+  background: red;
+}
+
+.content {
+  flex: 1;
+  background: yellow;
+}`
+}} />
 
 While the full APIs are probably more complicated than we have space to get into, there are wonderful tutorials:
 
@@ -182,8 +302,28 @@ Lastly, sometimes you want to position an element directly (rather than having t
 - its parent: using `position: absolute` 
 - the browser window: using `position: fixed`
 
-<Fiddle url={"//jsfiddle.net/xkgs8j1n/1/embedded/html,css,result/"} />
-
+<Example template="static" files={{
+  "/index.html": `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Demo app</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="bottom-right">
+      Always positioned on the bottom right
+    </div>
+  </body>
+</html>`,
+  "/styles.css": `.bottom-right {
+  position: fixed;
+  
+  right: 0;
+  bottom: 0;
+  
+  background: red;
+}`
+}} />
 
 ## Browser defaults
 
@@ -218,13 +358,65 @@ Hopefully, I've given you enough of a foundation to understand any new propertie
 
 Media queries allow you to apply different CSS properties based on properties of the medium (most commonly, browser width). This lets you have different designs for, for example, mobile vs desktop. 
 
-<Fiddle url={"//jsfiddle.net/2pax31dj/3/embedded/html,css,result/"} />
+<Example template="static" files={{
+  "/index.html": `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Demo app</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="red">
+      My background is red if the result window is narrower than 800px.
+    </div>
+  </body>
+</html>`,
+  "/styles.css": `@media (max-width: 800px) {
+  .red {
+    background: red;
+  }
+}`
+}} />
 
 ### Variables
 
 CSS has gotten more advanced over the years, and you can now specify properties that compose into other properties. 
 
-<Fiddle url={"//jsfiddle.net/nmgb9vr8/2/embedded/html,css,result/"} />
+<Example template="static" files={{
+  "/index.html": `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Demo app</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="blue-parent">
+      <div class="child">
+        Blue
+      </div>
+    </div>
+
+    <div class="red-parent">
+      <div class="child">
+        Red
+      </div>
+    </div>
+  </body>
+</html>`,
+  "/styles.css": `.blue-parent {
+  --background: blue;
+}
+
+.red-parent {
+  --background: red;
+  
+  margin-top: 8px;
+}
+
+.child {
+  background: var(--background);
+}`
+}} />
 
 As a warning, you can also compute things with `calc` (e.g. `width: calc(80% - 10px)`. In general, I would avoid using this, and I would especially avoid putting variables in it. Calc is rarely necessary and leads to hard to understand code.
 
@@ -232,11 +424,64 @@ As a warning, you can also compute things with `calc` (e.g. `width: calc(80% - 1
 
 There are two types of animations you can define in CSS. Transitions, which define how to change between different values of a property: 
 
-<Fiddle url={"//jsfiddle.net/d0k7Lef6/3/embedded/html,css,result/"} />
+<Example template="static" files={{
+  "/index.html": `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Demo app</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="animates">
+      Hover over me!
+    </div>
+  </body>
+</html>`,
+  "/styles.css": `.animates {
+  background: red;
+  
+  padding: 10px;
+  
+  transition: background 2s;
+}
+
+.animates:hover {
+  background: yellow;
+}`
+}} />
 
 Animations, which animate an object:
 
-<Fiddle url={"//jsfiddle.net/nkpa34zg/3/embedded/html,css,result/"} />
+<Example template="static" files={{
+  "/index.html": `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Demo app</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="spin" />
+  </body>
+</html>`,
+  "/styles.css": `@keyframes spinning {
+  0% {
+    transform: rotate(0deg)
+  }
+  
+  100% {
+    transform: rotate(180deg)
+  }
+}
+
+.spin {
+  width: 20px;
+  height: 20px;
+  
+  background: red;
+  
+  animation: spinning 2s linear infinite;
+}`
+}} />
 
 Animations rely on ["keyframes"](https://en.wikipedia.org/wiki/Key_frame): a concept borrowed from animation, you specify the properties at specific points, and let the runtime interpolate the middle state (for example, if you know that a box starts at 10px wide and ends at 20px wide, you can infer that half way through that animation, the box should be 15px wide).
 
@@ -246,4 +491,20 @@ Selectors can also create elements. For example, `.foo::before` will create an e
 
 Yes this is weird; an example of when you might use it is to add a bullet point before items in a bullet point list. 
 
-<Fiddle url={"//jsfiddle.net/L8v6ry97/embedded/html,css,result/"} />
+<Example template="static" files={{
+  "/index.html": `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Demo app</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="hello">
+      world!
+    </div>
+  </body>
+</html>`,
+  "/styles.css": `.hello::before {
+  content: "Hello, "
+}`
+}} />

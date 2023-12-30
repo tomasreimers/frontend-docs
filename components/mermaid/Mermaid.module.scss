@@ -1,0 +1,28 @@
+/**
+ * The #__next selector is a specificity hack. 
+ * 
+ * Mermaid prepends all theme CSS with the ID of 
+ * the chart (https://github.com/mermaid-js/mermaid/blob/develop/packages/mermaid/src/mermaidAPI.ts#L198)
+ * So we need to add our own ID to be at least as specific
+ */
+:global(#__next) .chart {
+  :global(.selected) {
+    rect {
+      fill: theme("colors.blue.100");
+      stroke: theme("colors.blue.200");
+
+      @at-root :global(.dark) & {
+        fill: theme("colors.blue.900/0.3");
+        stroke: theme("colors.blue.200/0.3");
+      }
+    }
+
+    span {
+      color: theme("colors.blue.900");
+
+      @at-root :global(.dark) & {
+        color: theme("colors.blue.200");
+      }
+    }
+  }
+}
