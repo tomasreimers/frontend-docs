@@ -1,0 +1,119 @@
+import Figma from "../public/images/content/design-systems/figma.png"
+import Theo from "../public/images/content/design-systems/theo.png"
+import FixedFluid from "../public/images/content/design-systems/fixed-fluid.png"
+import LightDark from "../public/images/content/design-systems/lightdark.png"
+import Colors from "../public/images/content/design-systems/colors.png"
+import Grid from "../public/images/content/design-systems/grid.webp"
+import { Image } from "../components/image"
+
+# Design systems: scaling design
+
+For many developers, frontend development is the first time they have to work with a designer. 
+
+There are many types of designers, and you are probably working with a product designer (as opposed to a visual designer). Simply put, the job of a product designer is to understand the user problem and create a product that solves it, using principles of [design thinking](https://www.ideou.com/pages/design-thinking). It is your job to build that product.
+
+Designers output "mocks" or still images of what the product should look like, along with documentation of any edge cases to be mindful of or transitions that aren't immediately obvious. 
+
+There are many ways designers hand off mocks, but these days the most common is [Figma](https://www.figma.com/):
+
+<Image src={Figma} alt="Figma" />
+
+Implementing mocks to be pixel perfect seems like a lot, but--in the same way there are with codebases--there are patterns and concepts that transcend the design and make it easier to understand.
+
+## Layout and the grid
+
+One of the first things to note when looking at designs is how is it all laid out. In general, there are [two approaches](https://internetingishard.netlify.app/html-and-css/responsive-design/) to laying out web pages: 
+
+- **Fixed**: The main content of the website has a maximum width it will grow to. 
+- **Fluid**: The main content of the webpage will expand to fill the screen.
+
+<Image src={FixedFluid} alt="Fixed vs fluid layouts" />
+
+For fixed layouts (and sometimes fluid ones as well, although less commonly), typically designs are made on a 8 or 12 column [grid](https://medium.com/@nitishkmrk/responsive-grid-design-ultimate-guide-7aa41ca7892). This helps ensure items are visually aligned. 
+
+<Image src={Grid} alt="Grid layout" />
+
+### Spacing
+
+Extending the idea of the grid, designers usually work with a common multiple for all paddings and widths. For example, by keeping all dimensions a multiple of 8px, it's much easier to make sure that all elements on your site are aligned and for developers to identify whether the space between elements is meant to be 8px or 16px (something that's easier to eye-ball than 8px or 7px).
+
+### Responsive design
+
+[Responsive design](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design) refers to a set of practices to make your webpage look good at various screen sizes. [Progressive enhancement](https://developer.mozilla.org/en-US/docs/Glossary/Progressive_Enhancement) takes this a step further and designs for the most limited browser (typically mobile), adding in features as the browser or screensize can support them. A common analogy in the space is an escalator works as a stair, and if it has power it enhances to something more powerful.
+
+### Defensive CSS
+
+In general, but especially if you're app contains user generated content, it's important to design for a wide variety of content (including extra-long content, foreign characters in usernames, and odd screen sizes) to make sure it does not mess up your layout. 
+
+A wonderful catalog of common techniques is [defensive css](https://defensivecss.dev/).
+
+### Dynamic graphics 
+
+Some graphics, visualizations, and other dynamic content cannot (easily) be expressed in CSS alone. For those, it might be worth switching to an alternative technology. As a general rule, 
+
+1. Start with HTML and CSS
+2. If you can't render the visualization in HTML, try [SVG](https://developer.mozilla.org/en-US/docs/Web/SVG) which is a richer way to declaratively express grahics and illustrations (including first-class support for animations)
+3. If SVGs are insufficient, because you need more interaction or graphical filters, [canvas](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas) provides a full... well, canvas, that you can render on.  
+
+## Typography
+
+Typography refers to the text and font-styles in an app. There are typically only a few of them (for example: heading, large heading, subtitle, body text), and each style defines a subset of: 
+
+- Font ([Google fonts](https://fonts.google.com/) has many fonts for you to use)
+- Font size
+- Font weight (how bold the text is; a multiple of 100 between 100 and 900; default is 400, bold is 700)
+- Color 
+- Line height (space between lines)
+- Letter spacing (space between letters)
+- Font weight
+- Font style (e.g. italics) and decorations (e.g. underlined)
+- Casing (e.g. all uppercase, sentence case, title case.)
+
+## Colors
+
+There are usually only a few colors used within an app (the collection of which is called a palette). There are many ways to generate a palette, but they typically involve picking a primary color and some supporting secondary colors. To play around and learn more about what makes different colors look good together, there are plenty of tools to help you play with color harmony: [Adobe](https://color.adobe.com/create/color-wheel), [Coolors](https://coolors.co/494947-35ff69-44ccff-7494ea-d138bf), and [Paletton](https://paletton.com/).
+
+Once you've selected your colors, you need to pick the shades that will be used within your app. Increasingly commonly, developers will name their shades like font-weights (in increments of 100, with 100 being the lightest and 900 being the darkest). For example, here is [Tailwind's default palette](https://tailwindcss.com/docs/customizing-colors) (more on Tailwind later): 
+
+<Image src={Colors} alt="Tailwind's color palette" />
+
+### Themes
+
+Increasingly, apps in general, including web apps, are expected to support multiple themes (or sets of colors). At a minimum, users expect a light (a set of colors that have a light background) and a dark mode (a set of colors with a dark background). 
+
+<Image src={LightDark} alt="Light and dark mode" />
+
+In CSS, themes are typically implemented with CSS variables (having variables background and text colors).
+
+## Accessibility
+
+An important, and often overlooked / under-invested-in, job of a frontend developer is to make sure everyone can use the web app; by everyone I mean everyone, including people who are colorblind, who are visually impaired, and who have trouble using a mouse. This is called accessibility (or a11y for short). 
+
+While there is a whole chapter, if not book, that could be written on accessibility, three things I'll call out are: 
+
+- Ensuring colors are visible, text has sufficient contrast with its background, and buttons are big enough for people who have trouble using a mouse--or are accessing the page on a mobile device--to tap. This kind of stuff is typically covered by human interface guidelines (for example, here's [Apple's human interface guidelines](https://developer.apple.com/design/human-interface-guidelines/buttons)) and handled by the designer. 
+- Ensuring your app is accessible to screen-readers (assistive technology that reads webpages to those who are visually impaired). The most basic thing you can do is ensure all images have an [alt](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/alt#usage_notes) property; ultimately, you should ensure your components have the relevant [ARIA properties](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques) and declare their role; for example, by annotating a dropdown menu, a screenreader can more easily navigate the content.
+- Ensure your app is accessible via keyboard navigation. Frequently this involves setting the [tabindex](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex). 
+
+## Components
+
+Even with the above patterns, all the above is a lot to think about for every part of every page. As a web app grows, designers abstract parts of the page into components: rather than needing to think about typography and colors and padding for every part of the site, designers can simply place a "button", and there is one canonical definition, complete with typography and colors and padding, for the button. 
+
+Some common components include buttons, text inputs, headings, a sidebar, etc. We'll cover more components in the next section. 
+
+## Off-the-shelf systems
+
+Everything above comprises the design system. In an ideal world, new pages need minimal design intervention, because there is a self-evident way to build what needs to be built given the design system. 
+
+Building a design system is a serious undertaking, and one that many developers chose to forego. There are many off-the-shelf systems that one can choose to use. Theo.gg has [a good video](https://www.youtube.com/watch?v=CQuTF-bkOgc) describing the multiple types of design systems that exist. 
+
+<Image src={Theo} alt="Theo's video" />
+
+Some notable examples are:
+
+- [Bootstrap](https://getbootstrap.com/): a full design system, includes colors, typography, fully-built components, etc. 
+- [Radix](https://www.radix-ui.com/primitives): the functionality of a design system with none of the visual design. You still need to bring your own colors and typography, but it will implement the user experience: keyboard shortcuts, hover states, etc. 
+- [Tailwind](https://tailwindcss.com/): the opposite of Radix, design with little functionality. Provides default colors, typography, etc. 
+- [ShadUI](https://ui.shadcn.com/): "Not a design system", provides copy-and-pastable components to use.
+
+Also, many companies open source their design systems, for example: [Google](https://m3.material.io/), [Adobe](https://spectrum.adobe.com/), [GitHub](https://primer.style/), and [Vercel](https://vercel.com/design/introduction). 
