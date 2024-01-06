@@ -1,3 +1,4 @@
+import Script from 'next/script';
 import '../styles.scss'
 import { Inter } from 'next/font/google'
  
@@ -8,5 +9,14 @@ const inter = Inter({ subsets: ['latin'] })
 export default function MyApp({ Component, pageProps }) {
   return <main className={inter.className}>
     <Component {...pageProps} />
+    <Script strategy='afterInteractive' src="https://www.googletagmanager.com/gtag/js?id=G-LJBHQ5RS43" />
+    <Script strategy='afterInteractive' dangerouslySetInnerHTML={{
+      __html: `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+      
+        gtag('config', 'G-LJBHQ5RS43');        
+      `}} />
   </main>;
 }
