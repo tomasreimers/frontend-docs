@@ -418,7 +418,7 @@ CSS has gotten more advanced over the years, and you can now specify properties 
 }`
 }} />
 
-As a warning, you can also compute things with `calc` (e.g. `width: calc(80% - 10px)`. In general, I would avoid using this, and I would especially avoid putting variables in it. Calc is rarely necessary and leads to hard to understand code.
+You can also compute things with `calc` (e.g. `width: calc(80% - 10px)`. `calc` certainly has its place, but in general, I frequently see first-time CSS developers try to overuse it. Calc is rarely necessary and leads to hard, and can be less performant than figuring out how to use the browser's native layout (flex or grid) to accomplish the same goal.
 
 ### Animations
 

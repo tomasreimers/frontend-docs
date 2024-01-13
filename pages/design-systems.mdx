@@ -1,10 +1,11 @@
 import Figma from "../public/images/content/design-systems/figma.png"
 import Theo from "../public/images/content/design-systems/theo.png"
-import FixedFluid from "../public/images/content/design-systems/fixed-fluid.png"
 import LightDark from "../public/images/content/design-systems/lightdark.png"
 import Colors from "../public/images/content/design-systems/colors.png"
-import Grid from "../public/images/content/design-systems/grid.webp"
 import { Image } from "../components/image"
+import { Excalidraw } from "../components/excalidraw"
+import FixedFluidJSON from "../public/images/content/design-systems/fixed-fluid.excalidraw.json"
+import ColumnsJSON from "../public/images/content/design-systems/columns.excalidraw.json"
 
 # Design systems: scaling design
 
@@ -27,11 +28,11 @@ One of the first things to note when looking at designs is how is it all laid ou
 - **Fixed**: The main content of the website has a maximum width it will grow to. 
 - **Fluid**: The main content of the webpage will expand to fill the screen.
 
-<Image src={FixedFluid} alt="Fixed vs fluid layouts" />
+<Excalidraw contents={FixedFluidJSON} />
 
 For fixed layouts (and sometimes fluid ones as well, although less commonly), typically designs are made on a 8 or 12 column [grid](https://medium.com/@nitishkmrk/responsive-grid-design-ultimate-guide-7aa41ca7892). This helps ensure items are visually aligned. 
 
-<Image src={Grid} alt="Grid layout" />
+<Excalidraw contents={ColumnsJSON} />
 
 ### Spacing
 
@@ -83,7 +84,7 @@ Increasingly, apps in general, including web apps, are expected to support multi
 
 <Image src={LightDark} alt="Light and dark mode" />
 
-In CSS, themes are typically implemented with CSS variables (having variables background and text colors).
+In CSS, themes are typically implemented with CSS variables (having variables for background or text colors).
 
 ## Accessibility
 
