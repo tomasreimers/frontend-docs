@@ -1,5 +1,15 @@
 # Chapter 9: State management
 
+## Thick vs Thin clients
+
+## Threads 
+
+## Arraybuffers
+
+## WASM 
+
+## WebGL
+
 ## The universal virtual machine
 
 Speaking of evolution, people who really believe in the web platform will tell you it’s a full fledged virtual machine: a sandboxed render engine and scripting environment that runs on virtually every device. 

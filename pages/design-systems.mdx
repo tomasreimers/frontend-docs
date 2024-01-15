@@ -102,6 +102,18 @@ Even with the above patterns, all the above is a lot to think about for every pa
 
 Some common components include buttons, text inputs, headings, a sidebar, etc. We'll cover more components in the next section. 
 
+### Utility classes
+
+In a perfect world, every possible semantic concept would have a component, and developers would not need to design anything outside of the design system. Unfortunately, we do not live in a perfect world and such a design system would be really extensive to make and maintain.
+
+A mid-way solution is to create css "utility classes" (or single purposes classes) that make it easier to create new components, so rather than having to create a new component or style for a page which needs to center its contents, I can instead write: 
+
+```html
+<div class="flex justify-center">
+  ...
+</div>
+```
+
 ## Off-the-shelf systems
 
 Everything above comprises the design system. In an ideal world, new pages need minimal design intervention, because there is a self-evident way to build what needs to be built given the design system. 

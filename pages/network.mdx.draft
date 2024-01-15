@@ -10,6 +10,10 @@ Cookies and headers
 
 ## TK REST-ish patterns
 
+Status codes 
+
+TLS
+
 ## TK Pagination
 
 ## TK Prefetching
@@ -17,6 +21,8 @@ Cookies and headers
 ## TK Security
 
 xss cors csrf iframes
+
+csp
 
 ## Sync
 

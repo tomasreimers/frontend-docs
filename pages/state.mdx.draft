@@ -8,6 +8,8 @@
 
 Split data fetch and presentation
 
+React is not MVC
+
 ### Composition
 
 ### Higher-order components

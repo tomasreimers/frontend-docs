@@ -134,10 +134,12 @@ More recently, there have been a class of new entrants, all targeting the same p
 Ultimately, the bundler is a glorified version of `cat`, with a few extra features to ensure things like: 
 
 - Dependencies are correctly ordered 
-- Any unreferenced code is removed 
+- Any unreferenced code is removed (tree shaking)
 - Files are split up to optimize for browser caching (e.g. if you depend on a library that is unlikely to change, output a separate file so the browser can cache it across version bumps of your application)
 - Node globals are shimmed to work in the browser (a common one is to replace `process.env.FOO`, the way you access the env variable `FOO` with whatever the value of `FOO` is at build time)
 - Minifying code to save network bandwidth (for example, comments don't need to be sent to the browser and whitespace can be removed)
+
+When code is minified, most tools will generate [source maps](https://web.dev/articles/source-maps) to help you symbolicate stack traces. Make sure not to ship your source maps to production or users will be able to decompile your code. 
 
 ### Orchestrators 
 
