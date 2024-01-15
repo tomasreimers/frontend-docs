@@ -40,7 +40,7 @@ const config: DocsThemeConfig = {
         This site is a ~20-page, front-to-back-readable guide on some of the knowledge, opinions, and intuition I've picked up along the way.
       </p>
       <p className='mt-2'>
-        Everything is still under development, so feel free to suggest edits or follow me on Twitter for updates.
+        This is still under development, so feel free to suggest edits or follow me on Twitter for updates.
       </p>
     </div>
   },

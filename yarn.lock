@@ -163,6 +163,11 @@
   resolved "https://registry.yarnpkg.com/@excalidraw/excalidraw/-/excalidraw-0.17.2.tgz#9a636a1e6bb3c88c5883347d3a7e75e9cce8ab96"
   integrity sha512-7pqUWD8+mPjDhF4XxG3gw4rvE2JGaLW3Vss5UZfTbITPxAtFaGEc1K081bncitnaYhUwN9ENJE0i87QB3poDwQ==
 
+"@excalidraw/utils@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@excalidraw/utils/-/utils-0.1.2.tgz#69b931772b5d06ea655743a85557f001b585c352"
+  integrity sha512-hypi3np+Do3e8Eb0Y1ug52EyJP4JAP3RPQRfAgiMN0ftag7M49vahiWVXd9yX4wsviCKYacTbBDs2mRqt3nyUQ==
+
 "@headlessui/react@^1.7.10":
   version "1.7.17"
   resolved "https://registry.yarnpkg.com/@headlessui/react/-/react-1.7.17.tgz#a0ec23af21b527c030967245fd99776aa7352bc6"
