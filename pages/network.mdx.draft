@@ -14,6 +14,12 @@ Status codes
 
 TLS
 
+Four ways to do uploads: 
+- Form multipart
+- An APi where all params come in as query params
+- Base64 encode payload
+- API to get URL to upload
+
 ## TK Pagination
 
 ## TK Prefetching
