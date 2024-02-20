@@ -1,0 +1,8 @@
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/state": "pages/state.js",
+  "/components": "pages/components.js",
+  "/ui-patterns": "pages/ui-patterns.js"
+}

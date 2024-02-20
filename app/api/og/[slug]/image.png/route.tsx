@@ -1,14 +1,15 @@
 import { ImageResponse } from '@vercel/og';
-import meta from "../../../../../pages/_meta.json";
 import fs from "fs";
 import path from "path";
+
+import meta from "../../../../../pages/_meta.json";
 
 const fontData = fs.readFileSync(
   path.join(process.cwd(), './assets/fonts/Inter/Inter-Black.ttf')
 );
  
 export async function generateStaticParams() {
-  return [...Object.entries(meta).filter(([key, value]) => typeof value === "string").map(([key, value]) => {
+  return [...Object.entries(meta).filter(([_key, value]) => typeof value === "string").map(([key, _value]) => {
     return {
       slug: key,
     }

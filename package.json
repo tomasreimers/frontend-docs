@@ -1,23 +1,23 @@
 {
-  "name": "nextra-docs-template",
+  "name": "frontend-docs",
   "version": "0.0.1",
-  "description": "Nextra docs template",
+  "description": "frontenddocs.com",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "lint": "yarn eslint . --ext .ts,.tsx,.mdx",
     "push": "git push origin `git subtree split --prefix dist main`:gh-pages --force"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shuding/nextra-docs-template.git"
+    "url": "git+https://github.com/tomasreimers/frontend-docs.git"
   },
-  "author": "Shu Ding <g@shud.in>",
-  "license": "MIT",
+  "author": "Tomas Reimers",
   "bugs": {
-    "url": "https://github.com/shuding/nextra-docs-template/issues"
+    "url": "https://github.com/tomasreimers/frontend-docs/issues"
   },
-  "homepage": "https://github.com/shuding/nextra-docs-template#readme",
+  "homepage": "https://frontenddocs.com",
   "dependencies": {
     "@codesandbox/sandpack-react": "^2.10.0",
     "@excalidraw/excalidraw": "^0.17.2",
@@ -32,8 +32,19 @@
   },
   "devDependencies": {
     "@types/node": "18.11.10",
+    "@typescript-eslint/eslint-plugin": "^5.47.1",
+    "@typescript-eslint/parser": "^6.2.0",
     "autoprefixer": "^10.4.16",
+    "eslint": "^8.45.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-typescript": "^3.5.2",
+    "eslint-plugin-check-file": "^1.3.1",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-mdx": "^3.1.5",
+    "eslint-plugin-simple-import-sort": "^8.0.0",
+    "eslint-plugin-switch-case": "^1.1.2",
     "postcss": "^8.4.31",
+    "prettier": "^3.2.5",
     "tailwindcss": "^3.3.5",
     "typescript": "^4.9.3"
   }

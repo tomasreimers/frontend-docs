@@ -1,9 +1,10 @@
-import { useEffect, useId, useRef, useState } from "react";
-import mermaid, { MermaidConfig } from 'mermaid';
+import mermaid, { type MermaidConfig } from 'mermaid';
 import { useTheme } from "nextra-theme-docs";
-import s from "./Mermaid.module.scss";
+import { useEffect, useId, useRef, useState } from "react";
 import resolveConfig from 'tailwindcss/resolveConfig'
+
 import rawTailwindConfig from '../../tailwind.config.js'
+import s from "./Mermaid.module.scss";
 
 const tailwindConfig = resolveConfig(rawTailwindConfig)
 

@@ -1,6 +1,6 @@
-import React from 'react'
-import { DocsThemeConfig } from 'nextra-theme-docs'
 import { useRouter } from 'next/router'
+import { type DocsThemeConfig } from 'nextra-theme-docs'
+import React from 'react'
 
 const config: DocsThemeConfig = {
   faviconGlyph: "📚", 
@@ -10,7 +10,7 @@ const config: DocsThemeConfig = {
       DRAFT
     </span>
   </>,
-  docsRepositoryBase: 'https://github.com/tomasreimers/clientside',
+  docsRepositoryBase: 'https://github.com/tomasreimers/frontend-docs',
   footer: {
     component: null,
   },
