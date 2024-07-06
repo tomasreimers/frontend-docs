@@ -20,7 +20,7 @@
     "title": "DESIGN PRINCIPLES"
   },
   "design-systems": "Chapter 8: Design systems",
-  "ui-patterns": "Chapter 9: UI patterns",
+  "graphics": "Chapter 9: Graphics",
   "-- Data": {
     "type": "separator",
     "title": "DATA ARCHITECTURE"

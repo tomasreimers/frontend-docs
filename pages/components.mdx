@@ -418,6 +418,50 @@ function CustomTag() {
 }
 ```
 
+## Higher order components
+
+In many ways, components are like functions, and like functions, you may find yourself writing the same logic over and over again as you write more of them. When working with functions, you can reduce this repetition with higher order functions, and the same concept exists with components: [higher order components](https://legacy.reactjs.org/docs/higher-order-components.html) (HOCs). 
+
+Higher order components are functions that return components. For example, imagine you wanted every page to log whenever it rendered. Because of that you found every page beginning with the same: 
+
+```jsx
+useEffect(() => {
+  console.log("NAME OF PAGE")
+}, [])
+```
+
+Instead of copy and pasting that across components, you could create a higher order component: 
+
+```jsx
+function withLogging(pageName, Component) {
+  return (props) => {
+    useEffect(() => {
+      console.log(pageName)
+    }, [])
+
+    return <Component {...props} />
+  }
+}
+```
+
+And then create your components like this: 
+
+```jsx
+const MyPage = withLogging("MY PAGE", MyPageComponent);
+```
+
+That said, these days I don't see higher order components as much because hooks make a lot of that same logic reuse easier. For example, another way to implement the above is as a custom hook:
+
+```jsx
+function useLogRender(name) {
+  useEffect(() => {
+    console.log(name)
+  }, []);
+}
+```
+
+If you do find yourself creating HOCs, make sure to create them in the global scope of your application (and not during render), because React uses the function pointer to determine component equality, and if you create a new component function every render, React will never reconcile state across them.
+
 ## File structure (locality)
 
 Like functions do in normal JS, components create a natural place to introduce abstraction to your code:

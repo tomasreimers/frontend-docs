@@ -7,7 +7,7 @@ import FixedFluidJSON from "../public/images/content/design-systems/fixed-fluid.
 import LightDark from "../public/images/content/design-systems/lightdark.png"
 import Theo from "../public/images/content/design-systems/theo.png"
 
-# Design systems: scaling design
+# Design systems: scaling style
 
 For many developers, frontend development is the first time they have to work with a designer. 
 
@@ -113,6 +113,72 @@ A mid-way solution is to create css "utility classes" (or single purposes classe
   ...
 </div>
 ```
+
+## UI patterns
+
+As you start to look at more mocks through the lens of frontend development, and build out your own components, you'll notice patterns and concepts that transcend the specific style. While different places call these elements different things, below are some of the common patterns you'll encounter.
+
+### Containers and layout
+
+Most web pages have some content at the top (called a header or navbar, as it's often used for navigation), some content in the middle, and some content at the bottom of the page (called a footer). If the header or footer follow you as you scroll, they are referred to as sticky (e.g. a sticky header). 
+
+In addition, many sites have a column to the side of the content (typically used for navigation): a sidebar. 
+
+Within the content of the page or in the sidebar: 
+ - A section is probably the most generic term and refers to any part of the page. 
+ - A panel is a section that is well defined (has a border or distinct background). 
+ - A card is a panel that is stand-alone and typically appears elevated above the content. 
+ - A drawer is a card or panel that the user can click on to expand. 
+ - An [accordion](https://vercel.com/design/collapse) is a stack of drawers.
+ - A banner is a panel at the top of the content (or above the navbar) spanning the width of the page (or almost the width) and informing the user of something, and 
+ - A callout is a banner, that's not at the top of the page. 
+
+Sometimes you have many different pieces of content that need to fit in the same section:
+
+- If you can click on labels to see that different content, you have [tabs](https://vercel.com/design/tabs)
+- If the different content automatically cycles between itself, you have a carosel. 
+
+### Inputs
+
+Within the content, you may have text, images, and inputs: elements that the user can use to enter data. For historical reasons, these elements are sometimes referred to as "form elements" (referencing a physical paper form that has checkboxes and space for written answers). 
+
+Some common form elements are: 
+ - Buttons: A [button](https://vercel.com/design/button) is probably the most straightforward element. You click it, and something happens. Optionally, a button will have a chevron next to it allowing you to pick other actions. Like all form elements, buttons can be disabled (this means they show up as non-interactive).
+ - Toggles: Toggles let the user pick between some predefined states. 
+    - [Checkbox](https://vercel.com/design/checkbox): A box that the user can check or not. 
+    - [Radio button](https://vercel.com/design/radio): A group of checkboxes where only one is selectable. 
+    - [Toggle](https://vercel.com/design/toggle): Functionally the same as a checkbox, but communicates you're turning something on or off.
+ - Dropdowns: Another way to let users pick between options is a [dropdown](https://vercel.com/design/select). The user clicks on a button and opens up a menu where they can select one (or more) options.
+    - If this menu has a search box, it's called a [combobox](https://vercel.com/design/combobox). 
+ - Textboxes: Lastly, sometimes users need a place to input text. This is a [textbox](https://vercel.com/design/input). A textbox can have somet type of validation, for example, [calendar](https://vercel.com/design/calendar), phone, or number validation (which optionally pop up additional UI). A textbox can autocomplete. If a textbox can autocomplete and select multiple options, it's called a [pill selector](https://paste.twilio.design/components/multiselect-combobox): as the options are usually shown as "pills" in the textbox. If the textbox is many lines, it is called a [textarea](https://vercel.com/design/textarea). 
+
+Lastly, while not technically a form element, [menus](https://vercel.com/design/menu) add additional functionality without cluttering the UI. 
+
+If a button opens an additional piece of UI (that floats above the rest of the content), this is generally called a [popover](https://www.radix-ui.com/primitives/docs/components/popover). Popovers are frequently used to implement menus. (If, instead, the user hovers to bring up a popover, this is called a [tooltip](https://vercel.com/design/tooltip) or hovercard. These are usually informationally.)
+
+The most common type of menu you'll see in designs is a kebab or hamburger menu (named after the icon). Typically hidden in the top right of content. Clicking this menu opens a popover.
+
+A menu opened on right click is called a [context menu](https://vercel.com/design/context-menu). 
+
+One specific element which is increasingly common is a [command bar](https://kbar.vercel.app/), it is usually summoned with "command k" and allows the user to pick among options.
+
+### Stateful UI
+
+When building data rich applications, three common states developers need to handle are: 
+
+- An error state: when the data can not be fetched or rendered, 
+- An empty state: when there is no data; also called a null state, and 
+- The loading state: when the data is still be loaded
+
+Some common loading states are: 
+
+- [Spinners](https://vercel.com/design/spinner): useful when it's not known how long data will take to fetch. 
+- [Shimmers](https://vercel.com/design/skeleton): similar to a spinner; minimizes layout shift by taking the rough shape of the final content. 
+- [Progress bar](https://vercel.com/design/progress): shows how much progress has been made. When fetching data for a page, it's becoming increasingly common to show at the border of the page or element. 
+
+On the flip side, a user may need to be guided through specific steps in a specific order. 
+
+If you display something above the content that disables interaction with things below it, it's called a [modal](https://vercel.com/design/modal) (sometimes called a dialog; however a common difference is a dialog doesn't prevent interaction with the other content below it). If the modal is attached to the side of the screen it's called a sidepanel. If it comes from the bottom of the screen (common on mobile), it's called a bottom sheet. 
 
 ## Off-the-shelf systems
 

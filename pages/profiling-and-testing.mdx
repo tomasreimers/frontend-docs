@@ -74,7 +74,7 @@ Once you have identified any slow parts of your app, there are a few common tact
 By far, the easiest thing to speed up is a single component that takes a long time to render. This is probably because that component's render function is doing some non-trivial compute; for a contrived example:
 
 ```tsx
-function Fibonacci({ n }: { n: number}) {
+function Fibonacci({ n }: { n: number }) {
   const value = computeFibonacci(n);
 
   return <div>
@@ -86,7 +86,7 @@ function Fibonacci({ n }: { n: number}) {
 Every time this component renders, it will recompute the nth fibonacci number, even though it's previously computed it. The [`useMemo`](https://react.dev/reference/react/useMemo) hook allows you to memoize expensive compute:
 
 ```tsx
-function Fibonacci({ n }: { n: number}) {
+function Fibonacci({ n }: { n: number }) {
   const value = useMemo(() => {
     return computeFibonacci(n)
   }, [n]);
