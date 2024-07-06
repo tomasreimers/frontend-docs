@@ -23,15 +23,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
+    "/client-compute": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/client-compute.js"
+    ],
     "/state": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/state.js"
-    ],
-    "/ui-patterns": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/ui-patterns.js"
     ]
   },
   "ampFirstPages": []

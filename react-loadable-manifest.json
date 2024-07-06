@@ -1,10 +1,4 @@
 {
-  "../components/excalidraw.tsx -> @excalidraw/excalidraw": {
-    "id": "../components/excalidraw.tsx -> @excalidraw/excalidraw",
-    "files": [
-      "static/chunks/node_modules_excalidraw_excalidraw_main_js.js"
-    ]
-  },
   "../node_modules/mermaid/dist/mermaid-934d9bea.js -> ./c4Diagram-817c8e44.js": {
     "id": "../node_modules/mermaid/dist/mermaid-934d9bea.js -> ./c4Diagram-817c8e44.js",
     "files": [
