@@ -2,7 +2,5 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/graphics": "pages/graphics.js",
-  "/client-compute": "pages/client-compute.js",
-  "/state": "pages/state.js"
+  "/": "pages/index.js"
 }
