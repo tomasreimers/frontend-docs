@@ -22,13 +22,17 @@
     "@codesandbox/sandpack-react": "^2.10.0",
     "@excalidraw/excalidraw": "^0.17.2",
     "@excalidraw/utils": "^0.1.2",
+    "@react-three/drei": "^9.108.3",
+    "@react-three/fiber": "^8.16.8",
+    "@types/three": "^0.166.0",
     "@vercel/og": "^0.6.1",
     "next": "^13.0.6",
     "nextra": "latest",
     "nextra-theme-docs": "latest",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "sass": "^1.69.5"
+    "sass": "^1.69.5",
+    "three": "^0.166.1"
   },
   "devDependencies": {
     "@types/node": "18.11.10",

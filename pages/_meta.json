@@ -1,5 +1,14 @@
 {
-  "index": "Foreword",
+  "index": {
+    "type": "separator",
+    "title": "Frontend docs",
+    "type": "page",
+    "display": "hidden",
+    "theme": {
+      "layout": "raw"
+    }
+  },
+  "foreword": "Foreword",
   "-- Platform": {
     "type": "separator",
     "title": "WEB FUNDAMENTALS"
