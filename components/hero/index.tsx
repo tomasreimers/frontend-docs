@@ -1,115 +1,28 @@
-import { shaderMaterial } from '@react-three/drei';
-import { type Node, Canvas, extend, useFrame } from '@react-three/fiber';
+import {
+  type Node as ThreeNode,
+  Canvas,
+  extend,
+  useFrame,
+  useThree,
+} from '@react-three/fiber';
 import { useState } from 'react';
 import * as THREE from 'three';
 
 import s from './Hero.module.scss';
+import { Edge } from './webgl/graph/edge';
+import { Node } from './webgl/graph/node';
+import { PassThruShaderMaterial } from './webgl/shaders/passthru';
+import { ParticlePositionSimulationMaterial } from './webgl/shaders/positions';
+import { ParticleRenderMaterial } from './webgl/shaders/render';
+import { ParticleRotationSimulationMaterial } from './webgl/shaders/rotations';
 
-const ParticlePositionSimulationMaterial = shaderMaterial(
-  {
-    positions: null,
-    velocity: null,
-  },
-  `varying vec2 vUv;
-
-void main() {
-    vUv = vec2(uv.x, uv.y);
-    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-}`,
-  // For reasons I do not understand, if you swap velocity and positions,
-  // velocity seems to be a very high number (even when init'd to zero),
-  // I wonder if positions is somehow overflowing when we copy texture...
-  `precision highp float;
-  precision highp sampler2D;
-  
-  varying vec2 vUv;
-  uniform sampler2D velocity;
-  uniform sampler2D positions;
-
-void main() {
-    vec4 vel = texture2D( velocity, vUv ).rgba;
-    vec4 pos = texture2D( positions, vUv ).rgba;
-    gl_FragColor = vec4(pos.r + vel.r, pos.g + vel.g, pos.b + vel.b, pos.a + vel.a);
-}
-`
-);
-
-const ParticleRotationSimulationMaterial = shaderMaterial(
-  {
-    spins: null,
-    rotations: null,
-  },
-  `varying vec2 vUv;
-
-void main() {
-    vUv = vec2(uv.x, uv.y);
-    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-}`,
-  // Same as above, rotations above spins creates an issue... still don't know why
-  `precision highp float;
-  precision highp sampler2D;
-
-  varying vec2 vUv;
-  uniform sampler2D spins;
-  uniform sampler2D rotations;
-  
-vec4 qmul(vec4 q1, vec4 q2) {
-	return vec4(
-		q2.xyz * q1.w + q1.xyz * q2.w + cross(q1.xyz, q2.xyz),
-		q1.w * q2.w - dot(q1.xyz, q2.xyz)
-	);
-}
-
-void main() {
-    vec4 rot = texture2D( rotations, vUv );
-    vec4 sp = texture2D( spins, vUv );
-    // TODO
-    // gl_FragColor = qmul(sp, rot);
-    gl_FragColor = rot;
-}
-`
-);
-
-const ParticleRenderMaterial = shaderMaterial(
-  {
-    positions: null,
-    rotations: null,
-  },
-  `attribute vec2 pindex;
-uniform sampler2D positions;
-uniform sampler2D rotations;
-
-vec3 quat_transform( vec4 q, vec3 v )
-{
-    return v + 2.*cross( q.xyz, cross( q.xyz, v ) + q.w*v ); 
-}
-
-void main() {
-    vec3 offset = texture2D( positions, pindex.xy ).xyz;
-    vec4 rotation = texture2D( rotations, pindex.xy ).xyzw;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4( quat_transform(rotation, position) + offset, 1.0 );
-}`,
-  `void main(){
-    gl_FragColor = vec4( vec3( 1. ), .25 );
-}`
-);
 extend({
-  ParticlePositionSimulationMaterial,
-  ParticleRotationSimulationMaterial,
   ParticleRenderMaterial,
 });
 
 declare module '@react-three/fiber' {
   interface ThreeElements {
-    particlePositionSimulationMaterial: Node<
-      typeof ParticlePositionSimulationMaterial,
-      typeof ParticlePositionSimulationMaterial
-    >;
-    particleRotationSimulationMaterial: Node<
-      typeof ParticleRotationSimulationMaterial,
-      typeof ParticleRotationSimulationMaterial
-    >;
-    particleRenderMaterial: Node<
+    particleRenderMaterial: ThreeNode<
       typeof ParticleRenderMaterial,
       typeof ParticleRenderMaterial
     >;
@@ -119,9 +32,9 @@ declare module '@react-three/fiber' {
 export function Hero() {
   return (
     <div className={s.canvasHolder}>
-      <Canvas camera={{ position: [0, 0, 128] }}>
+      <Canvas camera={{ position: [0, 0, 100] }}>
         <ambientLight intensity={0.01} />
-        <directionalLight position={[0, 0, 128]} intensity={2} />
+        <directionalLight position={[0, 0, 4]} intensity={2} />
         <Particles />
       </Canvas>
     </div>
@@ -129,54 +42,46 @@ export function Hero() {
 }
 
 function Particles() {
-  const [particles] = useState(() => initParticles());
+  const gl = useThree((state) => state.gl);
+  const [particles] = useState(() => initParticles(gl));
 
   // TODO: We should take into account the delta in time and move it by that much
   useFrame(({ gl, scene, camera }) => {
-    const originalRenderTarget = gl.getRenderTarget();
+    particles.simulations.position.run(gl, particles.outputs.position.data);
+    particles.loopbacks.position.run(gl, particles.data.positions.data);
 
-    // Simulate velocity
-    gl.setRenderTarget(particles.simulations.position.target);
-    gl.render(
-      particles.simulations.position.scene,
-      particles.simulations.position.camera
-    );
-    gl.copyFramebufferToTexture(
-      particles.simulations.position.material.uniforms.positions.value
-    );
-
-    // Simulate spin
-    gl.setRenderTarget(particles.simulations.rotation.target);
-    gl.render(
-      particles.simulations.rotation.scene,
-      particles.simulations.rotation.camera
-    );
-    gl.copyFramebufferToTexture(
-      particles.simulations.rotation.material.uniforms.rotations.value
-    );
+    particles.simulations.rotation.run(gl, particles.outputs.rotations.data);
+    particles.loopbacks.rotations.run(gl, particles.data.rotations.data);
 
     // Render frame
-    gl.setRenderTarget(originalRenderTarget);
+    gl.setRenderTarget(null);
     gl.render(scene, camera);
   }, 1);
 
   return (
     <instancedMesh args={[undefined, undefined, particles.total]}>
-      <circleGeometry args={[0.1, 5]}>
+      {/* <circleGeometry args={[0.1, 5]}>
         <instancedBufferAttribute
           attach="attributes-pindex"
           args={[particles.indicies, 2]}
         />
-      </circleGeometry>
+      </circleGeometry> */}
+      <cylinderGeometry args={[0.1, 0.1, 0.01, 5]}>
+        <instancedBufferAttribute
+          attach="attributes-pindex"
+          args={[particles.indicies, 2]}
+        />
+      </cylinderGeometry>
       <particleRenderMaterial
-        positions={particles.simulations.position.target.texture}
-        rotations={particles.simulations.rotation.target.texture}
+        positions={particles.outputs.position.data.texture}
+        rotations={particles.outputs.rotations.data.texture}
+        sides={THREE.DoubleSide}
       />
     </instancedMesh>
   );
 }
 
-function initParticles() {
+function initParticles(renderer: THREE.WebGLRenderer) {
   const width = 64;
   const height = 64;
 
@@ -188,35 +93,37 @@ function initParticles() {
     indicies[i3 + 1] = i / width / height;
   }
 
-  //returns an array of random 3D coordinates
-  function getRandomData(width, height) {
-    let len = width * height * 4;
-    const data = new Float32Array(len);
-    while (len--) data[len] = (Math.random() * 2 - 1) * 128;
-    return data;
-  }
-
-  function getRandomVelocity(width, height) {
-    let len = width * height * 4;
-    const data = new Float32Array(len);
-    while (len--) data[len] = (Math.random() * 2 - 1) * 0.02;
-    return data;
-  }
-
-  //then you convert it to a Data texture:
-  const positionsData = getRandomData(width, height);
-  const positions = new THREE.DataTexture(
-    positionsData,
+  const positions = new Node({
     width,
     height,
-    THREE.RGBAFormat,
-    THREE.FloatType
-  );
-  positions.needsUpdate = true;
-
-  function getRandomRotationData(width, height) {
-    const data = new Float32Array(width * height * 4);
-    for (let i = 0; i < width * height; i++) {
+    renderer,
+    init: () => {
+      return [
+        (Math.random() * 2 - 1) * 100,
+        (Math.random() * 2 - 1) * 100,
+        (Math.random() * 2 - 1) * 100,
+        (Math.random() * 2 - 1) * 100,
+      ];
+    },
+  });
+  const velocity = new Node({
+    width,
+    height,
+    renderer,
+    init: () => {
+      return [
+        (Math.random() * 2 - 1) * 0.02,
+        (Math.random() * 2 - 1) * 0.02,
+        (Math.random() * 2 - 1) * 0.02,
+        (Math.random() * 2 - 1) * 0.02,
+      ];
+    },
+  });
+  const rotations = new Node({
+    width,
+    height,
+    renderer,
+    init: () => {
       // https://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
       const axisX = Math.random() * 2 - 1;
       const axisY = Math.random() * 2 - 1;
@@ -238,18 +145,14 @@ function initParticles() {
       const y = normalizedAxisY * sineOfAngle;
       const z = normalizedAxisZ * sineOfAngle;
 
-      const idx = i * 4;
-      data[idx] = x;
-      data[idx + 1] = y;
-      data[idx + 2] = z;
-      data[idx + 3] = w;
-    }
-    return data;
-  }
-
-  function getRandomSpinData(width, height) {
-    const data = new Float32Array(width * height * 4);
-    for (let i = 0; i < width * height; i++) {
+      return [x, y, z, w];
+    },
+  });
+  const spins = new Node({
+    width,
+    height,
+    renderer,
+    init: () => {
       const axisX = Math.random() * 2 - 1;
       const axisY = Math.random() * 2 - 1;
       const axisZ = Math.random() * 2 - 1;
@@ -270,44 +173,47 @@ function initParticles() {
       const y = normalizedAxisY * sineOfAngle;
       const z = normalizedAxisZ * sineOfAngle;
 
-      const idx = i * 4;
-      data[idx] = x;
-      data[idx + 1] = y;
-      data[idx + 2] = z;
-      data[idx + 3] = w;
-    }
-    return data;
-  }
+      return [x, y, z, w];
+    },
+  });
 
-  const rotationsData = getRandomRotationData(width, height);
-  const rotations = new THREE.DataTexture(
-    rotationsData,
+  const positionSimulation = new Edge({
+    material: new ParticlePositionSimulationMaterial({
+      precision: 'highp',
+      uniforms: {
+        velocity: { value: velocity.data.texture },
+        positions: { value: positions.data.texture },
+      },
+    }),
+  });
+
+  const rotationSimulation = new Edge({
+    material: new ParticleRotationSimulationMaterial({
+      precision: 'highp',
+      uniforms: {
+        rotations: { value: rotations.data.texture },
+        spins: { value: spins.data.texture },
+      },
+    }),
+  });
+
+  const positionOutput = new Node({
     width,
     height,
-    THREE.RGBAFormat,
-    THREE.FloatType
-  );
-  rotations.needsUpdate = true;
+    renderer,
+    init: () => {
+      return [0, 0, 0, 0];
+    },
+  });
 
-  const velocityData = getRandomVelocity(width, height);
-  const velocity = new THREE.DataTexture(
-    velocityData,
+  const rotationOutput = new Node({
     width,
     height,
-    THREE.RGBAFormat,
-    THREE.FloatType
-  );
-  velocity.needsUpdate = true;
-
-  const spinData = getRandomSpinData(width, height);
-  const spin = new THREE.DataTexture(
-    spinData,
-    width,
-    height,
-    THREE.RGBAFormat,
-    THREE.FloatType
-  );
-  spin.needsUpdate = true;
+    renderer,
+    init: () => {
+      return [0, 0, 0, 0];
+    },
+  });
 
   return {
     total: height * width,
@@ -316,88 +222,31 @@ function initParticles() {
       positions,
       rotations,
       velocity,
-      spin,
+      spins,
+    },
+    loopbacks: {
+      position: new Edge({
+        material: new PassThruShaderMaterial({
+          uniforms: {
+            srcdata: { value: positionOutput.data.texture },
+          },
+        }),
+      }),
+      rotations: new Edge({
+        material: new PassThruShaderMaterial({
+          uniforms: {
+            srcdata: { value: rotationOutput.data.texture },
+          },
+        }),
+      }),
+    },
+    outputs: {
+      position: positionOutput,
+      rotations: rotationOutput,
     },
     simulations: {
-      position: initSimulation({
-        height,
-        width,
-        material: new ParticlePositionSimulationMaterial({
-          precision: 'highp',
-          uniforms: {
-            velocity: { value: velocity },
-            positions: { value: positions },
-          },
-        }),
-      }),
-      rotation: initSimulation({
-        height,
-        width,
-        material: new ParticleRotationSimulationMaterial({
-          precision: 'highp',
-          uniforms: {
-            rotations: { value: rotations },
-            spins: { value: spin },
-          },
-        }),
-      }),
+      position: positionSimulation,
+      rotation: rotationSimulation,
     },
-  };
-}
-
-function initSimulation({
-  width,
-  height,
-  material,
-}: {
-  width: number;
-  height: number;
-  material: THREE.ShaderMaterial;
-}) {
-  const scene = new THREE.Scene();
-  const camera = new THREE.OrthographicCamera(
-    -1,
-    1,
-    1,
-    -1,
-    1 / Math.pow(2, 53),
-    1
-  );
-
-  //4 create a target texture
-  const options = {
-    minFilter: THREE.NearestFilter, //important as we want to sample square pixels
-    magFilter: THREE.NearestFilter, //
-    format: THREE.RGBAFormat,
-    type: THREE.FloatType, //important as we need precise coordinates (not ints)
-  };
-  const target = new THREE.WebGLRenderTarget(width, height, options);
-
-  //5 the simulation:
-  //create a bi-unit quadrilateral and uses the simulation material to update the Float Texture
-  const geom = new THREE.BufferGeometry();
-  geom.setAttribute(
-    'position',
-    new THREE.BufferAttribute(
-      new Float32Array([
-        -1, -1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, 1, 0, -1, 1, 0,
-      ]),
-      3
-    )
-  );
-  geom.setAttribute(
-    'uv',
-    new THREE.BufferAttribute(
-      new Float32Array([0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0]),
-      2
-    )
-  );
-  scene.add(new THREE.Mesh(geom, material));
-
-  return {
-    scene,
-    camera,
-    target,
-    material,
   };
 }
