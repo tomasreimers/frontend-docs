@@ -10,14 +10,14 @@ import { useState } from 'react';
 import type * as THREE from 'three';
 
 import s from './Hero.module.scss';
-import { GPUData } from './webgl/gpgpu/data';
-import { Edge } from './webgl/gpgpu/edge';
+import { createGPUData } from './webgl/gpgpu/data';
 import { initRandom } from './webgl/initializers/random';
 import { initRandomRotation } from './webgl/initializers/random_rotation';
-import { PassThruShaderMaterial } from './webgl/shaders/passthru';
-import { ParticlePositionSimulationMaterial } from './webgl/shaders/positions';
+import { passThruFn } from './webgl/shaders/passthru';
+import { updatePositionsFn } from './webgl/shaders/positions';
 import { ParticleRenderMaterial } from './webgl/shaders/render';
-import { ParticleRotationSimulationMaterial } from './webgl/shaders/rotations';
+import { updateRotationsFn } from './webgl/shaders/rotations';
+import { createAndInitializeGPUData } from './webgl/utils/create_and_initialize_gpu_data';
 
 extend({
   ParticleRenderMaterial,
@@ -53,8 +53,8 @@ function Particles() {
   const [particles] = useState(() => initParticles(gl));
 
   // TODO: We should take into account the delta in time and move it by that much
-  useFrame(({ gl, scene, camera }) => {
-    particles.update(gl);
+  useFrame(({ gl, scene, camera }, delta) => {
+    particles.update(gl, delta);
 
     // Render frame
     gl.setRenderTarget(null);
@@ -73,8 +73,8 @@ function Particles() {
         />
       </cylinderGeometry>
       <particleRenderMaterial
-        positions={particles.output.positions.data.texture}
-        rotations={particles.output.rotations.data.texture}
+        positions={particles.output.positions.texture}
+        rotations={particles.output.rotations.texture}
       />
     </instancedMesh>
   );
@@ -92,96 +92,81 @@ function initParticles(renderer: THREE.WebGLRenderer) {
     indicies[i3 + 1] = i / width / height;
   }
 
-  const newPositions = new GPUData({
+  const newPositions = createAndInitializeGPUData({
     width,
     height,
-    init: {
-      renderer,
-      dataGen: initRandom(-100, 100),
-    },
+    renderer,
+    gen: initRandom(-100, 100),
   });
-  const velocity = new GPUData({
+  const velocity = createAndInitializeGPUData({
     width,
     height,
-    init: {
-      renderer,
-      dataGen: initRandom(-0.02, 0.02),
-    },
+    renderer,
+    gen: initRandom(-4, 4),
   });
-  const newRotations = new GPUData({
+  const newRotations = createAndInitializeGPUData({
     width,
     height,
-    init: {
-      renderer,
-      dataGen: initRandomRotation(0, 2),
-    },
+    renderer,
+    gen: initRandomRotation(-1, 1),
   });
-  const spins = new GPUData({
+  const spins = createAndInitializeGPUData({
     width,
     height,
-    init: {
-      renderer,
-      dataGen: initRandomRotation(-0.02, 0.02),
-    },
+    renderer,
+    gen: initRandom(-2, 2),
   });
 
-  const oldPositions = new GPUData({
+  const oldPositions = createGPUData({
     width,
     height,
   });
 
-  const oldRotations = new GPUData({
+  const oldRotations = createGPUData({
     width,
     height,
   });
 
-  const positionSimulation = new Edge({
-    material: new ParticlePositionSimulationMaterial({
-      precision: 'highp',
-      uniforms: {
-        velocity: { value: velocity.data.texture },
-        positions: { value: oldPositions.data.texture },
-      },
-    }),
-  });
-
-  const rotationSimulation = new Edge({
-    material: new ParticleRotationSimulationMaterial({
-      precision: 'highp',
-      uniforms: {
-        rotations: { value: oldRotations.data.texture },
-        spins: { value: spins.data.texture },
-      },
-    }),
-  });
-
-  const positionLoopback = new Edge({
-    material: new PassThruShaderMaterial({
-      uniforms: {
-        srcdata: { value: newPositions.data.texture },
-      },
-    }),
-  });
-  const rotationLoopback = new Edge({
-    material: new PassThruShaderMaterial({
-      uniforms: {
-        srcdata: { value: newRotations.data.texture },
-      },
-    }),
-  });
+  const positionSimulation = updatePositionsFn();
+  const rotationSimulation = updateRotationsFn();
+  const loopback = passThruFn();
 
   return {
     // necessary
     total: height * width,
     indicies,
-    update: (gl: THREE.WebGLRenderer) => {
+    update: (gl: THREE.WebGLRenderer, delta: number) => {
       // Positions
-      positionLoopback.run(gl, oldPositions.data);
-      positionSimulation.run(gl, newPositions.data);
+      loopback({
+        inputs: { srcdata: newPositions.texture },
+        renderer: gl,
+        output: oldPositions,
+      });
+      positionSimulation({
+        inputs: {
+          velocity: velocity.texture,
+          positions: oldPositions.texture,
+          delta,
+        },
+        renderer: gl,
+        output: newPositions,
+      });
 
       // Rotations
-      rotationLoopback.run(gl, oldRotations.data);
-      rotationSimulation.run(gl, newRotations.data);
+      loopback({
+        inputs: { srcdata: newRotations.texture },
+        renderer: gl,
+        output: oldRotations,
+      });
+      rotationSimulation({
+        inputs: {
+          rotations: oldRotations.texture,
+          spins: spins.texture,
+          delta,
+        },
+        renderer: gl,
+        output: newRotations,
+      });
     },
     output: {
       positions: newPositions,
