@@ -1,3 +1,4 @@
+import { OrbitControls } from '@react-three/drei';
 import {
   type Node as ThreeNode,
   Canvas,
@@ -6,11 +7,13 @@ import {
   useThree,
 } from '@react-three/fiber';
 import { useState } from 'react';
-import * as THREE from 'three';
+import type * as THREE from 'three';
 
 import s from './Hero.module.scss';
-import { Edge } from './webgl/graph/edge';
-import { Node } from './webgl/graph/node';
+import { GPUData } from './webgl/gpgpu/data';
+import { Edge } from './webgl/gpgpu/edge';
+import { initRandom } from './webgl/initializers/random';
+import { initRandomRotation } from './webgl/initializers/random_rotation';
 import { PassThruShaderMaterial } from './webgl/shaders/passthru';
 import { ParticlePositionSimulationMaterial } from './webgl/shaders/positions';
 import { ParticleRenderMaterial } from './webgl/shaders/render';
@@ -23,7 +26,10 @@ extend({
 declare module '@react-three/fiber' {
   interface ThreeElements {
     particleRenderMaterial: ThreeNode<
-      typeof ParticleRenderMaterial,
+      {
+        positions: THREE.Texture;
+        rotations: THREE.Texture;
+      },
       typeof ParticleRenderMaterial
     >;
   }
@@ -36,6 +42,7 @@ export function Hero() {
         <ambientLight intensity={0.01} />
         <directionalLight position={[0, 0, 4]} intensity={2} />
         <Particles />
+        <OrbitControls target={[0, 0, 99]} />
       </Canvas>
     </div>
   );
@@ -47,11 +54,7 @@ function Particles() {
 
   // TODO: We should take into account the delta in time and move it by that much
   useFrame(({ gl, scene, camera }) => {
-    particles.simulations.position.run(gl, particles.outputs.position.data);
-    particles.loopbacks.position.run(gl, particles.data.positions.data);
-
-    particles.simulations.rotation.run(gl, particles.outputs.rotations.data);
-    particles.loopbacks.rotations.run(gl, particles.data.rotations.data);
+    particles.update(gl);
 
     // Render frame
     gl.setRenderTarget(null);
@@ -59,13 +62,10 @@ function Particles() {
   }, 1);
 
   return (
-    <instancedMesh args={[undefined, undefined, particles.total]}>
-      {/* <circleGeometry args={[0.1, 5]}>
-        <instancedBufferAttribute
-          attach="attributes-pindex"
-          args={[particles.indicies, 2]}
-        />
-      </circleGeometry> */}
+    <instancedMesh
+      args={[undefined, undefined, particles.total]}
+      frustumCulled={false}
+    >
       <cylinderGeometry args={[0.1, 0.1, 0.01, 5]}>
         <instancedBufferAttribute
           attach="attributes-pindex"
@@ -73,9 +73,8 @@ function Particles() {
         />
       </cylinderGeometry>
       <particleRenderMaterial
-        positions={particles.outputs.position.data.texture}
-        rotations={particles.outputs.rotations.data.texture}
-        sides={THREE.DoubleSide}
+        positions={particles.output.positions.data.texture}
+        rotations={particles.output.rotations.data.texture}
       />
     </instancedMesh>
   );
@@ -93,88 +92,47 @@ function initParticles(renderer: THREE.WebGLRenderer) {
     indicies[i3 + 1] = i / width / height;
   }
 
-  const positions = new Node({
+  const newPositions = new GPUData({
     width,
     height,
-    renderer,
-    init: () => {
-      return [
-        (Math.random() * 2 - 1) * 100,
-        (Math.random() * 2 - 1) * 100,
-        (Math.random() * 2 - 1) * 100,
-        (Math.random() * 2 - 1) * 100,
-      ];
+    init: {
+      renderer,
+      dataGen: initRandom(-100, 100),
     },
   });
-  const velocity = new Node({
+  const velocity = new GPUData({
     width,
     height,
-    renderer,
-    init: () => {
-      return [
-        (Math.random() * 2 - 1) * 0.02,
-        (Math.random() * 2 - 1) * 0.02,
-        (Math.random() * 2 - 1) * 0.02,
-        (Math.random() * 2 - 1) * 0.02,
-      ];
+    init: {
+      renderer,
+      dataGen: initRandom(-0.02, 0.02),
     },
   });
-  const rotations = new Node({
+  const newRotations = new GPUData({
     width,
     height,
-    renderer,
-    init: () => {
-      // https://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
-      const axisX = Math.random() * 2 - 1;
-      const axisY = Math.random() * 2 - 1;
-      const axisZ = Math.random() * 2 - 1;
-      const axisLength = Math.sqrt(
-        axisX * axisX + axisY * axisY + axisZ * axisZ
-      );
-
-      const normalizedAxisX = axisX / axisLength;
-      const normalizedAxisY = axisY / axisLength;
-      const normalizedAxisZ = axisZ / axisLength;
-
-      const rotation = Math.random() * 2 * Math.PI;
-
-      const sineOfAngle = Math.sin(rotation / 2);
-
-      const w = Math.cos(rotation / 2);
-      const x = normalizedAxisX * sineOfAngle;
-      const y = normalizedAxisY * sineOfAngle;
-      const z = normalizedAxisZ * sineOfAngle;
-
-      return [x, y, z, w];
+    init: {
+      renderer,
+      dataGen: initRandomRotation(0, 2),
     },
   });
-  const spins = new Node({
+  const spins = new GPUData({
     width,
     height,
-    renderer,
-    init: () => {
-      const axisX = Math.random() * 2 - 1;
-      const axisY = Math.random() * 2 - 1;
-      const axisZ = Math.random() * 2 - 1;
-      const axisLength = Math.sqrt(
-        axisX * axisX + axisY * axisY + axisZ * axisZ
-      );
-
-      const normalizedAxisX = axisX / axisLength;
-      const normalizedAxisY = axisY / axisLength;
-      const normalizedAxisZ = axisZ / axisLength;
-
-      const rotation = (2 * Math.random() - 1) * 0.02 * Math.PI;
-
-      const sineOfAngle = Math.sin(rotation / 2);
-
-      const w = Math.cos(rotation / 2);
-      const x = normalizedAxisX * sineOfAngle;
-      const y = normalizedAxisY * sineOfAngle;
-      const z = normalizedAxisZ * sineOfAngle;
-
-      return [x, y, z, w];
+    init: {
+      renderer,
+      dataGen: initRandomRotation(-0.02, 0.02),
     },
+  });
+
+  const oldPositions = new GPUData({
+    width,
+    height,
+  });
+
+  const oldRotations = new GPUData({
+    width,
+    height,
   });
 
   const positionSimulation = new Edge({
@@ -182,7 +140,7 @@ function initParticles(renderer: THREE.WebGLRenderer) {
       precision: 'highp',
       uniforms: {
         velocity: { value: velocity.data.texture },
-        positions: { value: positions.data.texture },
+        positions: { value: oldPositions.data.texture },
       },
     }),
   });
@@ -191,62 +149,43 @@ function initParticles(renderer: THREE.WebGLRenderer) {
     material: new ParticleRotationSimulationMaterial({
       precision: 'highp',
       uniforms: {
-        rotations: { value: rotations.data.texture },
+        rotations: { value: oldRotations.data.texture },
         spins: { value: spins.data.texture },
       },
     }),
   });
 
-  const positionOutput = new Node({
-    width,
-    height,
-    renderer,
-    init: () => {
-      return [0, 0, 0, 0];
-    },
+  const positionLoopback = new Edge({
+    material: new PassThruShaderMaterial({
+      uniforms: {
+        srcdata: { value: newPositions.data.texture },
+      },
+    }),
   });
-
-  const rotationOutput = new Node({
-    width,
-    height,
-    renderer,
-    init: () => {
-      return [0, 0, 0, 0];
-    },
+  const rotationLoopback = new Edge({
+    material: new PassThruShaderMaterial({
+      uniforms: {
+        srcdata: { value: newRotations.data.texture },
+      },
+    }),
   });
 
   return {
+    // necessary
     total: height * width,
     indicies,
-    data: {
-      positions,
-      rotations,
-      velocity,
-      spins,
+    update: (gl: THREE.WebGLRenderer) => {
+      // Positions
+      positionLoopback.run(gl, oldPositions.data);
+      positionSimulation.run(gl, newPositions.data);
+
+      // Rotations
+      rotationLoopback.run(gl, oldRotations.data);
+      rotationSimulation.run(gl, newRotations.data);
     },
-    loopbacks: {
-      position: new Edge({
-        material: new PassThruShaderMaterial({
-          uniforms: {
-            srcdata: { value: positionOutput.data.texture },
-          },
-        }),
-      }),
-      rotations: new Edge({
-        material: new PassThruShaderMaterial({
-          uniforms: {
-            srcdata: { value: rotationOutput.data.texture },
-          },
-        }),
-      }),
-    },
-    outputs: {
-      position: positionOutput,
-      rotations: rotationOutput,
-    },
-    simulations: {
-      position: positionSimulation,
-      rotation: rotationSimulation,
+    output: {
+      positions: newPositions,
+      rotations: oldRotations,
     },
   };
 }

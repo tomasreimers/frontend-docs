@@ -11,7 +11,6 @@ void main() {
     vUv = vec2(uv.x, uv.y);
     gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
 }`,
-  // Same as above, rotations above spins creates an issue... still don't know why
   `precision highp float;
   precision highp sampler2D;
 

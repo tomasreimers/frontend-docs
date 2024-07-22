@@ -11,9 +11,6 @@ void main() {
     vUv = vec2(uv.x, uv.y);
     gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
 }`,
-  // For reasons I do not understand, if you swap velocity and positions,
-  // velocity seems to be a very high number (even when init'd to zero),
-  // I wonder if positions is somehow overflowing when we copy texture...
   `precision highp float;
   precision highp sampler2D;
   
