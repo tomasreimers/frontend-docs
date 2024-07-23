@@ -45,6 +45,5 @@ void main() {
   vec4 rot = texture2D( rotations, vUv );
   vec4 sp = texture2D( spins, vUv );
   gl_FragColor = qmul(velocityToQuarternion(sp.xyz, delta), rot);
-  // gl_FragColor = qmul(sp, rot);
 }`
 );

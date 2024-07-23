@@ -21,9 +21,9 @@ uniform sampler2D positions;
 uniform float delta;
 
 void main() {
-  vec4 vel = texture2D( velocity, vUv ).rgba;
-  vec4 pos = texture2D( positions, vUv ).rgba;
-  gl_FragColor = vec4(pos.r + vel.r * delta, pos.g + vel.g * delta, pos.b + vel.b * delta, pos.a + vel.a * delta);
+  vec4 vel = texture2D( velocity, vUv );
+  vec4 pos = texture2D( positions, vUv );
+  gl_FragColor = pos + vel * delta;
 }
 `
 );

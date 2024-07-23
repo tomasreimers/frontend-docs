@@ -6,7 +6,7 @@ import {
   useFrame,
   useThree,
 } from '@react-three/fiber';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import type * as THREE from 'three';
 
 import s from './Hero.module.scss';
@@ -17,6 +17,7 @@ import { passThruFn } from './webgl/shaders/passthru';
 import { updatePositionsFn } from './webgl/shaders/positions';
 import { ParticleRenderMaterial } from './webgl/shaders/render';
 import { updateRotationsFn } from './webgl/shaders/rotations';
+import { updateVelocityFn } from './webgl/shaders/velocity';
 import { createAndInitializeGPUData } from './webgl/utils/create_and_initialize_gpu_data';
 
 extend({
@@ -26,9 +27,12 @@ extend({
 declare module '@react-three/fiber' {
   interface ThreeElements {
     particleRenderMaterial: ThreeNode<
-      {
+      THREE.Material & {
         positions: THREE.Texture;
         rotations: THREE.Texture;
+        rayOrigin: THREE.Vector3;
+        rayDirection: THREE.Vector3;
+        debugDistanceToMouse: boolean;
       },
       typeof ParticleRenderMaterial
     >;
@@ -51,10 +55,25 @@ export function Hero() {
 function Particles() {
   const gl = useThree((state) => state.gl);
   const [particles] = useState(() => initParticles(gl));
+  const renderMaterialRef = useRef<
+    THREE.Material & {
+      positions: THREE.Texture;
+      rotations: THREE.Texture;
+      rayOrigin: THREE.Vector3;
+      rayDirection: THREE.Vector3;
+      debugDistanceToMouse: boolean;
+    }
+  >(null);
 
   // TODO: We should take into account the delta in time and move it by that much
-  useFrame(({ gl, scene, camera }, delta) => {
-    particles.update(gl, delta);
+  useFrame(({ gl, scene, camera, pointer, raycaster }, delta) => {
+    raycaster.setFromCamera(pointer, camera);
+    if (renderMaterialRef.current) {
+      renderMaterialRef.current.rayOrigin = raycaster.ray.origin;
+      renderMaterialRef.current.rayDirection = raycaster.ray.direction;
+    }
+
+    particles.update({ gl, delta, ray: raycaster.ray });
 
     // Render frame
     gl.setRenderTarget(null);
@@ -73,8 +92,10 @@ function Particles() {
         />
       </cylinderGeometry>
       <particleRenderMaterial
+        ref={renderMaterialRef}
         positions={particles.output.positions.texture}
         rotations={particles.output.rotations.texture}
+        debugDistanceToMouse={false}
       />
     </instancedMesh>
   );
@@ -98,7 +119,7 @@ function initParticles(renderer: THREE.WebGLRenderer) {
     renderer,
     gen: initRandom(-100, 100),
   });
-  const velocity = createAndInitializeGPUData({
+  const newVelocity = createAndInitializeGPUData({
     width,
     height,
     renderer,
@@ -117,16 +138,20 @@ function initParticles(renderer: THREE.WebGLRenderer) {
     gen: initRandom(-2, 2),
   });
 
+  const oldVelocity = createGPUData({
+    width,
+    height,
+  });
   const oldPositions = createGPUData({
     width,
     height,
   });
-
   const oldRotations = createGPUData({
     width,
     height,
   });
 
+  const velocitySimulation = updateVelocityFn();
   const positionSimulation = updatePositionsFn();
   const rotationSimulation = updateRotationsFn();
   const loopback = passThruFn();
@@ -135,28 +160,59 @@ function initParticles(renderer: THREE.WebGLRenderer) {
     // necessary
     total: height * width,
     indicies,
-    update: (gl: THREE.WebGLRenderer, delta: number) => {
-      // Positions
+    update: ({
+      gl,
+      delta,
+      ray,
+    }: {
+      gl: THREE.WebGLRenderer;
+      delta: number;
+      ray: THREE.Ray;
+    }) => {
+      // Velocity
+      loopback({
+        inputs: { srcdata: newVelocity.texture },
+        renderer: gl,
+        output: oldVelocity,
+      });
       loopback({
         inputs: { srcdata: newPositions.texture },
         renderer: gl,
         output: oldPositions,
       });
+      loopback({
+        inputs: { srcdata: newRotations.texture },
+        renderer: gl,
+        output: oldRotations,
+      });
+
+      velocitySimulation({
+        inputs: {
+          velocity: oldVelocity.texture,
+          positions: oldPositions.texture,
+          rayOrigin: ray.origin,
+          rayDirection: ray.direction,
+          delta,
+          applyGravity: false,
+        },
+        renderer: gl,
+        output: newVelocity,
+      });
       positionSimulation({
         inputs: {
-          velocity: velocity.texture,
+          /**
+           * Warning: Yes, it looks like this should be new velocities; for whatever reason,
+           * when I change this to be new velocities, I do not see points converging on the
+           * gravitational center.
+           *
+           * This doesn't make sense to me. We just computed the velocity to converge... Alas.
+           */
+          velocity: oldVelocity.texture,
           positions: oldPositions.texture,
           delta,
         },
         renderer: gl,
         output: newPositions,
-      });
-
-      // Rotations
-      loopback({
-        inputs: { srcdata: newRotations.texture },
-        renderer: gl,
-        output: oldRotations,
       });
       rotationSimulation({
         inputs: {
@@ -170,7 +226,7 @@ function initParticles(renderer: THREE.WebGLRenderer) {
     },
     output: {
       positions: newPositions,
-      rotations: oldRotations,
+      rotations: newRotations,
     },
   };
 }
