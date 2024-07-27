@@ -4,17 +4,11 @@ export const ParticleRenderMaterial = shaderMaterial(
   {
     positions: null,
     rotations: null,
-    rayOrigin: null,
-    rayDirection: null,
-    debugDistanceToMouse: null,
   },
   `attribute vec2 pindex;
 uniform sampler2D positions;
 uniform sampler2D rotations;
-
-varying float distanceToMouse;
-uniform vec3 rayOrigin;
-uniform vec3 rayDirection;
+varying vec3 vNormal;
 
 vec3 quat_transform( vec4 q, vec3 v )
 {
@@ -26,21 +20,15 @@ void main() {
     vec4 rotation = texture2D( rotations, pindex.xy ).xyzw;
     gl_Position = projectionMatrix * modelViewMatrix * vec4( quat_transform(rotation, position) + offset, 1.0 );
 
-    vec3 positionRelativeToOrigin = offset - rayOrigin;
-    vec3 distanceAlongRay = rayDirection * dot(rayDirection, positionRelativeToOrigin);
-    vec3 closestPointOnRay = rayOrigin + distanceAlongRay;
-    vec3 distanceFromRay = closestPointOnRay - offset;
-    distanceToMouse = sqrt(dot(distanceFromRay, distanceFromRay));
+    vNormal = quat_transform(rotation, normal);
 }`,
   `
-varying float distanceToMouse;
-uniform bool debugDistanceToMouse;
+varying vec3 vNormal;
 
 void main(){
-    if (debugDistanceToMouse) {
-      gl_FragColor = vec4( 1., 1., distanceToMouse / 20., 1. );
-    } else {
-      gl_FragColor = vec4( 1., 1., 1., 1. );
-    }
+    float lightAlignment = dot(vNormal, normalize(vec3(0., 0., -1.)));
+    float directionalLightPerc = max(0., lightAlignment);
+    float brightness = mix(0.1, 1., directionalLightPerc);
+    gl_FragColor = vec4( brightness, brightness, brightness, 1. );
 }`
 );

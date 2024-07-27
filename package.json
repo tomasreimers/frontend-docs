@@ -24,6 +24,7 @@
     "@excalidraw/utils": "^0.1.2",
     "@react-three/drei": "^9.108.3",
     "@react-three/fiber": "^8.16.8",
+    "@react-three/postprocessing": "^2.16.2",
     "@types/three": "^0.166.0",
     "@vercel/og": "^0.6.1",
     "next": "^13.0.6",

@@ -1,3 +1,6 @@
+/**
+ * These are not actually radians, they are radians over pi
+ */
 export const initRandomRotation = (
   minRadians: number,
   maxRadians: number

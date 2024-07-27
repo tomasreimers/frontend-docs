@@ -688,6 +688,17 @@
     suspend-react "^0.1.3"
     zustand "^3.7.1"
 
+"@react-three/postprocessing@^2.16.2":
+  version "2.16.2"
+  resolved "https://registry.yarnpkg.com/@react-three/postprocessing/-/postprocessing-2.16.2.tgz#a6ed5aa0775d843eba845915c41160ce7fff3e79"
+  integrity sha512-2ya1gXLDpzyfbELobi3rPHNNZZCrCfyq20GMYJD1yD7ZyBFSpRG9YSPMBnOal6A89kXanPBw273h6/Dqev0n7g==
+  dependencies:
+    buffer "^6.0.3"
+    maath "^0.6.0"
+    n8ao "^1.6.6"
+    postprocessing "^6.32.1"
+    three-stdlib "^2.23.4"
+
 "@resvg/resvg-wasm@2.6.0":
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/@resvg/resvg-wasm/-/resvg-wasm-2.6.0.tgz#fa4db659b8c2519715f7f7dacfbb327aad193935"
@@ -3775,6 +3786,11 @@ maath@^0.10.7:
   resolved "https://registry.yarnpkg.com/maath/-/maath-0.10.8.tgz#cf647544430141bf6982da6e878abb6c4b804e24"
   integrity sha512-tRvbDF0Pgqz+9XUa4jjfgAQ8/aPKmQdWXilFu2tMy4GWj4NOsx99HlULO4IeREfbO3a0sA145DZYyvXPkybm0g==
 
+maath@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/maath/-/maath-0.6.0.tgz#7841d0fb95bbb37d19b08b7c5458ef70190950d2"
+  integrity sha512-dSb2xQuP7vDnaYqfoKzlApeRcR2xtN8/f7WV/TMAkBC8552TwTLtOO0JTcSygkYMjNDPoo6V01jTw/aPi4JrMw==
+
 markdown-extensions@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/markdown-extensions/-/markdown-extensions-1.1.1.tgz#fea03b539faeaee9b4ef02a3769b455b189f7fc3"
@@ -4900,6 +4916,11 @@ mz@^2.7.0:
     object-assign "^4.0.1"
     thenify-all "^1.0.0"
 
+n8ao@^1.6.6:
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/n8ao/-/n8ao-1.8.3.tgz#fd961902b333525d805e791121c15ff5e42f0667"
+  integrity sha512-ARbRL2j1iWEI6PuPd3TaasvGa3QXeBn9bPgPKTeTxMOwwejxcwIlUiQLrk8xbr2M22vbE5ePQYcYj28YNeI5kA==
+
 nanoid@^3.3.6:
   version "3.3.7"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.7.tgz#d0c301a691bc8d54efa0a2226ccf3fe2fd656bd8"
@@ -5372,6 +5393,11 @@ postcss@8.4.31, postcss@^8.4.23, postcss@^8.4.31:
     nanoid "^3.3.6"
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
+
+postprocessing@^6.32.1:
+  version "6.36.0"
+  resolved "https://registry.yarnpkg.com/postprocessing/-/postprocessing-6.36.0.tgz#e795c986f85d1a500e13d9c6e25a140e1156f25f"
+  integrity sha512-7V2t8Yi+Edh0FybErMdBV3CCJ/tTeNeLh6z+i0VczwZ6HGV3XyRfC8v4Ps9a6tjawcTvatLptQzX8QnDlU8BXw==
 
 potpack@^1.0.1:
   version "1.0.2"
@@ -6220,6 +6246,18 @@ three-mesh-bvh@^0.7.0:
   version "0.7.6"
   resolved "https://registry.yarnpkg.com/three-mesh-bvh/-/three-mesh-bvh-0.7.6.tgz#6764b39475bdba9450ad3a4065492678ee537272"
   integrity sha512-rCjsnxEqR9r1/C/lCqzGLS67NDty/S/eT6rAJfDvsanrIctTWdNoR4ZOGWewCB13h1QkVo2BpmC0wakj1+0m8A==
+
+three-stdlib@^2.23.4:
+  version "2.30.5"
+  resolved "https://registry.yarnpkg.com/three-stdlib/-/three-stdlib-2.30.5.tgz#5d4804b17a7807573cbf96b1159024921596342a"
+  integrity sha512-BBZkKnTDmUacXU9mv7fA5R7Brb89uUbOUWXXZKNrzdx6JEozJt3e6I5zPMRbb1FC2aw/2QFtgwPi1PI8VjX6FQ==
+  dependencies:
+    "@types/draco3d" "^1.4.0"
+    "@types/offscreencanvas" "^2019.6.4"
+    "@types/webxr" "^0.5.2"
+    draco3d "^1.4.1"
+    fflate "^0.6.9"
+    potpack "^1.0.1"
 
 three-stdlib@^2.29.9:
   version "2.30.4"
