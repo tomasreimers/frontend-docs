@@ -3,5 +3,12 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
-  "/foreword": "pages/foreword.js"
+  "/foreword": "pages/foreword.js",
+  "/html": "pages/html.js",
+  "/css": "pages/css.js",
+  "/javascript": "pages/javascript.js",
+  "/build-tooling": "pages/build-tooling.js",
+  "/profiling-and-testing": "pages/profiling-and-testing.js",
+  "/design-systems": "pages/design-systems.js",
+  "/graphics": "pages/graphics.js"
 }

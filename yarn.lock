@@ -5394,7 +5394,7 @@ postcss@8.4.31, postcss@^8.4.23, postcss@^8.4.31:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
-postprocessing@^6.32.1:
+postprocessing@^6.32.1, postprocessing@^6.36.0:
   version "6.36.0"
   resolved "https://registry.yarnpkg.com/postprocessing/-/postprocessing-6.36.0.tgz#e795c986f85d1a500e13d9c6e25a140e1156f25f"
   integrity sha512-7V2t8Yi+Edh0FybErMdBV3CCJ/tTeNeLh6z+i0VczwZ6HGV3XyRfC8v4Ps9a6tjawcTvatLptQzX8QnDlU8BXw==

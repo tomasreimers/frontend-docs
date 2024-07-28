@@ -5,8 +5,13 @@ import {
   useFrame,
   useThree,
 } from '@react-three/fiber';
-import { Bloom, EffectComposer } from '@react-three/postprocessing';
-import { useRef, useState } from 'react';
+import {
+  Bloom,
+  ChromaticAberration,
+  EffectComposer,
+} from '@react-three/postprocessing';
+import { Link } from 'nextra-theme-docs';
+import { type MutableRefObject, useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 
 import s from './Hero.module.scss';
@@ -40,19 +45,72 @@ declare module '@react-three/fiber' {
 }
 
 export function Hero() {
+  const [offset] = useState(() => new THREE.Vector2(1e-3, 5e-4));
+  const element = useRef<HTMLDivElement>(null);
+  const pointer = useRef({ x: 0, y: 0 });
+  const [initialRender, setInitialRender] = useState(() => performance.now());
+  useEffect(() => {
+    if (element.current) {
+      const handler = (ev: MouseEvent) => {
+        if (element.current) {
+          pointer.current = {
+            x:
+              ((ev.clientX - element.current.clientLeft) /
+                element.current.clientWidth) *
+                2 -
+              1,
+            y:
+              1 -
+              2 *
+                ((ev.clientY - element.current.clientTop) /
+                  element.current.clientHeight),
+          };
+        }
+      };
+
+      element.current.addEventListener('mousemove', handler);
+      return () => element.current?.removeEventListener('mousemove', handler);
+    }
+  }, []);
+
   return (
-    <div className={s.canvasHolder}>
-      <Canvas camera={{ position: [0, 0, -1] }}>
-        <Particles />
-        <EffectComposer>
-          <Bloom
-            luminanceThreshold={0.5}
-            luminanceSmoothing={0.7}
-            radius={0.9}
-            mipmapBlur={true}
-          />
-        </EffectComposer>
-      </Canvas>
+    <div className={s.hero} ref={element}>
+      <div className={s.canvasHolder}>
+        <Canvas camera={{ position: [0, 0, -1] }}>
+          <Particles pointer={pointer} initialRender={initialRender} />
+          <EffectComposer>
+            <ChromaticAberration
+              radialModulation={true}
+              modulationOffset={0.5}
+              offset={offset}
+            />
+            <Bloom
+              luminanceThreshold={0.5}
+              luminanceSmoothing={0.7}
+              radius={0.9}
+              mipmapBlur={true}
+            />
+          </EffectComposer>
+        </Canvas>
+      </div>
+      <div className={s.heroContent}>
+        <div className={s.heroTitle}>Learn frontend</div>
+        <div className={s.heroSubtitle}>
+          A ~20-page guide on web programming, design, and technologies for
+          experienced developers.
+        </div>
+        <div className={s.heroCTA}>
+          <Link className={s.heroCTAButton} href="/foreword">
+            Get started &rsaquo;
+          </Link>
+          <div
+            className={s.heroCTAButtonSecondary}
+            onClick={() => setInitialRender(performance.now())}
+          >
+            Do the animation again
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -61,7 +119,16 @@ function easeOutCubic(x) {
   return 1 - Math.pow(1 - x, 3);
 }
 
-function Particles() {
+function Particles({
+  pointer,
+  initialRender,
+}: {
+  pointer: MutableRefObject<{
+    x: number;
+    y: number;
+  }>;
+  initialRender: number;
+}) {
   const gl = useThree((state) => state.gl);
   const [particles] = useState(() => initParticles(gl));
   const renderMaterialRef = useRef<
@@ -73,10 +140,9 @@ function Particles() {
       debugDistanceToMouse: boolean;
     }
   >(null);
-  const [initialRender] = useState(() => performance.now());
 
   // TODO: We should take into account the delta in time and move it by that much
-  useFrame(({ gl, scene, camera, pointer }, delta) => {
+  useFrame(({ gl, scene, camera }, delta) => {
     const secondsSinceRender = (performance.now() - initialRender) / 1000;
     const easeIn = easeOutCubic(Math.min(secondsSinceRender / 4, 1));
     const zoomOut = 100 * (1 - easeIn);
@@ -84,8 +150,8 @@ function Particles() {
     // Update camera
     camera.position.set(0, 0, -zoomOut);
     camera.rotation.set(
-      -1 * pointer.y * Math.PI * 0.1,
-      Math.PI + -1 * pointer.x * Math.PI * 0.1,
+      -1 * pointer.current.y * Math.PI * 0.1,
+      Math.PI + -1 * pointer.current.x * Math.PI * 0.1,
       0
     );
 
@@ -159,7 +225,7 @@ function initParticles(renderer: THREE.WebGLRenderer) {
     width,
     height,
     renderer,
-    gen: initRandom(-2, 2),
+    gen: initRandom(-0.5, 0.5),
   });
 
   const oldVelocity = createGPUData({
