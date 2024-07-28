@@ -1,4 +1,28 @@
 {
+  "../components/excalidraw.tsx -> @excalidraw/excalidraw": {
+    "id": "../components/excalidraw.tsx -> @excalidraw/excalidraw",
+    "files": [
+      "static/chunks/node_modules_excalidraw_excalidraw_main_js.js"
+    ]
+  },
+  "../node_modules/@codesandbox/sandpack-client/dist/index.mjs -> ./clients/node/index.mjs": {
+    "id": "../node_modules/@codesandbox/sandpack-client/dist/index.mjs -> ./clients/node/index.mjs",
+    "files": [
+      "static/chunks/node_modules_codesandbox_sandpack-client_dist_clients_node_index_mjs.js"
+    ]
+  },
+  "../node_modules/@codesandbox/sandpack-client/dist/index.mjs -> ./clients/runtime/index.mjs": {
+    "id": "../node_modules/@codesandbox/sandpack-client/dist/index.mjs -> ./clients/runtime/index.mjs",
+    "files": [
+      "static/chunks/node_modules_codesandbox_sandpack-client_dist_clients_runtime_index_mjs.js"
+    ]
+  },
+  "../node_modules/@codesandbox/sandpack-client/dist/index.mjs -> ./index-ec7d9378.mjs": {
+    "id": "../node_modules/@codesandbox/sandpack-client/dist/index.mjs -> ./index-ec7d9378.mjs",
+    "files": [
+      "static/chunks/node_modules_codesandbox_sandpack-client_dist_index-ec7d9378_mjs.js"
+    ]
+  },
   "../node_modules/@react-three/drei/core/VideoTexture.js -> hls.js": {
     "id": "../node_modules/@react-three/drei/core/VideoTexture.js -> hls.js",
     "files": []
