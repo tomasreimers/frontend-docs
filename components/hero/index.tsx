@@ -96,8 +96,7 @@ export function Hero() {
       <div className={s.heroContent}>
         <div className={s.heroTitle}>Learn frontend</div>
         <div className={s.heroSubtitle}>
-          A ~20-page guide on web programming, design, and technologies for
-          experienced developers.
+          A ~20-page guide on frontend development for backend developers.
         </div>
         <div className={s.heroCTA}>
           <Link className={s.heroCTAButton} href="/foreword">

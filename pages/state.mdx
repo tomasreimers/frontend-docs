@@ -1,4 +1,4 @@
-# State: what drives your application
+# State: Separating logic and render
 
 As you scale your application, you will inevitably need two parts of your app, which are not near each other visually or in the DOM, need to access the same data; for example, consider a code editor with a file tree on the left. Opening a file needs to update the main window and also the file tree (to highlight the file).
 
@@ -26,9 +26,49 @@ This quickly becomes hard to manage, and slows down development of your applicat
 
 This is called [prop drilling](https://www.quora.com/What-is-prop-drilling-in-ReactJS), and is the sign that your application has out-grown basic state management.
 
+### Event delegation
+
+As a word of caution, many people find themselves prop drilling because they forget that React renders to HTML, and don't leverage the DOM. For example, imagine you have an email inbox with each email as a row, and every row has a button to select the row (for bulk operations) and one to delete the row. At first, you might imagine that you need to pass props to select and delete to each row. 
+
+```jsx
+<Email
+  id={...}
+  subject={...}
+  select={...}
+  delete={...}
+/>
+```
+
+However, this doesn't leverage the fact that in HTML all events traverse the entire tree. 
+
+Instead of handling the `onClick` event inside of each row, we can instead handle it at the table level by attaching a `data-id` attribute to every email. 
+
+```jsx
+function Email({ id, subject }) {
+  return <div>
+    {subject}
+    <button data-id={id} data-action="SELECT" />
+    <button data-id={id} data-action="DELETE" />
+  </div>;
+}
+```
+
+And extracting it from the "target" of the event (the inner most element): 
+
+```jsx
+<Inbox onClick={(ev) => {
+  const id = ev.target['data-id'];
+  const action = ev.target['data-action'];
+
+  ...
+}}>
+  {...emails}
+</Inbox>
+```
+
 ## Architecture
 
-One way to reduce prop drilling is to rearchitect your application to construct the components that need state closer in the tree to where that state is defined. 
+That said, not all prop drilling can be solved with event delegation (and sometimes event delegation can make your code messier or create spooky action at a distance). Another way to reduce prop drilling is to rearchitect your application to construct the components that need state closer in the tree to where that state is defined. 
 
 ### Composition
 
