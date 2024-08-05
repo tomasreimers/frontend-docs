@@ -1,4 +1,8 @@
+import { ByLine } from "../components/byline"
+
 # State: Separating logic and render
+
+<ByLine />
 
 As you scale your application, you will inevitably need two parts of your app, which are not near each other visually or in the DOM, need to access the same data; for example, consider a code editor with a file tree on the left. Opening a file needs to update the main window and also the file tree (to highlight the file).
 
