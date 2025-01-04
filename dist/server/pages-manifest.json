@@ -1,0 +1,11 @@
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/foreword": "pages/foreword.js",
+  "/components": "pages/components.js",
+  "/": "pages/index.js",
+  "/css": "pages/css.js",
+  "/javascript": "pages/javascript.js",
+  "/html": "pages/html.js"
+}

@@ -8,7 +8,7 @@ Once you've started to write large parts of your website with React, the natural
 
 ## Single-page apps (SPAs)
 
-One of the most common way to write React apps are "single-page applications" (abbreviated SPAs, and pronounced S.P.A.s). In a SPA, the entire application is bundled into a single web-page.
+One of the most common ways to write React apps are "single-page applications" (abbreviated SPAs, and pronounced S.P.A.s). In a SPA, the entire application is bundled into a single web-page.
 
 ### History: Create React App
 
@@ -27,7 +27,7 @@ Although [no longer officially supported](https://github.com/reactjs/react.dev/p
 
 The boilerplate JS finds `#root` and mounts your React into it, so all you have to do is write React. In addition, CRA installs a package `react-scripts` that had scripts to develop, build, and test CRA projects.
 
-Like other scaffolders, than can be invoked directly from the command line without downloading anything: 
+Like other scaffolders, that can be invoked directly from the command line without downloading anything: 
 
 ```bash
 npx create-react-app my-app
@@ -35,7 +35,7 @@ npx create-react-app my-app
 
 ### Vite 
 
-While CRA is deprecated, [Vite](https://vitejs.dev/guide/) lives on:
+Unfortunately, CRA is deprecated; however, [Vite](https://vitejs.dev/guide/) provides much of the same functionality:
 
 ```bash
 npm create vite@latest
@@ -45,7 +45,7 @@ npm create vite@latest
 
 While CRA only emits one HTML page, there are ways to make it seem as if your SPA has multiple pages. 
 
-The simplest solution is what's called "hash routing", where your application has many "pages" and the URL encodes them after the "hash" (which isn't sent up to the server, and doesn't create a reload):
+The simplest solution is what's called "hash routing", where your application has many "pages" and the URL encodes them after the "hash". Hashes in URLs are intended to link across different sections on the same page, because of that browsers don't send them up to the server and they don't trigger reloads:
 
 ```
 your-single-page-app.com/#sign-in
@@ -155,7 +155,7 @@ While it's possible to connect Next to your DB, many people choose not to use Ne
 
 ### Bundle splitting
 
-One of the main advantages of Next is that it breaks apart your JavaScript for you: because not every page needs every piece of JS, Next will automatically break apart your JS into the minimal amount needed for just the page: reducing page size and page load. Navigating to new pages will load additional JS.
+Next.js automatically optimizes your JavaScript through bundle splitting. Instead of loading all JavaScript at once, Next.js breaks your code into smaller chunks. When a user visits a page, they only download the JavaScript necessary for that specific page, significantly reducing initial load times. As users navigate to different pages, Next.js loads additional JavaScript chunks as needed.
 
 ### Everything else
 

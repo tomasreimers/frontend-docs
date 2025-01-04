@@ -1,8 +1,8 @@
+import { ByLine } from "../components/byline"
 import { Example } from "../components/example"
 import { Image } from "../components/image"
 import Box from "../public/images/content/css/boxmodel.png"
 import Devtools from "../public/images/content/css/devtools.png"
-import { ByLine } from "../components/byline"
 
 # CSS: The style of web pages
 
@@ -25,7 +25,7 @@ Building on our earlier example, let's create a folder with two documents:
 </html>
 ```
 
-This is the same as above, but with and added `<link>` tag (which is just telling the browser the address it can request to find an associated CSS file; because the address doesn't begin with a `/` it's presumed to be relative to the HTML file). And:
+This is the same as above, but with an added `<link>` tag (which is just telling the browser the address it can request to find an associated CSS file; because the address doesn't begin with a `/` it's presumed to be relative to the HTML file). And:
 
 ```css filename="styles.css"
 p {
@@ -76,11 +76,13 @@ h1 {
 }
 ```
 
-There are three types of selectors: 
+There are three main types of selectors: 
 
 - `foo`: this matches all elements of the tag `foo` (for example, `<foo />`)
 - `#foo`: this matches the element with the attribute `id="foo"`. Every ID must be unique.
 - `.foo`: this matches all elements which include the attribute `class="foo"`. Unlike IDs, there can be many elements with the same class; there can also be multiple classes per element; for example, an element with `class="foo bar"` will match both `.foo` and `.bar`.
+
+There are also attribute selectors, which match elements based on the value of an attribute, for example `[type="text"]` matches all tags with the `type` attribute set to `text`.
 
 ### Composing selectors
 
@@ -158,7 +160,7 @@ div.foo {
 }`
 }} />
 
-### Psuedo-selectors
+### Pseudo-selectors
 
 Selectors can also match states. These selectors are prefixed with a colon. For example, `.foo:hover` matches elements with class `.foo` when the mouse hovers over them:
 
@@ -231,7 +233,7 @@ Each element is modeled as four concentric rectangles (or boxes):
 
 For each rectangle, you can define all sides at once (`padding; 16px`), each side individually (`padding-left: 16px`), or each side individually using a shorthand (`padding: 16px 12px 8px 4px` defines the top as 16px, right as 12px, bottom as 8px, and left as 4px).
 
-The height and width of the content default to whatever height and width the children require to be laid out, but can be explicitly set via the `height` and `width` properties (e.g. `height: 100px`). In addition to specifying a height and width, you can also constrain them using `max-height`, `max-width`, `min-width`, and `min-height`. For example, an element with the below will be as wide as possible, but not more than 800px:
+The height and width of the content default to whatever height and width the children require to be laid out, but can be explicitly set via the `height` and `width` properties (e.g. `height: 100px`). In addition to specifying a height and width, you can also constrain them using `max-height`, `max-width`, `min-width`, and `min-height`. For example, an element with the example below will be as wide as possible, but not more than 800px:
 
 ```css 
 .example {
@@ -359,7 +361,7 @@ Hopefully, I've given you enough of a foundation to understand any new propertie
 
 ### Media queries
 
-Media queries allow you to apply different CSS properties based on properties of the medium (most commonly, browser width). This lets you have different designs for, for example, mobile vs desktop. 
+Media queries allow you to apply different CSS properties based on properties of the medium (most commonly, browser width or color scheme). This lets you have different designs for, for example, mobile vs desktop or light mode vs dark mode. 
 
 <Example template="static" files={{
   "/index.html": `<!DOCTYPE html>
@@ -488,7 +490,7 @@ Animations, which animate an object:
 
 Animations rely on ["keyframes"](https://en.wikipedia.org/wiki/Key_frame): a concept borrowed from animation, you specify the properties at specific points, and let the runtime interpolate the middle state (for example, if you know that a box starts at 10px wide and ends at 20px wide, you can infer that half way through that animation, the box should be 15px wide).
 
-### Psuedo-elements
+### Pseudo-elements
 
 Selectors can also create elements. For example, `.foo::before` will create an element within all elements with class `foo` but before their children. 
 

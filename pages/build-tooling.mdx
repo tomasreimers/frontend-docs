@@ -1,5 +1,5 @@
-import { Video } from "../components/video"
 import { ByLine } from "../components/byline"
+import { Video } from "../components/video"
 
 # Build tooling: More tools and more problems
 
@@ -99,7 +99,7 @@ And for developers writing mobile apps, [React Native](https://reactnative.dev/)
 
 Due to its simple origins, JavaScript never had a good way to split out code across files. It wasn't intended for applications of that scale; as JavaScript broke out of the browser, this had to change, and many people rushed to create a solution. This led to many, competing solutions to the problem of "how do I import one JavaScript file from another".
 
-These module systems have mostly been paired down to 2: 
+These module systems have mostly been pared down to 2: 
 - CommonJS (CJS): The most popular standard to date. 
 - ECMAScript modules (ESM): The newer standard introduced as part of the JavaScript spec. This will eventually become *the* standard; it just takes time.
 
@@ -119,7 +119,7 @@ Because ECMAScript modules are a superset of CJS modules, ESM files can import C
 
 ### Bundlers 
 
-While modules, predicatably, became a very popular way to organize code, web browsers never added first party support for them. The result was a need for packagers: a way to take all of the modularized code and concatenate it into one file. 
+While modules, predictably, became a very popular way to organize code, web browsers never added first party support for them. The result was a need for packagers: a way to take all of the modularized code and concatenate it into one file. 
 
 The most popular packager is [Webpack](https://webpack.js.org/), which not only bundles, but has an [extensive plugin ecosystem](https://webpack.js.org/plugins/).
 
@@ -137,7 +137,7 @@ More recently, there have been a class of new entrants, all targeting the same p
 Ultimately, the bundler is a glorified version of `cat`, with a few extra features to ensure things like: 
 
 - Dependencies are correctly ordered 
-- Any unreferenced code is removed (tree shaking)
+- Any unreferenced code is removed (this is called "tree shaking")
 - Files are split up to optimize for browser caching (e.g. if you depend on a library that is unlikely to change, output a separate file so the browser can cache it across version bumps of your application)
 - Node globals are shimmed to work in the browser (a common one is to replace `process.env.FOO`, the way you access the env variable `FOO` with whatever the value of `FOO` is at build time)
 - Minifying code to save network bandwidth (for example, comments don't need to be sent to the browser and whitespace can be removed)
@@ -146,7 +146,7 @@ When code is minified, most tools will generate [source maps](https://web.dev/ar
 
 ### Orchestrators 
 
-That's a lot of tools. Running them all in concert is difficult. The result is a set of tooling intended to help you coordinate all the other tools. Other languages and ecosystems use [MAKE](https://www.gnu.org/software/make/manual/make.html), some JavaScript projects do to, but as is customary here, we also have our own, bespoke, solutions.
+That's a lot of tools. Running them all in concert is difficult. The result is a set of tooling intended to help you coordinate all the other tools. Other languages and ecosystems use [Make](https://www.gnu.org/software/make/manual/make.html), some JavaScript projects do to, but as is customary here, we also have our own, bespoke, solutions.
 
 [Grunt](https://gruntjs.com/) and, later, [Gulp](https://gulpjs.com/) were introduced to help transform files. These days they're less frequent (as the packagers have subsumed much of this functionality), but still exist.
 
@@ -176,7 +176,7 @@ To deal with the inconsistency of runtimes, websites use one of three strategies
 
 - **Browser detection**: If you've ever seen the message "Please open this site in Chrome or Firefox for the best experience", you've experienced browser detection. The website is detecting which browser you're using, and gating the experience based on it, probably because the website requires some not-yet-widely-supported API. While common, this is broadly considered bad practice because it excludes niche browsers, excludes future browsers, and is unlikely to be updated once the new version of a currently-incompatible browser adds all the necessary APIs to support the site. 
 - **Feature detection**: The better version of browser detection is feature detection, which simply asks "does the current browser support the specific feature I need" (for example, if you're trying to use the `window.querySelectorAll()` function, you can test if `window.querySelectorAll` is a function; because in incompatible browsers it's not even defined). A popular library for this is [Modernizr](https://modernizr.com/).
-- **Polyfills (aka Shims)**: The even better version of feature detection is to not only detect if the browser supports a feature, but to retrofit it when it doesn't. As I said, JavaScript is an incredibly flexible langugae and even lets you add new functions to base types (for example, you can add a method to the base array type). Polyfills will detect if a browser has an API, and if not, define it for you; for example, the `.forEach()` method was introduced on arrays, but before every browser had it, websites might include a piece of code that checked if `forEach` existed on the base array type, and if not, [define it](https://vanillajstoolkit.com/polyfills/arrayforeach/). 
+- **Polyfills (aka Shims)**: The even better version of feature detection is to not only detect if the browser supports a feature, but to retrofit it when it doesn't. As I said, JavaScript is an incredibly flexible language and even lets you add new functions to base types (for example, you can add a method to the base array type). Polyfills will detect if a browser has an API, and if not, define it for you; for example, the `.forEach()` method was introduced on arrays, but before every browser had it, websites might include a piece of code that checked if `forEach` existed on the base array type, and if not, [define it](https://vanillajstoolkit.com/polyfills/arrayforeach/). 
 
 #### Evolving the langauge 
 
@@ -202,7 +202,7 @@ That said, NPM is no longer the only package manager, and there are now other to
 - **Plug-n-play**: Yarn introduced [PNP](https://yarnpkg.com/features/pnp) as an opt-in way to save disk space, because zero install means that all packages are in zip files, why not override `require()` to simply reach into those zip files (which are unzipped in memory); this also saves the OS from having to page 100s-100,000s of tiny files into memory. While interesting in theory, and faster in practice, the ecosystem has not adopted it and getting tools like React Native, Webpack, or Electron to work with PNP is difficult. For this reason, I typically disable this.
 - **Workspaces**: discussed below.
 
-Because of Facebook's support, and the corresponding features intended for company-wide monorepos, yarn is my prefered package manager.
+Because of Facebook's support, and the corresponding features intended for company-wide monorepos, yarn is my preferred package manager.
 
 ### Workspaces (monorepos)
 
@@ -212,7 +212,7 @@ NPM did not have great support for importing local packages (and certainly not f
 
 Along with supporting multiple local packages, developers needed a way to coordinate tasks across those packages (the most simple example being you should first build any dependencies of a package before you build the package itself). Two tools that came into existence were [TurboRepo](https://turbo.build/) and [Lerna](https://lerna.js.org/). Because TurboRepo is supported by Vercel, it is my preferred tool.
 
-One edgecase to call out with multiple local packages is **Hoisting**: 
+One edge case to call out with multiple local packages is **Hoisting**: 
 
 For background, when you import a package in node, node climbs the directory structure checking in `node_modules`. For example, if I require package `foo` from `/some/path/file.js`, node will check the following locations, stopping when it finds a file. 
 
@@ -244,7 +244,7 @@ repository/
     react/
 ```
 
-Now both workspaces will resolve to the same react. 
+Now both workspaces will resolve to the same react, and reference the same copy of react at runtime.
 
 If you find this confusing, it is, but it's something to be mindful of when working with workspaces.
 
@@ -252,4 +252,4 @@ If you find this confusing, it is, but it's something to be mindful of when work
 
 If you had to set it all this tooling yourself, it could easily be a week of work. As a result, there are a handful of tools that help you scaffold new projects. 
 
-The most common general tool here is [Yeoman](https://yeoman.io/), which lets developers author customer project [generators](https://yeoman.io/generators/). There are also application-specific scaffolders, such as [create-next-app](https://nextjs.org/docs/pages/api-reference/create-next-app), [create-react-native-app](https://github.com/expo/create-react-native-app), or [HTML5 boilerplate](https://html5boilerplate.com/).
+The most common general tool here is [Yeoman](https://yeoman.io/), which lets developers author custom project [generators](https://yeoman.io/generators/). There are also application-specific scaffolders, such as [create-next-app](https://nextjs.org/docs/pages/api-reference/create-next-app), [create-react-native-app](https://github.com/expo/create-react-native-app), or [HTML5 boilerplate](https://html5boilerplate.com/).

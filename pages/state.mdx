@@ -28,7 +28,7 @@ Do this enough, and you'll find your codebase looking like this:
 
 This quickly becomes hard to manage, and slows down development of your application. Every piece of application-level state now needs to be created at the top and threaded through N-many levels of your tree.
 
-This is called [prop drilling](https://www.quora.com/What-is-prop-drilling-in-ReactJS), and is the sign that your application has out-grown basic state management.
+This is called [prop drilling](https://www.quora.com/What-is-prop-drilling-in-ReactJS), and is the sign that your application has outgrown basic state management.
 
 ### Event delegation
 
@@ -177,6 +177,8 @@ function Dropdown(props) {
 
 The advantage of this is that if the account switcher needs new props, or you want to add another item to the dropdown, there is no need to drill props. This pattern is called [composition over inheritance](https://legacy.reactjs.org/docs/composition-vs-inheritance.html), and is recommended by the React docs themselves.
 
+[Here](https://dio.la/article/the-everything-bagel-of-components) is a blog post I really like on the topic.
+
 ### Render props
 
 Composition works great, but it breaks down when you have a component that needs props from multiple layers in the component tree. For example, consider the same dropdown case, but you want to close the dropdown menu if the user changes accounts--well now we have a problem: the state of whether the dropdown is opened is handled within the `<Dropdown>` component, but all the other state is at the root. 
@@ -258,9 +260,9 @@ Imagine you're developing an online shopping website:
 
 Unfortunately, because neither the ShoppingCartListOfItems component or the ShoppingCartItem component obviously depended on the shopping cart context, when a user right clicks to remove an item not in the shopping cart, at best it will do nothing and at worst it will crash. Had those components declared their dependencies, this wouldn't have happened. 
 
-Now one could argue that the developer should have fully audited the component before they chose to reuse it, but that becomes prohibitively expensive as the app scales. Imagine you're making a food ordering app, and there is a map view to see restaurants, and when you click on a restaurant a carosel of pictures pops up, and if you click a picture it adds it to the current order. 
+Now one could argue that the developer should have fully audited the component before they chose to reuse it, but that becomes prohibitively expensive as the app scales. Imagine you're making a food ordering app, and there is a map view to see restaurants, and when you click on a restaurant a carousel of pictures pops up, and if you click a picture it adds it to the current order. 
 
-Now someone decides to reuse that map to show previous pickup orders, unaware that if the user were to click on a different restaurant, and then click on an image in the popped up carosel it would crash the app because there is no "current order" context. 
+Now someone decides to reuse that map to show previous pickup orders, unaware that if the user were to click on a different restaurant, and then click on an image in the popped up carousel it would crash the app because there is no "current order" context. 
 
 ## Extracting state
 
@@ -301,7 +303,7 @@ class TodoState {
 
   // setters are defined as actions
   addTodo(todo) {
-    this.todos.push(todos)
+    this.todos.push(todo)
   }
 }
 
@@ -332,7 +334,7 @@ This is better than prop drilling because you can wrap all of your states in one
 
 ### Prefer local state
 
-I'll caution against is that as you have a solution for a global state store, you might be tempted to put ALL of your state in there. Before you clutter your state store, two quesitons to ask are: 
+I'll caution against is that as you have a solution for a global state store, you might be tempted to put ALL of your state in there. Before you clutter your state store, two questions to ask are: 
  - Does this state really need to be read from two different places in the tree (if you can, keep it local)?
  - Is there another way to refactor this to avoid global state (composition, render props)?
 

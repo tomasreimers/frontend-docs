@@ -1,3 +1,4 @@
+import { ByLine } from "../components/byline"
 import { Excalidraw } from "../components/excalidraw"
 import { Image } from "../components/image"
 import ChromeProfiler from "../public/images/content/profiling-and-testing/chrome-profiler.png"
@@ -6,7 +7,6 @@ import Lighthouse from "../public/images/content/profiling-and-testing/lighthous
 import ReactDevtools from "../public/images/content/profiling-and-testing/react-devtools.png"
 import ReactDevtoolsTimeline from "../public/images/content/profiling-and-testing/timeline.png"
 import VirtualizationJSON from "../public/images/content/profiling-and-testing/virtualization.excalidraw.json"
-import { ByLine } from "../components/byline"
 
 # Profiling and testing: Productionizing apps
 
@@ -34,9 +34,9 @@ While the answer to that question depends on your specific application, there ar
 - [First input delay (FID)](https://web.dev/articles/fid): The delay between a user's first interaction and its event handler running.
 - [Interaction to Next Paint (INP)](https://web.dev/articles/inp): Time from user interaction until the page rerenders. 
 
-I'll caution you against over-indexing on these metrics. Over-time they've evolved, and like most things in the JavaScript ecosystem "over time" is short. The "most important" metrics change every 2-4 years. 
+I'll caution you against over-indexing on these metrics. Over time they've evolved, and like most things in the JavaScript ecosystem "over time" is short. The "most important" metrics change every 2-4 years. 
 
-Computing these metrics yourself can be tedius, and Chrome ships with [Lighthouse](https://developer.chrome.com/docs/lighthouse/overview#devtools): a tool that scores websites across a variety of metrics, including performance (as well as for SEO, accessibility, best practices, and other important things.) Lighthouse can be accessed directly from Chrome devtools.
+Computing these metrics yourself can be tedious, and Chrome ships with [Lighthouse](https://developer.chrome.com/docs/lighthouse/overview#devtools): a tool that scores websites across a variety of metrics, including performance (as well as for SEO, accessibility, best practices, and other important things.) Lighthouse can be accessed directly from Chrome devtools.
 
 <Image src={Lighthouse} alt="Lighthouse" />
 
@@ -171,9 +171,9 @@ Because it actually renders components, it requires a DOM: the simplest way to r
 
 ### End-to-end tests 
 
-While integration tests are great, they aren't bullet-proof in the world of UI. For example, while you can still technically click a button, and that button may do what you expect, it's exceptionally hard to do if the button is off-screen or has a width of 0. 
+While integration tests are great, they aren't bulletproof in the world of UI. For example, while you can still technically click a button, and that button may do what you expect, it's exceptionally hard to do if the button is off-screen or has a width of 0. 
 
-For this reason, many frontend projects have some level of end-to-end testing: where they load their application in a literal browser, and attempt to interact with it (a simple example would be: find the X/Y coordinates of a button, move the mouse to that X/Y coordinates, and click). Because they rely on loading your application and browser state, end-to-end tests (E2E tests) can be notoriously flakey. 
+For this reason, many frontend projects have some level of end-to-end testing: where they load their application in a literal browser, and attempt to interact with it (a simple example would be: find the X/Y coordinates of a button, move the mouse to that X/Y coordinates, and click). Because they rely on loading your application and browser state, end-to-end tests (E2E tests) can be notoriously flaky. 
 
 Some common libraries are [Cypress](https://www.cypress.io/) and [Playwright](https://playwright.dev/).
 

@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { type DocsThemeConfig } from 'nextra-theme-docs';
+import { type DocsThemeConfig, useConfig } from 'nextra-theme-docs';
 import React from 'react';
 
 const config: DocsThemeConfig = {
@@ -19,31 +19,13 @@ const config: DocsThemeConfig = {
   nextThemes: {
     defaultTheme: 'dark',
   },
-  sidebar: {
-    titleComponent({ type, title, route }) {
-      if (type === 'doc' && ['#', ''].includes(route)) {
-        return (
-          <span
-            className="text-gray-300 dark:text-neutral-600"
-            title="Coming soon"
-          >
-            {title}
-          </span>
-        );
-      }
-      return <>{title}</>;
-    },
-  },
   feedback: {
     content: <>Questions? Leave me feedback &rarr;</>,
   },
   editLink: {
-    text: <>Opinions? Suggest an edit &rarr;</>,
+    content: <>Opinions? Suggest an edit &rarr;</>,
   },
   toc: {
-    /** Classes stolen directly from the sidebar. Note: if we ever update nextra, they might remove
-     * these CSS classes
-     */
     extraContent: (
       <div className="mt-4 text-xs text-gray-500 dark:text-gray-400 contrast-more:text-gray-800 contrast-more:dark:text-gray-50">
         <p>
@@ -62,14 +44,29 @@ const config: DocsThemeConfig = {
     ),
   },
   project: {},
-  search: {
-    component: null,
-  },
   head: () => {
-    const { asPath } = useRouter();
+    const { asPath, defaultLocale, locale } = useRouter();
+    const { frontMatter } = useConfig();
+
+    const url =
+      'https://frontenddocs.com' +
+      (defaultLocale === locale ? asPath : `/${locale}${asPath}`);
 
     return (
       <>
+        <meta property="og:url" content={url} />
+        <meta
+          property="og:title"
+          content={frontMatter.title || 'Frontend docs'}
+        />
+        <title>{frontMatter.title || 'Frontend docs'}</title>
+        <meta
+          property="og:description"
+          content={
+            frontMatter.description ||
+            'A ~20-page, front-to-back-readable guide on writing frontend for experienced developers.'
+          }
+        />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:creator" content="@tomasreimers" />
         <meta
@@ -78,14 +75,6 @@ const config: DocsThemeConfig = {
         />
       </>
     );
-  },
-  useNextSeoProps() {
-    return {
-      titleTemplate: '%s – Frontend docs',
-      defaultTitle: 'Frontend docs',
-      description:
-        'A ~20-page, front-to-back-readable guide on writing frontend for experienced developers.',
-    };
   },
 };
 

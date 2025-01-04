@@ -1,3 +1,4 @@
+import { ByLine } from "../components/byline"
 import { Excalidraw } from "../components/excalidraw"
 import { Image } from "../components/image"
 import Colors from "../public/images/content/design-systems/colors.png"
@@ -6,7 +7,6 @@ import Figma from "../public/images/content/design-systems/figma.png"
 import FixedFluidJSON from "../public/images/content/design-systems/fixed-fluid.excalidraw.json"
 import LightDark from "../public/images/content/design-systems/lightdark.png"
 import Theo from "../public/images/content/design-systems/theo.png"
-import { ByLine } from "../components/byline"
 
 # Design systems: Scaling style
 
@@ -18,7 +18,7 @@ There are many types of designers, and you are probably working with a product d
 
 Designers output "mocks" or still images of what the product should look like, along with documentation of any edge cases to be mindful of or transitions that aren't immediately obvious. 
 
-There are many ways designers hand off mocks, but these days the most common is [Figma](https://www.figma.com/):
+There are many ways designers hand off mocks, but these days, the most common is [Figma](https://www.figma.com/):
 
 <Image src={Figma} alt="Figma" />
 
@@ -61,7 +61,6 @@ Typography refers to the text and font-styles in an app. There are typically onl
 - Color 
 - Line height (space between lines)
 - Letter spacing (space between letters)
-- Font weight
 - Font style (e.g. italics) and decorations (e.g. underlined)
 - Casing (e.g. all uppercase, sentence case, title case.)
 
@@ -131,7 +130,7 @@ Within the content of the page or in the sidebar:
 Sometimes you have many different pieces of content that need to fit in the same section:
 
 - If you can click on labels to see that different content, you have [tabs](https://vercel.com/design/tabs)
-- If the different content automatically cycles between itself, you have a carosel. 
+- If the different content automatically cycles between itself, you have a carousel. 
 
 ### Inputs
 
@@ -145,7 +144,7 @@ Some common form elements are:
     - [Toggle](https://vercel.com/design/toggle): Functionally the same as a checkbox, but communicates you're turning something on or off.
  - Dropdowns: Another way to let users pick between options is a [dropdown](https://vercel.com/design/select). The user clicks on a button and opens up a menu where they can select one (or more) options.
     - If this menu has a search box, it's called a [combobox](https://vercel.com/design/combobox). 
- - Textboxes: Lastly, sometimes users need a place to input text. This is a [textbox](https://vercel.com/design/input). A textbox can have somet type of validation, for example, [calendar](https://vercel.com/design/calendar), phone, or number validation (which optionally pop up additional UI). A textbox can autocomplete. If a textbox can autocomplete and select multiple options, it's called a [pill selector](https://paste.twilio.design/components/multiselect-combobox): as the options are usually shown as "pills" in the textbox. If the textbox is many lines, it is called a [textarea](https://vercel.com/design/textarea). 
+ - Textboxes: Lastly, sometimes users need a place to input text. This is a [textbox](https://vercel.com/design/input). A textbox can have some type of validation, for example, [calendar](https://vercel.com/design/calendar), phone, or number validation (which optionally pop up additional UI). A textbox can autocomplete. If a textbox can autocomplete and select multiple options, it's called a [pill selector](https://paste.twilio.design/components/multiselect-combobox): as the options are usually shown as "pills" in the textbox. If the textbox is many lines, it is called a [textarea](https://vercel.com/design/textarea). 
 
 Lastly, while not technically a form element, [menus](https://vercel.com/design/menu) add additional functionality without cluttering the UI. 
 
@@ -163,7 +162,7 @@ When building data rich applications, three common states developers need to han
 
 - An error state: when the data can not be fetched or rendered, 
 - An empty state: when there is no data; also called a null state, and 
-- The loading state: when the data is still be loaded
+- The loading state: when the data is still being loaded
 
 Some common loading states are: 
 

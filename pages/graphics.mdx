@@ -1,5 +1,5 @@
-import { Example } from "../components/example"
 import { ByLine } from "../components/byline"
+import { Example } from "../components/example"
 
 # Graphics: Adding wow 
 
@@ -8,7 +8,7 @@ import { ByLine } from "../components/byline"
 Some graphics, visualizations, and other dynamic content cannot (easily) be expressed in HTML and CSS alone. For those, it might be worth switching to an alternative technology. As a general rule, 
 
 1. Start with HTML and CSS
-2. If you can't render the visualization in HTML, try SVG, which is a richer way to declaratively express grahics and illustrations (including first-class support for animations)
+2. If you can't render the visualization in HTML, try SVG, which is a richer way to declaratively express graphics and illustrations (including first-class support for animations)
 3. If SVGs are insufficient, because you need more interaction or graphical filters, canvas provides a full... well, canvas, that you can render on.  
 
 ## SVGs: declarative graphics 
@@ -79,7 +79,7 @@ Because SVG and HTML are so interoperable, CSS can actually effect both. For exa
 
 ### Embedding HTML
 
-Not only can you embed SVGs in HTML, you can also embd HTML in SVGs using `foreignObject`: 
+Not only can you embed SVGs in HTML, you can also embed HTML in SVGs using `foreignObject`: 
 
 <Example template="static" files={{
   "/index.html": `<!DOCTYPE html>
@@ -169,7 +169,7 @@ If you start to use Canvas for realtime graphics (or games), you'll quickly run 
 
 ### ThreeJS
 
-The APIs behind WebGL, especially for 3D, are really low level, and as a result, most people interact with it through a library, specifically [Three.js](https://threejs.org/). Three handles all of the internals of 3D rendering, and provides human-readable primatives for math, shapes, cameras, etc. 
+The APIs behind WebGL, especially for 3D, are really low level, and as a result, most people interact with it through a library, specifically [Three.js](https://threejs.org/). Three handles all of the internals of 3D rendering, and provides human-readable primitives for math, shapes, cameras, etc. 
 
 <Example template="vanilla" dependencies={{"three": "^0.166.1"}} files={{
   "/index.html": `<!DOCTYPE html>
@@ -204,14 +204,12 @@ function animate() {
 
 	renderer.render( scene, camera );
 
-}
-
-console.log("HI");`
+}`
 }} />
 
 ### React three fiber
 
-Like many Graphics libraries, Three is imperative in nature; because it is not declarative, it can be awkward to use alongside React. [React-three-fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction) bridges that gap, by providing react primatives for Three concepts.
+Like many Graphics libraries, Three is imperative in nature; because it is not declarative, it can be awkward to use alongside React. [React-three-fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction) bridges that gap, by providing react primitives for Three concepts.
 
 <Example template="react" dependencies={{
    "@react-three/fiber": "^8.16.8",

@@ -1,6 +1,6 @@
+import { ByLine } from "../components/byline"
 import { Image } from "../components/image"
 import NetworkInspector from "../public/images/content/network/inspector.png"
-import { ByLine } from "../components/byline"
 
 # Network: Old page, new data
 
@@ -52,7 +52,7 @@ In those requests, parameters can be encoded in:
 
 The browser will automatically add a lot of headers for you (including things like the user agent, describing your device). One header to call out are [cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies): cookies are key value pairs that a server can send to the browser, and the browser will include in any subsequent requests (for example, for authentication).
 
-The server will recieve the URL, verb, headers, and body and respond with: 
+The server will receive the URL, verb, headers, and body and respond with: 
 - A document (probably XML or JSON encoded)
 - A status code
 
@@ -237,9 +237,9 @@ To protect against this, most sites implement "CSRF tokens" or random tokens sto
 
 ### Frames
 
-While CSRF protects unauthorized user requests, an old attack was to embed people's sites in iframes. [Iframes](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe) allow you to embed other websites, and while useful for sharding our your site, they can also be used maliciously.
+While CSRF protects unauthorized user requests, an old attack was to embed people's sites in iframes. [Iframes](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe) allow you to embed other websites, and while useful for sharding out your site, they can also be used maliciously.
 
-For a contrived example, pretend I know who you bank with and can assume that you're signed in. I could construct a URL for the transfer page to transfer my back account some amount of money from yours, and show you that page in an IFrame (which is scrolled to the exact position of the "Transfer" button) and put a transfer button on my site as part of some user-facing flow.
+For a contrived example, pretend I know who you bank with and can assume that you're signed in. I could construct a URL for the transfer page to transfer my bank account some amount of money from yours, and show you that page in an IFrame (which is scrolled to the exact position of the "Transfer" button) and put a transfer button on my site as part of some user-facing flow.
 
 For this reason, sites can now define a content security policy or [header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options) to prevent them from being iframed.
 

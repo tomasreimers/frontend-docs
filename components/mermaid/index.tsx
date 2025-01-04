@@ -1,39 +1,39 @@
 import mermaid, { type MermaidConfig } from 'mermaid';
-import { useTheme } from "nextra-theme-docs";
-import { useEffect, useId, useRef, useState } from "react";
-import resolveConfig from 'tailwindcss/resolveConfig'
+import { useTheme } from 'nextra-theme-docs';
+import { useEffect, useId, useRef, useState } from 'react';
+import resolveConfig from 'tailwindcss/resolveConfig';
 
-import rawTailwindConfig from '../../tailwind.config.js'
-import s from "./Mermaid.module.scss";
+import rawTailwindConfig from '../../tailwind.config.cjs';
+import s from './Mermaid.module.scss';
 
-const tailwindConfig = resolveConfig(rawTailwindConfig)
+const tailwindConfig = resolveConfig(rawTailwindConfig);
 
 /**
- * While Nextra technically has support for Mermaid charts 
+ * While Nextra technically has support for Mermaid charts
  * (https://nextra.site/docs/guide/advanced/mermaid), their
- * built-in support (https://github.com/the-guild-org/docs/blob/main/packages/remark-mermaid/src/mermaid.tsx) 
- * has a few issues: 
- *  - It is hard to globally configure (b/c it calls initialize on 
+ * built-in support (https://github.com/the-guild-org/docs/blob/main/packages/remark-mermaid/src/mermaid.tsx)
+ * has a few issues:
+ *  - It is hard to globally configure (b/c it calls initialize on
  *    every render, overriding whatever you set)
- *  - Rendering with a custom font (Inter) causes text to be truncated 
+ *  - Rendering with a custom font (Inter) causes text to be truncated
  *    (https://github.com/mermaid-js/mermaid/issues/1540)
- * 
+ *
  * I've submitted a PR for the second one (https://github.com/the-guild-org/docs/pull/1348),
  * but don't believe I can change the first without some refactoring.
- * 
+ *
  * If Mermaid was more prevalent (or I was using a CMS), I would look
  * into one of:
- *  - monkey-patching the inline support 
+ *  - monkey-patching the inline support
  *    (via https://www.npmjs.com/package/@theguild/remark-mermaid and
  *     https://github.com/shuding/nextra/pull/1930/files),
- *  - providing a custom Nextra remark plugin for this (via 
+ *  - providing a custom Nextra remark plugin for this (via
  *    https://nextra.site/docs/guide/syntax-highlighting#custom-themes
  *    and nextra({ mdxOptions: { remarkPlugins: [ ... ]} }))
  *  - providing a custom code component to MDX
  *    (https://nextra.site/docs/docs-theme/theme-configuration#mdx-components)
- * 
- * However, because we only use it sporadically I'm going to just write 
- * my own component to render Mermaid. If this changes, this should 
+ *
+ * However, because we only use it sporadically I'm going to just write
+ * my own component to render Mermaid. If this changes, this should
  * be an easy approach to update.
  */
 export function Mermaid({ chart }: { chart: string }) {
@@ -44,7 +44,7 @@ export function Mermaid({ chart }: { chart: string }) {
 
   useEffect(() => {
     const renderChart = async () => {
-      const isDarkMode = theme.resolvedTheme === "dark";
+      const isDarkMode = theme.resolvedTheme === 'dark';
 
       const mermaidConfig: MermaidConfig = {
         startOnLoad: false,
@@ -56,13 +56,19 @@ export function Mermaid({ chart }: { chart: string }) {
         themeVariables: {
           darkMode: isDarkMode,
           fontFamily: 'inherit',
-          fontSize: "16px",
-          background: isDarkMode ? tailwindConfig.theme!.colors!.black : tailwindConfig.theme!.colors!.white,
-          primaryColor: isDarkMode ? tailwindConfig.theme!.colors!.neutral["800"] : tailwindConfig.theme!.colors!.neutral["200"],
-          primaryTextColor: isDarkMode ? tailwindConfig.theme!.colors!.white : tailwindConfig.theme!.colors!.black,
-          noteBkgColor: tailwindConfig.theme!.colors!.red["900"],
-          noteTextColor: tailwindConfig.theme!.colors!.red["900"],
-        }
+          fontSize: '16px',
+          background: isDarkMode
+            ? tailwindConfig.theme!.colors!.black
+            : tailwindConfig.theme!.colors!.white,
+          primaryColor: isDarkMode
+            ? tailwindConfig.theme!.colors!.neutral['800']
+            : tailwindConfig.theme!.colors!.neutral['200'],
+          primaryTextColor: isDarkMode
+            ? tailwindConfig.theme!.colors!.white
+            : tailwindConfig.theme!.colors!.black,
+          noteBkgColor: tailwindConfig.theme!.colors!.red['900'],
+          noteTextColor: tailwindConfig.theme!.colors!.red['900'],
+        },
       };
 
       try {
@@ -80,10 +86,15 @@ export function Mermaid({ chart }: { chart: string }) {
         console.error('Error while rendering mermaid', error);
       }
     };
-    
+
     void renderChart();
   }, [theme, chart]);
 
-  return <div className={`mt-6 ${s.chart}`} ref={testBoxRef} dangerouslySetInnerHTML={{ __html: svg }} />;
-
+  return (
+    <div
+      className={`mt-6 ${s.chart}`}
+      ref={testBoxRef}
+      dangerouslySetInnerHTML={{ __html: svg }}
+    />
+  );
 }
