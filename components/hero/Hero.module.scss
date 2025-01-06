@@ -1,91 +1,105 @@
+.heroWrapper {
+  height: 120vh;
+  // You need a top margin for the scroll progress to be able to go to 0 (otherwise it will start offset)
+  margin-top: theme("spacing.6");
+  margin-bottom: theme("spacing.6");
+}
+
 .hero {
   width: 100%;
-  height: calc(100vh - var(--nextra-navbar-height));
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  aspect-ratio: 16 / 9;
+  position: sticky;
+  top: calc(var(--nextra-navbar-height) + theme("spacing.6"));
+  overflow: hidden;
+
+  .heroPopover {
+    z-index: 1000;
+    overflow: hidden;
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
 }
 
 .canvasHolder {
   position: absolute;
-  top: 0; 
-  left: 0; 
-  right: 0;
-  bottom: 0;
-  z-index: -1;
+  top: 50%; 
+  left: 50%; 
+
+  transform: translate(-50%, -50%);
+  
+  width: 100vw;
+  height: 100vh;
 
   background-color: #0a0a0a;
 }
 
-.heroContent {
+.section {
+  width: 100%;
+  height: 100%;
   display: flex;
+  align-items: center;
   flex-direction: column;
   justify-content: center;
   text-align: center;
   padding: 16px;
   color: white;
+}
 
-  max-width: 632px;
+.heroCover {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
 
   .heroTitle {
-    font-size: 64px;
+    font-size: 32px;
     text-transform: uppercase;
     font-weight: 900;
 
-    @media (max-width: 720px) {
-      font-size: 32px;
-    }
-  }
-
-  .heroSubtitle {
-    font-size: 24px;
 
     @media (max-width: 720px) {
-      font-size: 16px;
+      font-size: 20px;
     }
   }
-
-  .heroCTA {
-    margin-top: 32px;
+  
+  .heroFor {
+    width: 100%;
     display: flex;
-    flex-direction: row;
-    gap: 16px;
     align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
+    gap: 16px;
+    margin: 8px 0;
+    font-size: 32px;
 
-    .heroCTAButton {
-      padding: 8px 16px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      background-color: rgba(0, 0, 0, 0.4);
-      display: inline-block;
-      text-transform: uppercase;
-      border-radius: 0;
-      transition: background-color 0.2s, border 0.2s;
-      font-weight: 600;
-      text-decoration: none;
-      color: #FFFFFF;
-      white-space: nowrap;
-      border-radius: 6px;
+    @media (max-width: 720px) {
+      font-size: 12px;
+    }
   
-      &:hover {
-        border: 1px solid rgba(255, 255, 255, 1);
-        background-color: rgba(0, 0, 0, 0.8);
-      }
+    .heroForFlair {
+      height: 1px;
+      flex: 1;
+      background-color: rgba(255,255,255,0.2);
+      max-width: 30%;
     }
+  }
+}
 
-    .heroCTAButtonSecondary {
-      font-weight: 600;
-      text-transform: uppercase;
-      cursor: pointer;
-      color: rgba(255, 255, 255, 0.6);
-      transition: color 0.2s;
-      white-space: nowrap;
+@keyframes pulse {
+  0% { opacity: 0; }
+  100% { opacity: 0.4; }
+}
 
-      &:hover {
-        color: rgba(255, 255, 255, 1);
-      }
-    }
+.chevron {
+  animation: pulse 1s ease-in-out infinite alternate;
+}
+
+.heroSubtitle {
+  font-size: 24px;
+
+  @media (max-width: 720px) {
+    font-size: 16px;
   }
 }

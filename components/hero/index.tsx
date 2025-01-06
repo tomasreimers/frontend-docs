@@ -10,11 +10,18 @@ import {
   ChromaticAberration,
   EffectComposer,
 } from '@react-three/postprocessing';
-import { Link } from 'nextra-theme-docs';
-import { type MutableRefObject, useEffect, useRef, useState } from 'react';
+import { Carattere } from 'next/font/google';
+import {
+  type MutableRefObject,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import * as THREE from 'three';
 
 import s from './Hero.module.scss';
+import { useScrollProgress } from './hooks/scroll_progress';
 import { createGPUData } from './webgl/gpgpu/data';
 import { initRandom } from './webgl/initializers/random';
 import { initRandomRotation } from './webgl/initializers/random_rotation';
@@ -24,6 +31,12 @@ import { ParticleRenderMaterial } from './webgl/shaders/render';
 import { updateRotationsFn } from './webgl/shaders/rotations';
 import { updateVelocityFn } from './webgl/shaders/velocity';
 import { createAndInitializeGPUData } from './webgl/utils/create_and_initialize_gpu_data';
+
+const cursive = Carattere({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 extend({
   ParticleRenderMaterial,
@@ -46,67 +59,147 @@ declare module '@react-three/fiber' {
 
 export function Hero() {
   const [offset] = useState(() => new THREE.Vector2(1e-3, 5e-4));
-  const element = useRef<HTMLDivElement>(null);
   const pointer = useRef({ x: 0, y: 0 });
-  const [initialRender, setInitialRender] = useState(() => performance.now());
   useEffect(() => {
-    if (element.current) {
-      const handler = (ev: MouseEvent) => {
-        if (element.current) {
-          pointer.current = {
-            x:
-              ((ev.clientX - element.current.clientLeft) /
-                element.current.clientWidth) *
-                2 -
-              1,
-            y:
-              1 -
-              2 *
-                ((ev.clientY - element.current.clientTop) /
-                  element.current.clientHeight),
-          };
-        }
+    const handler = (ev: MouseEvent) => {
+      pointer.current = {
+        x: (ev.clientX / window.innerWidth) * 2 - 1,
+        y: 1 - 2 * (ev.clientY / window.innerHeight),
       };
+    };
 
-      element.current.addEventListener('mousemove', handler);
-      return () => element.current?.removeEventListener('mousemove', handler);
-    }
+    document.addEventListener('mousemove', handler);
+    return () => document.removeEventListener('mousemove', handler);
   }, []);
 
+  const element = useRef<HTMLDivElement>(null);
+  const wrapperElement = useRef<HTMLDivElement>(null);
+
+  const scrollProgress = useScrollProgress(element, wrapperElement);
+  const scrollProgressCappedAtOne = Math.min(scrollProgress, 1);
+
+  const [clientPosition, setClientPosition] = useState({
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+    windowWidth: 0,
+    windowHeight: 0,
+  });
+  useEffect(() => {
+    const handler = () => {
+      if (element.current) {
+        const rect = element.current.getBoundingClientRect();
+
+        setClientPosition({
+          x: rect.left,
+          y: rect.top,
+          width: rect.width,
+          height: rect.height,
+          windowWidth: window.innerWidth,
+          windowHeight: window.innerHeight,
+        });
+      }
+    };
+
+    handler();
+
+    document.addEventListener('scroll', handler);
+    window.addEventListener('resize', handler);
+    return () => {
+      document.removeEventListener('scroll', handler);
+      window.removeEventListener('resize', handler);
+    };
+  }, []);
+
+  const popoverStyle = useMemo(() => {
+    if (scrollProgressCappedAtOne === 1) {
+      return {
+        borderRadius: 16,
+      };
+    }
+
+    if (clientPosition.windowHeight === 0 && clientPosition.windowWidth === 0) {
+      return {
+        position: 'fixed' as const,
+        left: 0,
+        top: 0,
+        width: '100vw',
+        height: '100vh',
+      };
+    }
+
+    const withEasing = easeOutCubic(scrollProgressCappedAtOne);
+
+    return {
+      position: 'fixed' as const,
+      left: clientPosition.x * withEasing,
+      top: clientPosition.y * withEasing,
+      width:
+        clientPosition.windowWidth -
+        (clientPosition.windowWidth - clientPosition.width) * withEasing,
+      height:
+        clientPosition.windowHeight -
+        (clientPosition.windowHeight - clientPosition.height) * withEasing,
+      borderRadius: 16 * withEasing,
+    };
+  }, [clientPosition, scrollProgressCappedAtOne]);
+
   return (
-    <div className={s.hero} ref={element}>
-      <div className={s.canvasHolder}>
-        <Canvas camera={{ position: [0, 0, -1] }}>
-          <Particles pointer={pointer} initialRender={initialRender} />
-          <EffectComposer>
-            <ChromaticAberration
-              radialModulation={true}
-              modulationOffset={0.5}
-              offset={offset}
+    <div
+      className={s.heroWrapper}
+      ref={wrapperElement}
+      style={{
+        position: 'relative',
+        zIndex: scrollProgressCappedAtOne === 1 ? undefined : 1000,
+      }}
+    >
+      <div className={s.hero} ref={element}>
+        <div className={s.heroPopover} style={popoverStyle}>
+          <div className={s.canvasHolder}>
+            <Canvas camera={{ position: [0, 0, -1] }}>
+              <Particles
+                pointer={pointer}
+                scrollProgress={scrollProgressCappedAtOne}
+              />
+              <EffectComposer>
+                <ChromaticAberration
+                  radialModulation={true}
+                  modulationOffset={0.5}
+                  offset={offset}
+                />
+                <Bloom
+                  luminanceThreshold={0.5}
+                  luminanceSmoothing={0.7}
+                  radius={0.9}
+                  mipmapBlur={true}
+                />
+              </EffectComposer>
+            </Canvas>
+          </div>
+          <div className={s.section}>
+            <div
+              className={s.heroCover}
+              style={{
+                transform: `scale(${1 + (1 - easeOutCubic(scrollProgressCappedAtOne)) * Math.min(1, Math.min(clientPosition.windowWidth / clientPosition.width, clientPosition.windowHeight / clientPosition.height) - 1)})`,
+                zIndex: scrollProgressCappedAtOne === 1 ? 1 : 1001,
+              }}
+            >
+              <div className={s.heroTitle}>Frontend development</div>
+              <div className={s.heroFor}>
+                <div className={s.heroForFlair} />
+                <div className={cursive.className}>For</div>
+                <div className={s.heroForFlair} />
+              </div>
+              <div className={s.heroTitle}>Backend developers</div>
+            </div>
+            <Chevrons
+              style={{
+                opacity: scrollProgress !== 0 ? 0 : 1,
+                transition: 'opacity 1s',
+                zIndex: scrollProgressCappedAtOne === 1 ? 1 : 1001,
+              }}
             />
-            <Bloom
-              luminanceThreshold={0.5}
-              luminanceSmoothing={0.7}
-              radius={0.9}
-              mipmapBlur={true}
-            />
-          </EffectComposer>
-        </Canvas>
-      </div>
-      <div className={s.heroContent}>
-        <div className={s.heroTitle}>Learn frontend</div>
-        <div className={s.heroSubtitle}>
-          A ~20-page guide on frontend development for backend developers.
-        </div>
-        <div className={s.heroCTA}>
-          <Link className={s.heroCTAButton} href="/foreword">
-            Get started &rsaquo;
-          </Link>
-          <div
-            className={s.heroCTAButtonSecondary}
-            onClick={() => setInitialRender(performance.now())}
-          >
-            Do the animation again
           </div>
         </div>
       </div>
@@ -120,13 +213,13 @@ function easeOutCubic(x) {
 
 function Particles({
   pointer,
-  initialRender,
+  scrollProgress,
 }: {
   pointer: MutableRefObject<{
     x: number;
     y: number;
   }>;
-  initialRender: number;
+  scrollProgress: number;
 }) {
   const gl = useThree((state) => state.gl);
   const [particles] = useState(() => initParticles(gl));
@@ -142,8 +235,7 @@ function Particles({
 
   // TODO: We should take into account the delta in time and move it by that much
   useFrame(({ gl, scene, camera }, delta) => {
-    const secondsSinceRender = (performance.now() - initialRender) / 1000;
-    const easeIn = easeOutCubic(Math.min(secondsSinceRender / 4, 1));
+    const easeIn = easeOutCubic(scrollProgress);
     const zoomOut = 100 * (1 - easeIn);
 
     // Update camera
@@ -308,3 +400,40 @@ function initParticles(renderer: THREE.WebGLRenderer) {
     },
   };
 }
+
+const Chevrons = ({ style }: { style: React.CSSProperties }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="40"
+      viewBox="0 0 120 120"
+      style={style}
+    >
+      <path
+        d="M10 20 L60 45 L110 20"
+        fill="none"
+        stroke="white"
+        stroke-width="10"
+        className={s.chevron}
+      />
+
+      <path
+        d="M10 45 L60 70 L110 45"
+        fill="none"
+        stroke="white"
+        stroke-width="10"
+        className={s.chevron}
+        style={{ animationDelay: '0.2s' }}
+      />
+
+      <path
+        d="M10 70 L60 95 L110 70"
+        fill="none"
+        stroke="white"
+        stroke-width="10"
+        className={s.chevron}
+        style={{ animationDelay: '0.4s' }}
+      />
+    </svg>
+  );
+};

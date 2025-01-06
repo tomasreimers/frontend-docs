@@ -1,45 +1,55 @@
 export default {
   index: {
-    title: 'Frontend docs',
-    type: 'page',
-    display: 'hidden',
+    title: 'Foreword',
     theme: {
-      layout: 'raw',
+      navbar: true,
+      breadcrumb: false,
     },
   },
-  foreword: 'Foreword',
   '-- Platform': {
     type: 'separator',
     title: 'WEB FUNDAMENTALS',
   },
-  html: 'Chapter 1: HTML',
-  css: 'Chapter 2: CSS',
-  javascript: 'Chapter 3: JavaScript',
+  html: { title: 'Chapter 1: HTML', theme: { breadcrumb: false } },
+  css: { title: 'Chapter 2: CSS', theme: { breadcrumb: false } },
+  javascript: { title: 'Chapter 3: JavaScript', theme: { breadcrumb: false } },
   '-- React': {
     type: 'separator',
     title: 'REACT ESSENTIALS',
   },
-  components: 'Chapter 4: Components',
-  applications: 'Chapter 5: Applications',
-  'build-tooling': 'Chapter 6: Build tooling',
-  'profiling-and-testing': 'Chapter 7: Profiling & testing',
+  components: { title: 'Chapter 4: Components', theme: { breadcrumb: false } },
+  applications: {
+    title: 'Chapter 5: Applications',
+    theme: { breadcrumb: false },
+  },
+  'build-tooling': {
+    title: 'Chapter 6: Build tooling',
+    theme: { breadcrumb: false },
+  },
+  'profiling-and-testing': {
+    title: 'Chapter 7: Profiling & testing',
+    theme: { breadcrumb: false },
+  },
   '-- Design': {
     type: 'separator',
     title: 'DESIGN PRINCIPLES',
   },
-  'design-systems': 'Chapter 8: Design systems',
-  graphics: 'Chapter 9: Graphics',
+  'design-systems': {
+    title: 'Chapter 8: Design systems',
+    theme: { breadcrumb: false },
+  },
+  graphics: { title: 'Chapter 9: Graphics', theme: { breadcrumb: false } },
   '-- Data': {
     type: 'separator',
     title: 'DATA ARCHITECTURE',
   },
-  state: 'Chapter 10: Managing state',
-  network: 'Chapter 11: Network & sync',
-  'client-compute': 'Chapter 12: Client compute',
-  contact: {
-    title: 'Want updates? Follow me on Twitter ↗',
-    type: 'page',
-    href: 'https://twitter.com/tomasreimers',
-    newWindow: true,
+  state: { title: 'Chapter 10: Managing state', theme: { breadcrumb: false } },
+  network: {
+    title: 'Chapter 11: Network & sync',
+    theme: { breadcrumb: false },
+  },
+  'client-compute': {
+    title: 'Chapter 12: Client compute',
+    theme: { breadcrumb: false },
   },
 };

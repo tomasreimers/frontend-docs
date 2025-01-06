@@ -1,4 +1,7 @@
+import { Breadcrumbs } from "../components/breadcrumbs"
 import { ByLine } from "../components/byline"
+
+<Breadcrumbs />
 
 # Applications: Composing components
 
@@ -110,7 +113,7 @@ A simple solution here was to begin server-side rendering webpages: rather than 
 
 An alternative to SSR is to pre-render all of the pages at build time. While this doesn't work for pages that have user generated content or depend on the logged in user, it works great for blogs and documentation which know all of their content at build time. 
 
-## Next.JS
+## Next.js
 
 Setting up SSR or SSG can be tricky, and these days the React docs [recommend](https://react.dev/learn/start-a-new-react-project) using a framework to do that for you. [Next.js](https://nextjs.org/) is a framework built by much of the original React team that optimizes not only site generation, but a whole lot of other things. 
 

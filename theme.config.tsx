@@ -7,9 +7,6 @@ const config: DocsThemeConfig = {
   logo: (
     <>
       <span className="font-black">FRONTEND DOCS</span>
-      <span className="font-black text-xs px-2 py-1 ml-2 rounded-md border text-gray-600 border-gray-300 dark:text-gray-400 dark:border-gray-700">
-        DRAFT
-      </span>
     </>
   ),
   docsRepositoryBase: 'https://github.com/tomasreimers/frontend-docs',
@@ -27,18 +24,10 @@ const config: DocsThemeConfig = {
   },
   toc: {
     extraContent: (
-      <div className="mt-4 text-xs text-gray-500 dark:text-gray-400 contrast-more:text-gray-800 contrast-more:dark:text-gray-50">
+      <div className="my-4 text-xs text-gray-500 dark:text-gray-400 contrast-more:text-gray-800 contrast-more:dark:text-gray-50">
         <p>
-          Hi! My name is Tomas; I have been programming for the web for 15+
-          years and developed reactive frontend frameworks at Facebook.
-        </p>
-        <p className="mt-2">
-          This site is a ~20-page, front-to-back-readable guide on some of the
-          knowledge, opinions, and intuition I've picked up along the way.
-        </p>
-        <p className="mt-2">
-          This is still under development, so feel free to suggest edits or
-          follow me on Twitter for updates.
+          This site is a ~20-page, front-to-back-readable guide for backend
+          developers learning frontend development.
         </p>
       </div>
     ),
@@ -46,7 +35,7 @@ const config: DocsThemeConfig = {
   project: {},
   head: () => {
     const { asPath, defaultLocale, locale } = useRouter();
-    const { frontMatter } = useConfig();
+    const { title, frontMatter } = useConfig();
 
     const url =
       'https://frontenddocs.com' +
@@ -55,11 +44,8 @@ const config: DocsThemeConfig = {
     return (
       <>
         <meta property="og:url" content={url} />
-        <meta
-          property="og:title"
-          content={frontMatter.title || 'Frontend docs'}
-        />
-        <title>{frontMatter.title || 'Frontend docs'}</title>
+        <meta property="og:title" content={title || 'Frontend docs'} />
+        <title>{title || 'Frontend docs'}</title>
         <meta
           property="og:description"
           content={

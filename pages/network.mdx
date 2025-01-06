@@ -1,6 +1,9 @@
+import {Breadcrumbs} from "../components/breadcrumbs"
 import { ByLine } from "../components/byline"
 import { Image } from "../components/image"
 import NetworkInspector from "../public/images/content/network/inspector.png"
+
+<Breadcrumbs />
 
 # Network: Old page, new data
 
@@ -32,11 +35,11 @@ REST is structured as many individual HTTP requests; each request has:
 - A body (except for GET requests, GETs have no body)
 
 In REST, each URL represents a unique object, and [verbs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) dictate the intention of the request: 
-- GET: Read the object
-- POST: Create a new object
-- PUT: Update the object by replacing it
-- PATCH: Update the object by providing partial fields
-- DELETE: Deletes the object
+- **GET**: Read the object
+- **POST**: Create a new object
+- **PUT**: Update the object by replacing it
+- **PATCH**: Update the object by providing partial fields
+- **DELETE**: Deletes the object
 
 For example, 
 

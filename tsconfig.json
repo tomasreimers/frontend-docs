@@ -31,7 +31,9 @@
     "**/*.tsx",
     "**/*.mdx",
     "dist/types/**/*.ts",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "./next.config.mjs",
+    "./plugins/word_count.mjs"
   ],
   "exclude": [
     "node_modules"

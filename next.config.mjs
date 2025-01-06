@@ -1,5 +1,8 @@
-import path from "path";
 import nextra from 'nextra'
+import path from "path";
+import process from "process";
+
+import { wordCountPlugin } from './plugins/word_count.mjs'
 
 const __dirname = import.meta.dirname || "";
 
@@ -8,6 +11,9 @@ const withNextra = nextra({
   themeConfig: './theme.config.tsx',
   search: {
     codeblocks: false
+  },
+  mdxOptions: {
+    remarkPlugins: [wordCountPlugin]
   }
 })
 
