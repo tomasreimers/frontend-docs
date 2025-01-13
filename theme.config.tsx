@@ -57,7 +57,7 @@ const config: DocsThemeConfig = {
         <meta name="twitter:creator" content="@tomasreimers" />
         <meta
           property="og:image"
-          content={`https://frontenddocs.com/api/og${asPath}image.png`}
+          content={`https://frontenddocs.com/api/og${asPath === '/' ? '/default/' : asPath}image.png`}
         />
       </>
     );
