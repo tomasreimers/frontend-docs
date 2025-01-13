@@ -2,6 +2,7 @@ import { Breadcrumbs } from "../components/breadcrumbs"
 import { ByLine } from "../components/byline"
 import { Excalidraw } from "../components/excalidraw"
 import { Image } from "../components/image"
+import { TLDR } from "../components/tldr"
 import ChromeProfiler from "../public/images/content/profiling-and-testing/chrome-profiler.png"
 import ReactDevtoolsFlamechart from "../public/images/content/profiling-and-testing/flamechart.png"
 import Lighthouse from "../public/images/content/profiling-and-testing/lighthouse.png"
@@ -10,9 +11,12 @@ import ReactDevtoolsTimeline from "../public/images/content/profiling-and-testin
 import VirtualizationJSON from "../public/images/content/profiling-and-testing/virtualization.excalidraw.json"
 
 <Breadcrumbs />
+
 # Profiling and testing: Productionizing apps
 
 <ByLine />
+
+<TLDR content="This chapter covers performance profiling and optimization in frontend applications, using tools like Chrome DevTools, Lighthouse, and React DevTools to identify bottlenecks and techniques like memoization to improve speed. It also explains how frontend testing differs from backend testing by emphasizing integration and end-to-end tests over unit tests, and concludes with approaches to production monitoring using both third-party services and built-in tools." />
 
 As you get ready to deploy your application, you probably start to think about performance and stability.
 
@@ -147,6 +151,10 @@ test('adds 1 + 2 to equal 3', () => {
 });
 ```
 
+For people that come from untyped / weakly typed languages (e.g. Python and Ruby) and are now working in a TypeScript codebase, a word of caution: I've noticed a heavy reliance on unit tests for things that can, or should, probably be typed instead. For example, there is no need to test that `sum()` will return a number, or even that `zip()` works, both of these can be fully checked by the type system.
+
+The type system is a really powerful way to reduce (or eliminate) the space you have to test; in the same way you don't rely on asserts for things you can test, and shouldn't rely on tests for things you could type.
+
 ### Integration tests 
 
 While logic should be pulled out of your app as much as it can be, there will still be components, and those components will still have logic (if nothing else, there are probably event handlers to test). 
@@ -193,7 +201,7 @@ describe('My First Test', () => {
 })
 ```
 
-Note: something I've noticed in developers new to frontend is they try to bring the classic "test pyramic" with them (having more integration tests than E2E tests, and more unit tests than integration tests). For whatever reason, I've noticed frontend code tends to invert this pyramid (having [more E2E than integration](https://twitter.com/sebmarkbage/status/1722025520513032454), and more integration than E2E). While I don't know the reason why, I suspect this is because once you've pulled out the meaningful logic into packages which are themselves unit tested, what remains is the integration between those packages and the browser (which is best E2E tested). 
+Frontend testing often inverts the traditional "test pyramid" - prioritizing end-to-end tests over unit tests. Frontend and backend codebases often differ in shape: backend tends to be deep and narrow (complex pieces with direct dependencies), while frontend tends to be wide and shallow (simple pieces with loose connections). This means frontend failures usually come from components interfering with each other, not internal bugs, and are better found with integration or end-to-end tests. (The exception is pure computational logic, which is typically isolated into packages and unit tested like backend code.)
 
 ### Visual tests
 

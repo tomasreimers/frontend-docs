@@ -1,11 +1,14 @@
 import { Breadcrumbs } from "../components/breadcrumbs"
 import { ByLine } from "../components/byline"
+import { TLDR } from "../components/tldr"
 
 <Breadcrumbs />
 
 # State: Separating logic and render
 
 <ByLine />
+
+<TLDR content='This chapter covers strategies for managing state in larger React applications beyond simple component-level state management. It explains how to avoid "prop drilling" through techniques like composition, render props, and React Context, while also exploring external state management solutions like Redux and MobX. The chapter emphasizes the importance of keeping state as local as possible and warns against prematurely adopting global state solutions when simpler alternatives exist.' />
 
 As you scale your application, you will inevitably need two parts of your app, which are not near each other visually or in the DOM, need to access the same data; for example, consider a code editor with a file tree on the left. Opening a file needs to update the main window and also the file tree (to highlight the file).
 

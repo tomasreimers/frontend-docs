@@ -9,7 +9,7 @@ const config: DocsThemeConfig = {
       <span className="font-black">FRONTEND DOCS</span>
     </>
   ),
-  docsRepositoryBase: 'https://github.com/tomasreimers/frontend-docs',
+  docsRepositoryBase: 'https://github.com/tomasreimers/frontend-docs/tree/main',
   footer: {
     component: null,
   },

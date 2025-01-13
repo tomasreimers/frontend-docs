@@ -1,5 +1,6 @@
 import { Breadcrumbs } from "../components/breadcrumbs"
 import { ByLine } from "../components/byline"
+import { TLDR } from "../components/tldr"
 import { Video } from "../components/video"
 
 <Breadcrumbs />
@@ -7,6 +8,8 @@ import { Video } from "../components/video"
 # Build tooling: More tools and more problems
 
 <ByLine />
+
+<TLDR content="This chapter covers the complex ecosystem of JavaScript build tools and infrastructure, explaining how modern web development relies on various compilers, bundlers, and package managers to transform source code into production-ready applications. It traces the evolution of JavaScript tooling from simple script tags to today's sophisticated build pipelines, covering topics like TypeScript and Babel for compilation, Webpack and Vite for bundling, and npm and Yarn for package management." />
 
 The JavaScript ecosystem is a reminder that the web is held up by shoestrings and gum; it is this immense mess of technologies, all haphazardly thrown together, that somehow happens to work just enough to get your website online. 
 
@@ -35,7 +38,7 @@ function Component() {
 }
 ```
 
-... and transform it into this: 
+... and transform it into something like this: 
 
 ```js filename="example.js"
 function Component() {
@@ -47,7 +50,7 @@ function Component() {
 }
 ```
 
-Because of the popularity of TypeScript, there is now a `tsx` file type: TypeScript with HTML-like syntax. 
+There is also a `tsx` file type: TypeScript with HTML-like syntax. 
 
 ### Compilers and transpilers
 
@@ -60,7 +63,7 @@ Supporting those different languages are compilers and transpilers. In the world
 
 Common compilers are: 
  
-- [TSC](https://www.typescriptlang.org/docs/handbook/compiler-options.html): Ships with TypeScript. 
+- [TSC](https://www.typescriptlang.org/docs/handbook/compiler-options.html): Ships with TypeScript. Compiles TypeScript to JavaScript.
 - [Babel](https://babeljs.io/): A pluggable compiler. Currently the most popular. 
 - [SWC](https://swc.rs/): A replacement for Babel written by Vercel intended to be faster. 
 

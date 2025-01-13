@@ -1,6 +1,7 @@
 import {Breadcrumbs} from "../components/breadcrumbs"
 import { ByLine } from "../components/byline"
 import { Image } from "../components/image"
+import { TLDR } from "../components/tldr"
 import NetworkInspector from "../public/images/content/network/inspector.png"
 
 <Breadcrumbs />
@@ -8,6 +9,8 @@ import NetworkInspector from "../public/images/content/network/inspector.png"
 # Network: Old page, new data
 
 <ByLine />
+
+<TLDR content="This chapter covers how modern web applications communicate with servers, focusing on REST and GraphQL as the primary protocols for data exchange. It explains key networking concepts like HTTP methods, status codes, and request optimization through techniques like ETags and prefetching, while also addressing security concerns such as XSS and CSRF. Additionally, it explores how to integrate network requests within React applications and handle real-time data updates through various connection strategies like WebSockets and server-sent events." />
 
 Eventually, your application is going to want to talk to the server. Either to write new data (because the user updated something), or to read new data (because you believe it may be out of date). 
 
@@ -190,7 +193,8 @@ Sometimes, data gets stale fast. For example, a chat app, where the person you'r
 1. **Polling**: Query your server every N seconds asking for new data. 
 2. **Long polling**: Poll, but rather than sending a "no new data" response immediately if there are no new messages, just keep the connection open and don't respond until either there is a message or you time out the requests (most browsers and servers impose a maximum limit on the time of a request).
 3. **Websockets**: A technology that allows you to [keep a connection alive](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API) between a client and a server and pass messages in between. This requires you to keep the server alive and write it to accept websockets.
-4. **Push**: A newer technology allowing the server to [push messages](https://developer.mozilla.org/en-US/docs/Web/API/Push_API) to the client via a service worker. 
+4. **Server-sent events**: Like websockets, but only in one direction, letting the server [send multiple messages](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events) to the client via a long-lived connection (opened by the client).
+4. **Push**: A newer technology allowing the server to [push messages](https://developer.mozilla.org/en-US/docs/Web/API/Push_API) to the client via a service worker.
 
 All of these are viable strategies, and which one is right depends on the situation.
 

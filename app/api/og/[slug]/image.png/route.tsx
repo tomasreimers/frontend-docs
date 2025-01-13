@@ -11,7 +11,12 @@ const fontData = fs.readFileSync(
 export async function generateStaticParams() {
   return [
     ...Object.entries(meta)
-      .filter(([_key, value]) => typeof value === 'string')
+      .filter(
+        ([_key, value]) =>
+          typeof value !== 'object' ||
+          !('type' in value) ||
+          value.type !== 'separator'
+      )
       .map(([key, _value]) => {
         return {
           slug: key,
@@ -25,7 +30,8 @@ export async function GET(
   _: Request,
   { params: { slug } }: { params: { slug: string } }
 ) {
-  const fullTitle = slug === 'default' ? 'Frontend' : meta[slug];
+  const details = slug === 'default' ? 'Frontend' : meta[slug];
+  const fullTitle = typeof details === 'string' ? details : details.title;
   let [chapter, title]: [string | undefined, string] = fullTitle.split(': ');
 
   if (typeof title === 'undefined') {
