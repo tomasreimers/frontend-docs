@@ -413,7 +413,7 @@ const Chevrons = ({ style }: { style: React.CSSProperties }) => {
         d="M10 20 L60 45 L110 20"
         fill="none"
         stroke="white"
-        stroke-width="10"
+        strokeWidth="10"
         className={s.chevron}
       />
 
@@ -421,7 +421,7 @@ const Chevrons = ({ style }: { style: React.CSSProperties }) => {
         d="M10 45 L60 70 L110 45"
         fill="none"
         stroke="white"
-        stroke-width="10"
+        strokeWidth="10"
         className={s.chevron}
         style={{ animationDelay: '0.2s' }}
       />
@@ -430,7 +430,7 @@ const Chevrons = ({ style }: { style: React.CSSProperties }) => {
         d="M10 70 L60 95 L110 70"
         fill="none"
         stroke="white"
-        stroke-width="10"
+        strokeWidth="10"
         className={s.chevron}
         style={{ animationDelay: '0.4s' }}
       />
