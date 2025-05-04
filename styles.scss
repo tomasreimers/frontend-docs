@@ -1,6 +1,8 @@
-@import "tailwindcss" source(none);
-@source "./components/**/*.scss";
-@source "./pages";
+@import "tailwindcss";
+@source "./pages/**/*.{js,ts,md,jsx,tsx,mdx}";
+@source "./components/**/*.{js,ts,md,jsx,tsx,mdx}";
+@source not ".next";
+@source not "dist";
 @config "./tailwind.config.cjs";
 
 .nextra-content {

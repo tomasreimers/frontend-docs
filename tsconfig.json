@@ -33,7 +33,8 @@
     "dist/types/**/*.ts",
     ".next/types/**/*.ts",
     "./next.config.mjs",
-    "./plugins/word_count.mjs"
+    "./plugins/word_count.mjs",
+    "./postcss.config.mjs"
   ],
   "exclude": [
     "node_modules"

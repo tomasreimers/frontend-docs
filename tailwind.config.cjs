@@ -11,11 +11,6 @@ const makePrimaryColor =
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./pages/**/*.{js,ts,md,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,md,jsx,tsx,mdx}",
-    "./theme.config.tsx",
-  ],
   // Directly copied from the nextra style to appear similar: 
   // https://github.com/shuding/nextra/blob/main/packages/nextra-theme-docs/tailwind.config.js
   theme: {
