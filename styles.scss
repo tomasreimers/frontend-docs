@@ -1,6 +1,7 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss" source(none);
+@source "./components/**/*.scss";
+@source "./pages";
+@config "./tailwind.config.cjs";
 
 .nextra-content {
   ul {
@@ -11,7 +12,7 @@
       &::before {
         content: "–";
         display: inline-block;
-        color: theme('colors.gray.500');
+        color: var(--color-gray-500);
         position: absolute;
         margin-left: -15px;
       }
@@ -24,7 +25,7 @@
 
   ol {
     li::marker {
-      color: theme('colors.gray.500');
+      color: var(--color-gray-500);
     }
   }
 }

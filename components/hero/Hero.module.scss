@@ -1,15 +1,17 @@
+@reference "../../styles.scss";
+
 .heroWrapper {
   height: 120vh;
   // You need a top margin for the scroll progress to be able to go to 0 (otherwise it will start offset)
-  margin-top: theme("spacing.6");
-  margin-bottom: theme("spacing.6");
+  margin-top: --spacing(6);
+  margin-bottom: --spacing(6);
 }
 
 .hero {
   width: 100%;
   aspect-ratio: 16 / 9;
   position: sticky;
-  top: calc(var(--nextra-navbar-height) + theme("spacing.6"));
+  top: calc(var(--nextra-navbar-height) + --spacing(6));
   overflow: hidden;
 
   .heroPopover {

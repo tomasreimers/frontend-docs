@@ -1,7 +1,6 @@
 import { Breadcrumbs } from "../components/breadcrumbs"
 import { ByLine } from "../components/byline"
 import { Example } from "../components/example"
-import { Mermaid } from "../components/mermaid"
 import { TLDR } from "../components/tldr"
 
 <Breadcrumbs />
@@ -162,7 +161,7 @@ Because setState will trigger a rerender, you should avoid unconditionally calli
 
 When state is updated in a component, React marks that component, and all of its descendent components, as "dirty"; whenever React has dirty nodes in its tree, it rerenders that subtree (React may rerender multiple subtrees simultaneously if they are all dirty and share no common ancestor that also needs rerendering).
 
-<Mermaid chart={`
+```mermaid
 flowchart TB
   A("App") --> B
   A --> E
@@ -174,7 +173,7 @@ flowchart TB
   class B selected
   class C selected
   class D selected
-`} />
+```
 
 To rerender a component, React: 
 1. [Renders](https://react.dev/learn/render-and-commit): Calls the same function that initially rendered it
