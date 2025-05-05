@@ -6,12 +6,14 @@ export const generateStaticParams = generateStaticParamsFor('mdxPath');
 
 export async function generateMetadata(props) {
   const params = await props.params;
-  const { title, metadata: frontMatter } = await importPage(params.mdxPath);
+  const data = await importPage(params.mdxPath);
 
+  const { metadata: frontMatter } = data;
+  const title = frontMatter?.title;
   const url = 'https://frontenddocs.com/' + (params.mdxPath || '');
 
   return {
-    title: title || 'Frontend docs',
+    title: title,
     openGraph: {
       url,
       title: title || 'Frontend docs',
