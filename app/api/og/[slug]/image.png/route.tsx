@@ -2,7 +2,7 @@ import { ImageResponse } from '@vercel/og';
 import fs from 'fs';
 import path from 'path';
 
-import meta from '../../../../../pages/_meta';
+import meta from '../../../../../content/_meta';
 
 const fontData = fs.readFileSync(
   path.join(process.cwd(), './assets/fonts/Inter/Inter-Black.ttf')

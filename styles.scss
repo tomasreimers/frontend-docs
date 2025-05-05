@@ -3,7 +3,9 @@
 @source "./components/**/*.{js,ts,md,jsx,tsx,mdx}";
 @source not ".next";
 @source not "dist";
-@config "./tailwind.config.cjs";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@import 'nextra-theme-docs/style.css';
 
 .nextra-content {
   ul {

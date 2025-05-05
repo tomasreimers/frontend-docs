@@ -1,3 +1,5 @@
+'use client';
+
 import {
   type Node as ThreeNode,
   Canvas,

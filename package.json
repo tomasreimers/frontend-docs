@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "yarn eslint . --ext .ts,.tsx,.mdx",
-    "push": "git push origin `git subtree split --prefix dist main`:gh-pages --force"
+    "push": "git push origin `git subtree split --prefix dist main`:gh-pages --force",
+    "postbuild": "pagefind --site .next/server/app --output-path dist/_pagefind"
   },
   "repository": {
     "type": "git",
@@ -30,8 +31,8 @@
     "@types/three": "^0.166.0",
     "@vercel/og": "^0.6.1",
     "next": "14.2.16",
-    "nextra": "^3.3.0",
-    "nextra-theme-docs": "^3.3.0",
+    "nextra": "^4.2.17",
+    "nextra-theme-docs": "^4.2.17",
     "postprocessing": "^6.36.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -51,6 +52,7 @@
     "eslint-plugin-mdx": "^3.1.5",
     "eslint-plugin-simple-import-sort": "^8.0.0",
     "eslint-plugin-switch-case": "^1.1.2",
+    "pagefind": "^1.3.0",
     "postcss": "^8.5.3",
     "prettier": "^3.2.5",
     "tailwindcss": "^4.1.5",

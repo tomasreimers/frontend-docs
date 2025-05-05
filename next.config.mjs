@@ -7,8 +7,6 @@ import { wordCountPlugin } from './plugins/word_count.mjs'
 const __dirname = import.meta.dirname || "";
 
 const withNextra = nextra({
-  theme: 'nextra-theme-docs',
-  themeConfig: './theme.config.tsx',
   search: {
     codeblocks: false
   },

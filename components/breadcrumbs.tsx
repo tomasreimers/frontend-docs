@@ -1,10 +1,13 @@
+'use client';
+
 import { useConfig } from 'nextra-theme-docs';
 
 export function Breadcrumbs() {
   const {
     normalizePagesResult: { activePath },
-    frontMatter,
   } = useConfig();
+
+  const frontMatter = activePath.at(-1)?.frontMatter;
 
   return (
     <div className="nextra-breadcrumb mt-1.5 flex items-center gap-1 overflow-hidden text-sm text-gray-500 dark:text-gray-400 contrast-more:text-current">
@@ -18,8 +21,8 @@ export function Breadcrumbs() {
         className="whitespace-nowrap font-medium contrast-more:font-bold text-gray-500 dark:text-gray-400 contrast-more:text-gray-800 contrast-more:dark:text-gray-50"
         title={activePath[0].title}
       >
-        · {frontMatter.readingTime} minute read (
-        {frontMatter.wordCount.toLocaleString()} words)
+        · {frontMatter?.readingTime} minute read (
+        {frontMatter?.wordCount?.toLocaleString() || '?'} words)
       </span>
     </div>
   );
