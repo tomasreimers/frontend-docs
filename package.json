@@ -8,7 +8,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "yarn eslint . --ext .ts,.tsx,.mdx",
-    "push": "git push origin `git subtree split --prefix dist main`:gh-pages --force",
     "postbuild": "pagefind --site .next/server/app --output-path dist/_pagefind"
   },
   "repository": {
