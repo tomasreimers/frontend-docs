@@ -496,6 +496,8 @@ Animations, which animate an object:
 
 Animations rely on ["keyframes"](https://en.wikipedia.org/wiki/Key_frame): a concept borrowed from animation, you specify the properties at specific points, and let the runtime interpolate the middle state (for example, if you know that a box starts at 10px wide and ends at 20px wide, you can infer that half way through that animation, the box should be 15px wide).
 
+Not all animation techniques perform equally well. For a comparison of common approaches, see [Web Animation Performance Tier List](https://motion.dev/magazine/web-animation-performance-tier-list).
+
 ### Pseudo-elements
 
 Selectors can also create elements. For example, `.foo::before` will create an element within all elements with class `foo` but before their children. 
