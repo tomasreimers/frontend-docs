@@ -1,7 +1,6 @@
 import {Breadcrumbs} from "../components/breadcrumbs"
 import { ByLine } from "../components/byline"
 import { Image } from "../components/image"
-import { TLDR } from "../components/tldr"
 import NetworkInspector from "../public/images/content/network/inspector.png"
 
 <Breadcrumbs />
@@ -9,8 +8,6 @@ import NetworkInspector from "../public/images/content/network/inspector.png"
 # Network: Old page, new data
 
 <ByLine />
-
-<TLDR content="This chapter covers how modern web applications communicate with servers, focusing on REST and GraphQL as the primary protocols for data exchange. It explains key networking concepts like HTTP methods, status codes, and request optimization through techniques like ETags and prefetching, while also addressing security concerns such as XSS and CSRF. Additionally, it explores how to integrate network requests within React applications and handle real-time data updates through various connection strategies like WebSockets and server-sent events." />
 
 Eventually, your application is going to want to talk to the server. Either to write new data (because the user updated something), or to read new data (because you believe it may be out of date). 
 
