@@ -27,6 +27,8 @@ There are many ways designers hand off mocks, but these days, the most common is
 
 Implementing mocks to be pixel perfect seems like a lot, but--in the same way there are with codebases--there are patterns and concepts that transcend the design and make it easier to understand.
 
+If you want to build an eye for design, some good places to find inspiration are [Muzli](https://muz.li/) (a curated feed available as a browser extension), [Mobbin](https://mobbin.com/) (a searchable library of real-world mobile and web app designs), [Detail](https://detail.design/) (a collection of small design details that make a big difference), and [Reading List](https://readinglist.design/) (books recommended by industry designers).
+
 ## Layout and the grid
 
 One of the first things to note when looking at designs is how is it all laid out. In general, there are [two approaches](https://internetingishard.netlify.app/html-and-css/responsive-design/) to laying out web pages: 
@@ -69,7 +71,7 @@ Typography refers to the text and font-styles in an app. There are typically onl
 
 ## Colors
 
-There are usually only a few colors used within an app (the collection of which is called a palette). There are many ways to generate a palette, but they typically involve picking a primary color and some supporting secondary colors. To play around and learn more about what makes different colors look good together, there are plenty of tools to help you play with color harmony: [Adobe](https://color.adobe.com/create/color-wheel), [Coolors](https://coolors.co/494947-35ff69-44ccff-7494ea-d138bf), and [Paletton](https://paletton.com/).
+There are usually only a few colors used within an app (the collection of which is called a palette). There are many ways to generate a palette, but they typically involve picking a primary color and some supporting secondary colors. To play around and learn more about what makes different colors look good together, there are plenty of tools to help you play with color harmony: [Adobe](https://color.adobe.com/create/color-wheel), [Coolors](https://coolors.co/494947-35ff69-44ccff-7494ea-d138bf), [Paletton](https://paletton.com/), and [Tints](https://www.tints.dev/) (which generates Tailwind CSS-compatible 50–950 shade scales from a single hex value).
 
 Once you've selected your colors, you need to pick the shades that will be used within your app. Increasingly commonly, developers will name their shades like font-weights (in increments of 100, with 100 being the lightest and 900 being the darkest). For example, here is [Tailwind's default palette](https://tailwindcss.com/docs/customizing-colors) (more on Tailwind later): 
 
@@ -81,7 +83,7 @@ Increasingly, apps in general, including web apps, are expected to support multi
 
 <Image src={LightDark} alt="Light and dark mode" />
 
-In CSS, themes are typically implemented with CSS variables (having variables for background or text colors).
+In CSS, themes are typically implemented with CSS variables (having variables for background or text colors). For dark theme inspiration, [Dark Mode Design](https://www.darkmodedesign.com/) is a curated showcase of websites with dark color schemes.
 
 ## Accessibility
 
@@ -97,7 +99,7 @@ While there is a whole chapter, if not book, that could be written on accessibil
 
 Even with the above patterns, all the above is a lot to think about for every part of every page. As a web app grows, designers abstract parts of the page into components: rather than needing to think about typography and colors and padding for every part of the site, designers can simply place a "button", and there is one canonical definition, complete with typography and colors and padding, for the button. 
 
-Some common components include buttons, text inputs, headings, a sidebar, etc. We'll cover more components in the next section. For a reference of common components across many design systems, check out [The Component Gallery](https://component.gallery/).
+Some common components include buttons, text inputs, headings, a sidebar, etc. We'll cover more components in the next section. For a reference of common components across many design systems, check out [The Component Gallery](https://component.gallery/). If you're looking for ready-to-use effects and copy-and-paste snippets, [Fancy Components](https://www.fancycomponents.dev/docs/introduction) offers playful React + Tailwind components and microinteractions, [ui.ibelick](https://ui.ibelick.com/) has dark-mode-first component effects, [animation.ibelick](https://animation.ibelick.com/) is a gallery of Tailwind CSS animations, and [bg.ibelick](https://bg.ibelick.com/) provides ready-to-use background snippets.
 
 ### Utility classes
 
@@ -117,7 +119,7 @@ As you start to look at more mocks through the lens of frontend development, and
 
 ### Containers and layout
 
-Most web pages have some content at the top (called a header or navbar, as it's often used for navigation), some content in the middle, and some content at the bottom of the page (called a footer). If the header or footer follow you as you scroll, they are referred to as sticky (e.g. a sticky header). 
+Most web pages have some content at the top (called a header or navbar, as it's often used for navigation), some content in the middle, and some content at the bottom of the page (called a footer). If the header or footer follow you as you scroll, they are referred to as sticky (e.g. a sticky header). For landing page layout inspiration (with Figma templates), check out [Landingly](https://www.landingly.co/).
 
 In addition, many sites have a column to the side of the content (typically used for navigation): a sidebar. 
 
@@ -193,27 +195,3 @@ Some notable examples are:
 - [ShadUI](https://ui.shadcn.com/): "Not a design system", provides copy-and-pastable components to use.
 
 Also, many companies open source their design systems, for example: [Google](https://m3.material.io/), [Adobe](https://spectrum.adobe.com/), [GitHub](https://primer.style/), and [Vercel](https://vercel.com/design/introduction). 
-
-## Resources for designers
-
-If you're looking for design inspiration or tools to aid your workflow, here are some resources worth bookmarking:
-
-### Inspiration
-
-- [Muzli](https://muz.li/): a curated feed of design inspiration from across the web; available as a browser extension.
-- [Mobbin](https://mobbin.com/): a library of real-world mobile and web app designs, searchable by screen type, flow, and UI element.
-- [Dark Mode Design](https://www.darkmodedesign.com/): a showcase of handpicked websites with dark color schemes.
-- [Landingly](https://www.landingly.co/): curated landing page examples with Figma templates.
-- [Detail](https://detail.design/): a collection of small design details (microinteractions, easter eggs, clever UX) that make a big difference.
-- [Reading List](https://readinglist.design/): books recommended by industry designers.
-
-### Components and effects
-
-- [Fancy Components](https://www.fancycomponents.dev/docs/introduction): playful, copy-and-paste React + Tailwind components and microinteractions.
-- [ui.ibelick](https://ui.ibelick.com/): dark-mode-first components and effects built with React and Tailwind CSS.
-- [animation.ibelick](https://animation.ibelick.com/): a gallery of copy-and-paste Tailwind CSS animations.
-- [bg.ibelick](https://bg.ibelick.com/): ready-to-use background snippets crafted with Tailwind CSS.
-
-### Color
-
-- [Tints](https://www.tints.dev/): a Tailwind CSS palette generator that produces 50–950 shade scales from a single hex value.
