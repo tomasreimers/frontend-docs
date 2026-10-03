@@ -49,5 +49,10 @@ export function Excalidraw({
     })();
   }, [contents, theme]);
 
-  return <div className="mt-6 flex justify-center" ref={ref}></div>;
+  return (
+    <div
+      className="mt-6 flex justify-center rounded-xl border border-black/5 bg-gray-50 p-6 dark:border-white/10 dark:bg-white/5"
+      ref={ref}
+    ></div>
+  );
 }

@@ -19,20 +19,19 @@ export function Example({
   const theme = useTheme();
 
   return (
-    <Sandpack
-      options={{
-        classes: {
-          'sp-layout': 'mt-6',
-        },
-        showConsole: console,
-        visibleFiles,
-      }}
-      customSetup={{
-        dependencies,
-      }}
-      files={files}
-      template={template}
-      theme={theme.resolvedTheme === 'dark' ? 'dark' : 'light'}
-    />
+    <div className="mt-6 overflow-hidden rounded-xl border border-black/10 dark:border-white/10">
+      <Sandpack
+        options={{
+          showConsole: console,
+          visibleFiles,
+        }}
+        customSetup={{
+          dependencies,
+        }}
+        files={files}
+        template={template}
+        theme={theme.resolvedTheme === 'dark' ? 'dark' : 'light'}
+      />
+    </div>
   );
 }
