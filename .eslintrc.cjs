@@ -1,5 +1,7 @@
 module.exports = {
   root: true,
+  // Build output (next dev/build write generated type stubs into dist/)
+  ignorePatterns: ["dist", ".next"],
   plugins: [
     "simple-import-sort",
     "import",
@@ -65,6 +67,11 @@ module.exports = {
       files: ['*.mdx'],
       extends: ['plugin:mdx/recommended'],
       plugins: [],
+      globals: {
+        // Nextra exports the page's frontmatter (incl. values injected by
+        // plugins/word_count.mjs) as a module-scoped `metadata` const.
+        metadata: 'readonly',
+      },
       rules: {
         "@typescript-eslint/await-thenable": "off",
         "@typescript-eslint/consistent-type-imports": "off",

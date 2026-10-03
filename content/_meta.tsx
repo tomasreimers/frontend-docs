@@ -1,3 +1,7 @@
+function DecoSeparator({ title }: { title: string }) {
+  return <span className="deco-sidebar-separator">{title}</span>;
+}
+
 export default {
   index: {
     title: 'Foreword',
@@ -8,14 +12,14 @@ export default {
   },
   '-- Platform': {
     type: 'separator',
-    title: 'WEB FUNDAMENTALS',
+    title: <DecoSeparator title="WEB FUNDAMENTALS" />,
   },
   html: { title: 'Chapter 1: HTML', theme: { breadcrumb: false } },
   css: { title: 'Chapter 2: CSS', theme: { breadcrumb: false } },
   javascript: { title: 'Chapter 3: JavaScript', theme: { breadcrumb: false } },
   '-- React': {
     type: 'separator',
-    title: 'REACT ESSENTIALS',
+    title: <DecoSeparator title="REACT ESSENTIALS" />,
   },
   components: { title: 'Chapter 4: Components', theme: { breadcrumb: false } },
   applications: {
@@ -32,7 +36,7 @@ export default {
   },
   '-- Design': {
     type: 'separator',
-    title: 'DESIGN PRINCIPLES',
+    title: <DecoSeparator title="DESIGN PRINCIPLES" />,
   },
   'design-systems': {
     title: 'Chapter 8: Design systems',
@@ -41,7 +45,7 @@ export default {
   graphics: { title: 'Chapter 9: Graphics', theme: { breadcrumb: false } },
   '-- Data': {
     type: 'separator',
-    title: 'DATA ARCHITECTURE',
+    title: <DecoSeparator title="DATA ARCHITECTURE" />,
   },
   state: { title: 'Chapter 10: Managing state', theme: { breadcrumb: false } },
   network: {

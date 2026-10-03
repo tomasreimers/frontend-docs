@@ -7,7 +7,100 @@
 
 @import 'nextra-theme-docs/style.css';
 
-.nextra-content {
+/* --------------------------------------------------------------------------- */
+/* Modern (Apple-style) theme */
+/*  */
+/* Typography-first: tight semibold Inter headings in sentence case, quiet */
+/* gray labels, the default blue accent, generous whitespace, no ornament. */
+/* --------------------------------------------------------------------------- */
+
+/* Navbar wordmark: bold, tight, plain. */
+.site-logo {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Sidebar section labels + page kickers: small quiet gray caps. */
+.deco-sidebar-separator,
+.deco-kicker {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-gray-500);
+}
+
+.dark .deco-sidebar-separator,
+.dark .deco-kicker {
+  color: var(--color-gray-400);
+}
+
+.deco-kicker {
+  margin-top: 2rem;
+}
+
+/* Note: Nextra 4 has no .nextra-content class; the MDX content lives in
+   main[data-pagefind-body]. */
+
+/* Headings: tight and heavy, sentence case. */
+main[data-pagefind-body] {
+  h1,
+  h2,
+  h3,
+  h4 {
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-weight: 700;
+    letter-spacing: -0.025em;
+  }
+
+  /* No underlines (Nextra adds a border-b to h2 by default). */
+  h2 {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+}
+
+/* Separator in the page meta line. */
+.deco-diamond {
+  color: var(--color-gray-400);
+}
+
+/* Fade the page chrome (navbar, sidebar, TOC) while the mouse is idle. */
+/* The `chrome-idle` class on <html> is managed by components/fading-chrome.tsx */
+/* and is only ever applied on devices with a mouse. */
+@media (hover: hover) and (pointer: fine) {
+  .nextra-navbar,
+  .nextra-sidebar,
+  .nextra-toc {
+    transition: opacity 0.6s ease;
+  }
+
+  .chrome-idle {
+    .nextra-navbar,
+    .nextra-sidebar,
+    .nextra-toc {
+      opacity: 0;
+    }
+
+    /* Keep the chrome visible while the mouse rests on it or focus is */
+    /* inside it (e.g. search input, keyboard navigation). */
+    .nextra-navbar:hover,
+    .nextra-navbar:focus-within,
+    .nextra-sidebar:hover,
+    .nextra-sidebar:focus-within,
+    .nextra-toc:hover,
+    .nextra-toc:focus-within {
+      opacity: 1;
+    }
+  }
+}
+
+main[data-pagefind-body] {
   ul {
     padding: 0;
     list-style-type: none;

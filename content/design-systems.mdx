@@ -1,7 +1,7 @@
-import { Breadcrumbs } from "../components/breadcrumbs"
-import { ByLine } from "../components/byline"
+import { ChapterKicker } from "../components/chapter-kicker"
 import { Excalidraw } from "../components/excalidraw"
 import { Image } from "../components/image"
+import { PageMeta } from "../components/page-meta"
 import Colors from "../public/images/content/design-systems/colors.png"
 import ColumnsJSON from "../public/images/content/design-systems/columns.excalidraw.json"
 import Figma from "../public/images/content/design-systems/figma.png"
@@ -9,11 +9,11 @@ import FixedFluidJSON from "../public/images/content/design-systems/fixed-fluid.
 import LightDark from "../public/images/content/design-systems/lightdark.png"
 import Theo from "../public/images/content/design-systems/theo.png"
 
-<Breadcrumbs />
+<ChapterKicker />
 
 # Design systems: Scaling style
 
-<ByLine />
+<PageMeta readingTime={metadata.readingTime} />
 
 For many developers, frontend development is the first time they have to work with a designer. 
 
